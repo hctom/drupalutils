@@ -1,0 +1,24 @@
+{
+  "name": "hctom/drupalutils",
+  "description": "Command line providing utilities for Drupal.",
+  "authors": [
+    {
+      "name": "hctom (Thomas Keitel)",
+      "email": "info@hctom.net",
+      "homepage": "http://www.hctom.net/",
+      "role": "Developer"
+    }
+  ],
+  "require": {
+    "symfony/console": "~2.3",
+    "symfony/process": "~2.1"
+  },
+  "bin": [
+    "drupalutils"
+  ],  
+  "autoload": {
+    "psr-4": {
+      "hctom\\DrupalUtils\\": "src/"
+    }
+  }
+}
