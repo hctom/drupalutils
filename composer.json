@@ -20,5 +20,8 @@
     "psr-4": {
       "hctom\\DrupalUtils\\": "src/"
     }
+  },
+  "require-dev": {
+    "drush/drush": "dev-master"
   }
 }
