@@ -74,6 +74,22 @@ class Drush implements DrushSiteAliasAwareInterface {
   }
 
   /**
+   * Return Drush process builder.
+   *
+   * @return DrushProcessBuilder
+   *   The Drush process builder.
+   */
+  protected function getProcessBuilder() {
+    $processBuilder = new DrushProcessBuilder();
+
+    // Set up process builder.
+    $processBuilder
+      ->setDrushSiteAlias($this->getDrushSiteAlias());
+
+    return $processBuilder;
+  }
+
+  /**
    * Return Drush version.
    *
    * @return string
@@ -85,11 +101,10 @@ class Drush implements DrushSiteAliasAwareInterface {
     static $version;
 
     if (!isset($version)) {
-      $processBuilder = new DrushProcessBuilder();
+      $processBuilder = $this->getProcessBuilder();
 
       // Set up process builder.
       $process = $processBuilder
-        ->setDrushSiteAlias($this->getDrushSiteAlias())
         ->setArguments(array(
           'command' => 'version',
         ))
