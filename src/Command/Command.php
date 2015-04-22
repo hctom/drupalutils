@@ -24,6 +24,16 @@ abstract class Command extends SymfonyConsoleCommand implements DrushSiteAliasAw
   use DrushSiteAliasAwareTrait;
 
   /**
+   * Return Drush.
+   *
+   * @return Drush
+   *   The Drush object.
+   */
+  public function drush() {
+    return new Drush($this->getDrushSiteAlias());
+  }
+
+  /**
    * {@inheritdoc}
    */
   protected function initialize(InputInterface $input, OutputInterface $output) {
@@ -51,10 +61,7 @@ abstract class Command extends SymfonyConsoleCommand implements DrushSiteAliasAw
       '--' . Application::INPUT_OPTION_DRUSH_SITE_ALIAS => $this->getDrushSiteAlias()
     ), $drushInputArray);
 
-    // Instantiate Drush.
-    $drush = new Drush($this->getDrushSiteAlias());
-
-    return $drush
+    return $this->drush()
       ->run(new ArrayInput($drushInputArray), $output);
   }
 
