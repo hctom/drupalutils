@@ -7,6 +7,7 @@
 
 namespace hctom\DrupalUtils\Console;
 
+use hctom\DrupalUtils\Command\Help\DrushHelpCommand;
 use hctom\DrupalUtils\Command\Help\DrushListCommand;
 use Symfony\Component\Console\Application as SymfonyConsoleApplication;
 use Symfony\Component\Console\Input\InputOption;
@@ -27,7 +28,10 @@ class Application extends SymfonyConsoleApplication {
   protected function getDefaultCommands() {
     $defaultCommands = parent::getDefaultCommands();
 
+    $defaultCommands[] = new DrushHelpCommand();
     $defaultCommands[] = new DrushListCommand();
+
+    // TODO Other default commands from config file.
 
     return $defaultCommands;
   }
