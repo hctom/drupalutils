@@ -29,7 +29,7 @@ class Drush implements DrushSiteAliasAwareInterface {
    */
   public function __construct($drushSiteAlias = null) {
     // Set Drush site alias (if specified).
-    if (isset($siteAlias)) {
+    if (isset($drushSiteAlias)) {
       $this->setDrushSiteAlias($drushSiteAlias);
     }
   }
