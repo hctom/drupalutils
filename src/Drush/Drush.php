@@ -74,6 +74,60 @@ class Drush implements DrushSiteAliasAwareInterface {
   }
 
   /**
+   * Return Drush site alias details.
+   *
+   * @return \stdClass
+   *   The Drush site alias details (configured in aliases file).
+   *
+   * @throws \Exception
+   */
+  public function getDrushSiteAliasDetails() {
+    static $details = array();
+
+    $drushSiteAlias = $this->getDrushSiteAlias();
+    $drushSiteAliasWithoutPrecedingAtChar = ltrim($drushSiteAlias, '@');
+
+    if (!isset($details[$drushSiteAlias])) {
+      $processBuilder = $this->getProcessBuilder();
+
+      // Set up process builder.
+      $process = $processBuilder
+        ->setArguments(array(
+          'command' => 'site-alias',
+          'site' => $drushSiteAlias
+        ))
+        ->setOptions(array(
+          'format' => 'json',
+          'full' => TRUE,
+        ))
+        ->getProcess();
+
+      // Run process.
+      $process->run();
+
+      // Error occurred?
+      if (!$process->isSuccessful()) {
+        throw new \Exception('Drush site alias not found: ' . $drushSiteAlias);
+      }
+
+      // Parse Drush site alias details.
+      if (!($details[$drushSiteAlias] = json_decode($process->getOutput()))) {
+        throw new \Exception('Unable to parse Drush site alias details: ' . $drushSiteAlias);
+      }
+
+      // Does not contain Drush site alias details?
+      if (!isset($details[$drushSiteAlias]->{$drushSiteAliasWithoutPrecedingAtChar})) {
+        throw new \Exception('Unable to locate Drush site alias details: ' . $drushSiteAlias);
+      }
+
+      // Switch pointer to Drush site alias details.
+      $details[$drushSiteAlias] = $details[$drushSiteAlias]->{$drushSiteAliasWithoutPrecedingAtChar};
+    }
+
+    return $details[$drushSiteAlias];
+  }
+
+  /**
    * Return Drush process builder.
    *
    * @return DrushProcessBuilder
