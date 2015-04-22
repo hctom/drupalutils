@@ -7,6 +7,7 @@
 
 namespace hctom\DrupalUtils\Console;
 
+use hctom\DrupalUtils\Command\Help\DrushListCommand;
 use Symfony\Component\Console\Application as SymfonyConsoleApplication;
 use Symfony\Component\Console\Input\InputOption;
 
@@ -19,6 +20,17 @@ class Application extends SymfonyConsoleApplication {
    * Input option name: Drush site alias.
    */
   const INPUT_OPTION_DRUSH_SITE_ALIAS = 'drush-site-alias';
+
+  /**
+   * {@inheritdoc}
+   */
+  protected function getDefaultCommands() {
+    $defaultCommands = parent::getDefaultCommands();
+
+    $defaultCommands[] = new DrushListCommand();
+
+    return $defaultCommands;
+  }
 
   /**
    * {@inheritdoc}
