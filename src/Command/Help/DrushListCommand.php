@@ -29,7 +29,7 @@ The <info>%command.name%</info> command lists all available Drush commands:
 
 <info>%command.full_name%</info>
 
-' . $this->getNotCallableNotice() . '
+%command.not_callable_notice%
 EOT
       );
   }
@@ -51,13 +51,29 @@ EOT
   }
 
   /**
+   * {@inheritdoc}
+   */
+  public function getProcessedHelp() {
+    $help = parent::getProcessedHelp();
+
+    $placeholders = array(
+      '%command.not_callable_notice%',
+    );
+    $replacements = array(
+      $this->getNotCallableNotice(),
+    );
+
+    return str_replace($placeholders, $replacements, $help);
+  }
+
+  /**
    * Return notice about uncallable Drush commands.
    *
    * @return string
    *   The notice text.
    */
   protected function getNotCallableNotice() {
-    return '<error> NOTE: </error> These commands can only be executed programatically and this list is just for reference.';
+    return '<error> NOTE: </error> The listed commands can only be executed programatically and the list is just for reference.';
   }
 
 }
