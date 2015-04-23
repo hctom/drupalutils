@@ -1,7 +1,11 @@
 <?php
 
 // Set error reporting level.
-error_reporting(E_ALL & E_STRICT);
+error_reporting(-1);
+
+if (function_exists('ini_set')) {
+  @ini_set('display_errors', 1);
+}
 
 use hctom\DrupalUtils\Console\Application;
 
