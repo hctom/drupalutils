@@ -60,6 +60,8 @@ abstract class TaskedCommand extends Command {
           $subInput['--' . ltrim($optionName, '-')] = $option;
         }
       }
+      // FIXME Verbosity get's lost during executions.
+      $subInput['--verbose'] = $output->getVerbosity();
 
       // Increase task counter.
       $taskCount++;
