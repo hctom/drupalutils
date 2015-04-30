@@ -12,6 +12,7 @@ use hctom\DrupalUtils\Command\Drush\ListCommand;
 use hctom\DrupalUtils\Command\Site\InstallSiteCommand;
 use hctom\DrupalUtils\Helper\DrupalHelper;
 use hctom\DrushWrapper\Helper\DrushHelper;
+use Symfony\Component\ClassLoader\Psr4ClassLoader;
 use Symfony\Component\Console\Application as SymfonyConsoleApplication;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -68,6 +69,9 @@ class Application extends SymfonyConsoleApplication {
     $this->getHelperSet()->get('drush')
       ->setOutput($output);
 
+    // Initialize class loader.
+    $this->initializeClassLoader($input, $output);
+
     // Merge additional/overriding custom commands from Drush site alias
     // configuration.
     $this->addCustomCommands($input, $output);
@@ -121,6 +125,43 @@ class Application extends SymfonyConsoleApplication {
     ));
 
     return $inputDefinition;
+  }
+
+  /**
+   * Initialize class loader.
+   *
+   * @param InputInterface $input
+   *   An Input instance.
+   * @param OutputInterface $output
+   *   An output instance.
+   */
+  protected function initializeClassLoader(InputInterface $input, OutputInterface $output) {
+    // Fetch Drush site alias details.
+    $siteAliasDetails = $this->getHelperSet()->get('drush')
+      ->setInput($input)
+      ->getSiteAliasDetails();
+
+    // Drupal utilities configuration found?
+    if (property_exists($siteAliasDetails, 'drupalutils') && property_exists($siteAliasDetails->drupalutils, 'autoload')) {
+      // Command list is not an array?
+      if (!empty($siteAliasDetails->drupalutils->autoload) && !is_object($siteAliasDetails->drupalutils->autoload)) {
+        throw new \RuntimeException('Invalid autoloader configuration found.');
+      }
+
+      if (!property_exists($siteAliasDetails->drupalutils->autoload, 'psr-4') || count($siteAliasDetails->drupalutils->autoload) > 1) {
+        throw new \RuntimeException('Currently only the PSR-4 autoloading standard is supported.');
+      }
+
+      $autoLoader = new Psr4ClassLoader();
+      foreach ($siteAliasDetails->drupalutils->autoload as $autoLoadStandard => $autoLoadDefinitions) {
+        foreach ($autoLoadDefinitions as $key => $value) {
+          // TODO Log namespace registration.
+          $autoLoader->addPrefix($key, $value);
+        }
+      }
+      $autoLoader->register();
+    }
+
   }
 
 }
