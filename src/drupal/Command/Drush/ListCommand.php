@@ -2,10 +2,10 @@
 
 /**
  * @file
- * Contains hctom\DrupalUtils\Command\Help\DrushListCommand.
+ * Contains hctom\DrupalUtils\Command\Drush\ListCommand.
  */
 
-namespace hctom\DrupalUtils\Command\Help;
+namespace hctom\DrupalUtils\Command\Drush;
 
 use hctom\DrupalUtils\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -14,7 +14,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 /**
  * Drupal utilities command class: List available Drush commands.
  */
-class DrushListCommand extends Command {
+class ListCommand extends Command {
 
   /**
    * {@inheritdoc}
@@ -38,10 +38,13 @@ EOT
    * {@inheritdoc}
    */
   protected function execute(InputInterface $input, OutputInterface $output) {
-    $exitCode = $this->runDrush('list', array(
-      'namespace' => 'drush',
-    ), $output);
+    $exitCode = $this->drush()
+      ->runCommand(array(
+        'command' => 'list',
+        'namespace' => 'drush',
+      ), $input);
 
+    // Display notice about uncallable Drush commands.
     if (!$exitCode) {
       $output->writeln('');
       $output->writeln($this->getNotCallableNotice());
@@ -56,9 +59,12 @@ EOT
   public function getProcessedHelp() {
     $help = parent::getProcessedHelp();
 
+    // Register additional placeholders.
     $placeholders = array(
       '%command.not_callable_notice%',
     );
+
+    // Register additional replacements.
     $replacements = array(
       $this->getNotCallableNotice(),
     );

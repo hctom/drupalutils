@@ -7,10 +7,15 @@
 
 namespace hctom\DrupalUtils\Console;
 
-use hctom\DrupalUtils\Command\Help\DrushHelpCommand;
-use hctom\DrupalUtils\Command\Help\DrushListCommand;
+use hctom\DrupalUtils\Command\Drush\HelpCommand;
+use hctom\DrupalUtils\Command\Drush\ListCommand;
+use hctom\DrupalUtils\Command\Site\InstallSiteCommand;
+use hctom\DrupalUtils\Helper\DrupalHelper;
+use hctom\DrushWrapper\Helper\DrushHelper;
 use Symfony\Component\Console\Application as SymfonyConsoleApplication;
+use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * Drupal utilities application class.
@@ -18,9 +23,17 @@ use Symfony\Component\Console\Input\InputOption;
 class Application extends SymfonyConsoleApplication {
 
   /**
-   * Input option name: Drush site alias.
+   * {@inheritdoc}
    */
-  const INPUT_OPTION_DRUSH_SITE_ALIAS = 'drush-site-alias';
+  public function doRun(InputInterface $input, OutputInterface $output) {
+    // Assign output to Drush helper.
+    $this->getHelperSet()->get('drush')
+      ->setOutput($output);
+
+    // TODO Other commands from Drush site alias config.
+
+    return parent::doRun($input, $output);
+  }
 
   /**
    * {@inheritdoc}
@@ -28,12 +41,26 @@ class Application extends SymfonyConsoleApplication {
   protected function getDefaultCommands() {
     $defaultCommands = parent::getDefaultCommands();
 
-    $defaultCommands[] = new DrushHelpCommand();
-    $defaultCommands[] = new DrushListCommand();
-
-    // TODO Other default commands from config file.
+    $defaultCommands[] = new HelpCommand();
+    $defaultCommands[] = new InstallSiteCommand();
+    $defaultCommands[] = new ListCommand();
 
     return $defaultCommands;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  protected function getDefaultHelperSet() {
+    $helperSet = parent::getDefaultHelperSet();
+
+    // Drupal helper.
+    $helperSet->set(new DrupalHelper());
+
+    // Drush helper.
+    $helperSet->set(new DrushHelper());
+
+    return $helperSet;
   }
 
   /**
@@ -42,9 +69,10 @@ class Application extends SymfonyConsoleApplication {
   protected function getDefaultInputDefinition() {
     $inputDefinition = parent::getDefaultInputDefinition();
 
-    // Additional options.
+    // Drush site alias option.
     $inputDefinition->addOptions(array(
-      new InputOption(Application::INPUT_OPTION_DRUSH_SITE_ALIAS, NULL, InputOption::VALUE_REQUIRED, 'The Drush site alias to use.', '@none'),
+      new InputOption('simulate', NULL, InputOption::VALUE_NONE, "Simulate all relevant actions (don't actually change the system)."),
+      new InputOption('site', NULL, InputOption::VALUE_REQUIRED, 'The Drush site alias to use.', '@none'),
     ));
 
     return $inputDefinition;

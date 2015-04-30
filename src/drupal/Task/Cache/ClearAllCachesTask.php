@@ -1,0 +1,37 @@
+<?php
+
+/**
+ * @file
+ * Contains hctom\DrupalUtils\Task\Cache\ClearAllCachesTask.
+ */
+
+namespace hctom\DrupalUtils\Task\Cache;
+
+/**
+ * Drupal utilities task class: Clear all caches.
+ */
+class ClearAllCachesTask extends ClearCacheTask {
+
+  /**
+   * {@inheritdoc}
+   */
+  protected function configure() {
+    $this
+      ->setName('task:cache:clear:all');
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getTitle() {
+    return 'Clear all caches';
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getType() {
+    return 'all';
+  }
+
+}

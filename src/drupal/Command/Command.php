@@ -7,62 +7,44 @@
 
 namespace hctom\DrupalUtils\Command;
 
-use hctom\DrupalUtils\Console\Application;
-use hctom\DrupalUtils\Drush\Drush;
-use hctom\DrupalUtils\Drush\DrushSiteAliasAwareInterface;
-use hctom\DrupalUtils\Drush\DrushSiteAliasAwareTrait;
+use hctom\DrupalUtils\Helper\DrupalHelper;
+use hctom\DrushWrapper\Helper\DrushHelper;
 use Symfony\Component\Console\Command\Command as SymfonyConsoleCommand;
-use Symfony\Component\Console\Input\ArrayInput;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Helper\FormatterHelper;
 
 /**
  * Drupal utilities command base class.
  */
-abstract class Command extends SymfonyConsoleCommand implements DrushSiteAliasAwareInterface {
-
-  use DrushSiteAliasAwareTrait;
+abstract class Command extends SymfonyConsoleCommand {
 
   /**
-   * Return Drush.
+   * Return Drupal helper.
    *
-   * @return Drush
-   *   The Drush object.
+   * @return DrupalHelper
+   *   The Drupal helper object.
+   */
+  public function drupal() {
+    return $this->getHelper('drupal');
+  }
+
+  /**
+   * Return Drush helper.
+   *
+   * @return DrushHelper
+   *   The Drush helper object.
    */
   public function drush() {
-    return new Drush($this->getDrushSiteAlias());
+    return $this->getHelper('drush');
   }
 
   /**
-   * {@inheritdoc}
-   */
-  protected function initialize(InputInterface $input, OutputInterface $output) {
-    // Save Drush site alias.
-    $this->setDrushSiteAlias($input->getOption(Application::INPUT_OPTION_DRUSH_SITE_ALIAS));
-  }
-
-  /**
-   * Run Drush command.
+   * Return formatter helper.
    *
-   * @param string $drushCommandName
-   *   The name of the Drush command to execute.
-   * @param array $drushInputArray
-   *   The Drush input.
-   * @param OutputInterface $output
-   *   The output.
-   *
-   * @return int
-   *   0 if everything went fine, or an error code.
+   * @return FormatterHelper
+   *   The formatter helper object.
    */
-  protected function runDrush($drushCommandName, array $drushInputArray, OutputInterface $output) {
-    // Extend input with static values.
-    $drushInputArray = array_merge(array(
-      'command' => $drushCommandName,
-      '--' . Application::INPUT_OPTION_DRUSH_SITE_ALIAS => $this->getDrushSiteAlias()
-    ), $drushInputArray);
-
-    return $this->drush()
-      ->run(new ArrayInput($drushInputArray), $output);
+  public function formatter() {
+    return $this->getHelper('formatter');
   }
 
 }

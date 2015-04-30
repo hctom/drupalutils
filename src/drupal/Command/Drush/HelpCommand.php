@@ -2,10 +2,10 @@
 
 /**
  * @file
- * Contains hctom\DrupalUtils\Command\Help\DrushHelpCommand.
+ * Contains hctom\DrupalUtils\Command\Drush\HelpCommand.
  */
 
-namespace hctom\DrupalUtils\Command\Help;
+namespace hctom\DrupalUtils\Command\Drush;
 
 use hctom\DrupalUtils\Command\Command;
 use Symfony\Component\Console\Input\ArrayInput;
@@ -16,7 +16,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 /**
  * Drupal utilities command class: Drush help.
  */
-class DrushHelpCommand extends Command {
+class HelpCommand extends Command {
 
   /**
    * {@inheritdoc}
@@ -32,16 +32,16 @@ class DrushHelpCommand extends Command {
 <<<EOT
 The <info>%command.name%</info> command displays help for a given Drush command:
 
-<info>%command.full_name% help:drush drush:cache-clear</info>
+<info>%command.full_name% drush:cache-clear</info>
 EOT
-      )
-    ;
+      );
   }
 
   /**
    * {@inheritdoc}
    */
   protected function execute(InputInterface $input, OutputInterface $output) {
+    // Fall back to 'list:drush'?
     if (!$input->getArgument('command_name')) {
       $command = $this->getApplication()->find('list:drush');
 
@@ -52,9 +52,11 @@ EOT
       return $command->run($subInput, $output);
     }
 
-    return $this->runDrush('help', array(
-      'command_name' => $input->getArgument('command_name'),
-    ), $output);
+    return $this->drush()
+      ->runCommand(array(
+        'command' => 'help',
+        'command_name' => $input->getArgument('command_name'),
+      ), $input);
   }
 
 }
