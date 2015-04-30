@@ -23,6 +23,45 @@ use Symfony\Component\Console\Output\OutputInterface;
 class Application extends SymfonyConsoleApplication {
 
   /**
+   * Add custom commands from Drush site alias configuration.
+   *
+   * @param InputInterface $input
+   *   An Input instance.
+   * @param OutputInterface $output
+   *   An Output instance.
+   */
+  protected function addCustomCommands(InputInterface $input, OutputInterface $output) {
+    // Fetch Drush site alias details.
+    $siteAliasDetails = $this->getHelperSet()->get('drush')
+      ->setInput($input)
+      ->getSiteAliasDetails();
+
+    // Drupal utilities configuration found?
+    if (property_exists($siteAliasDetails, 'drupalutils') && property_exists($siteAliasDetails->drupalutils, 'commands')) {
+      // Command list is not an array?
+      if (!empty($siteAliasDetails->drupalutils->commands) && !is_object($siteAliasDetails->drupalutils->commands)) {
+        throw new \RuntimeException('Invalid command configuration found.');
+      }
+
+      // Process command list.
+      foreach ($siteAliasDetails->drupalutils->commands as $commandName => $class) {
+        $output->writeln($commandName . ': ' . $class);
+        // Command class exists?
+        if (!class_exists($class)) {
+          throw new \RuntimeException('Command class not found: ' . $class);
+        }
+
+        if ($this->has($commandName)) {
+          // TODO Log that an existing ocmmand is overridden.
+        }
+
+        // Add custom command.
+        $this->add(new $class());
+      }
+    }
+  }
+
+  /**
    * {@inheritdoc}
    */
   public function doRun(InputInterface $input, OutputInterface $output) {
@@ -83,45 +122,6 @@ class Application extends SymfonyConsoleApplication {
     ));
 
     return $inputDefinition;
-  }
-
-  /**
-   * Add custom commands from Drush site alias configuration.
-   *
-   * @param InputInterface $input
-   *   An Input instance.
-   * @param OutputInterface $output
-   *   An Output instance.
-   */
-  protected function addCustomCommands(InputInterface $input, OutputInterface $output) {
-    // Set up Drush helper.
-    $siteAliasDetails = $this->getHelperSet()->get('drush')
-      ->setInput($input)
-      ->getSiteAliasDetails();
-
-    // Drupal utilities configuration found?
-    if (property_exists($siteAliasDetails, 'drupalutils') && property_exists($siteAliasDetails->drupalutils, 'commands')) {
-      // Command list is not an array?
-      if (!empty($siteAliasDetails->drupalutils->commands) && !is_object($siteAliasDetails->drupalutils->commands)) {
-        throw new \RuntimeException('Invalid command configuration found.');
-      }
-
-      // Process command list.
-      foreach ($siteAliasDetails->drupalutils->commands as $commandName => $class) {
-        $output->writeln($commandName . ': ' . $class);
-        // Command class exists?
-        if (!class_exists($class)) {
-          throw new \RuntimeException('Command class not found: ' . $class);
-        }
-
-        if ($this->has($commandName)) {
-          // TODO Log that an existing ocmmand is overridden.
-        }
-
-        // Add custom command.
-        $this->add(new $class());
-      }
-    }
   }
 
 }
