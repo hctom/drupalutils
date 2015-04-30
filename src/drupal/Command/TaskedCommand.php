@@ -64,9 +64,14 @@ abstract class TaskedCommand extends Command {
       // Increase task counter.
       $taskCount++;
 
-      // TODO Implement a logger?
-      $format = '%0' . strlen(count($tasks)) . 'd';
-      $output->writeln($this->formatter()->formatSection(sprintf($format, $taskCount) . '/' . sprintf($format, count($tasks)), '<comment>' . $task->getTitle() . '</comment>'));
+      // Output task counter/title.
+      $terminalDimensions = $this->getApplication()->getTerminalDimensions();
+      $taskCountFormat = '%0' . strlen(count($tasks)) . 'd';
+      $taskCounter = sprintf($taskCountFormat, $taskCount) . '/' . sprintf($taskCountFormat, count($tasks));
+      $taskTitle = '<comment>' . $task->getTitle() . '</comment>';
+      $output->writeln('');
+      $output->writeln(str_pad($this->formatter()->formatSection($taskCounter, $taskTitle) . ' ', $terminalDimensions[0], '>'));
+      $output->writeln('');
 
       // Run task and abort, if an error occurred.
       if (($exitCode = $subApp->run(new ArrayInput($subInput), $output))) {
