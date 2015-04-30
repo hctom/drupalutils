@@ -31,6 +31,7 @@ class InstallSiteTask extends Task {
     return $this->drush()
       ->runCommand(array(
         'command' => 'drush:site-install',
+        'profile' => $this->getInstallProfile(),
         '--account-mail' => $this->getAccountMail(),
         '--account-name' => $this->getAccountName(),
         '--account-pass' => $this->getAccountPassword(),
