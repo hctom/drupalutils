@@ -125,8 +125,8 @@ class Application extends SymfonyConsoleApplication {
 
     // Drush site alias option.
     $inputDefinition->addOptions(array(
-      new InputOption('simulate', NULL, InputOption::VALUE_NONE, "Simulate all relevant actions (don't actually change the system)."),
-      new InputOption('site', NULL, InputOption::VALUE_REQUIRED, 'The Drush site alias to use.', '@none'),
+      new InputOption('--simulate', NULL, InputOption::VALUE_NONE, "Simulate all relevant actions (don't actually change the system)."),
+      new InputOption('--site', NULL, InputOption::VALUE_REQUIRED, 'The Drush site alias to use.', '@none'),
     ));
 
     return $inputDefinition;
