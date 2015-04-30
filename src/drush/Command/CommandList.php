@@ -2,33 +2,46 @@
 
 /**
  * @file
- * Contains hctom\DrupalUtils\Drush\DrushCommandList.
+ * Contains hctom\DrushWrapper\Command\CommandList.
  */
 
-namespace hctom\DrupalUtils\Drush;
+namespace hctom\DrushWrapper\Command;
 
-use hctom\DrupalUtils\Process\DrushProcessBuilder;
+use hctom\DrushWrapper\Helper\DrushHelper;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console\Output\NullOutput;
 
 /**
  * Drupal utilities Drush command list class.
  */
-class DrushCommandList implements DrushSiteAliasAwareInterface {
+class CommandList {
 
-  use DrushSiteAliasAwareTrait;
+  /**
+   * Drush helper.
+   *
+   * @var DrushHelper
+   */
+  private $drushHelper;
 
   /**
    * Constructor.
    *
-   * @param string|null $drushSiteAlias
-   *   An optional Drush site alias to use (defaults to '@none').
+   * @param DrushHelper $drushHelper
+   *   A Drush helper instance object.
    */
-  public function __construct($drushSiteAlias = null) {
-    // Set Drush site alias (if specified).
-    if (isset($siteAlias)) {
-      $this->setDrushSiteAlias($drushSiteAlias);
-    }
+  public function __construct(DrushHelper $drushHelper) {
+    $this->drushHelper = $drushHelper;
+  }
+
+  /**
+   * Return Drush helper.
+   *
+   * @return DrushHelper
+   *   The Drush helper object.
+   */
+  protected function drush() {
+    return $this->drushHelper;
   }
 
   /**
@@ -44,7 +57,7 @@ class DrushCommandList implements DrushSiteAliasAwareInterface {
   protected function getCommand($name, $definition) {
     $name = 'drush:' . $name;
 
-    $command = new DrushCommand($name);
+    $command = new Command($name);
 
     // Set up command.
     $command
@@ -69,6 +82,7 @@ class DrushCommandList implements DrushSiteAliasAwareInterface {
   public function getCommands() {
     static $commands;
 
+    // Build command list (if not already).
     if (!isset($commands)) {
       foreach ($this->query() as $commandName => $commandDefinition) {
         $command = $this->getCommand($commandName, $commandDefinition);
@@ -82,12 +96,12 @@ class DrushCommandList implements DrushSiteAliasAwareInterface {
   /**
    * Merge command arguments.
    *
-   * @param DrushCommand $command
+   * @param Command $command
    *   The command to merge the arguments into.
    * @param $definition
    *   The input definition.
    */
-  protected function mergeCommandArguments(DrushCommand &$command, $definition) {
+  protected function mergeCommandArguments(Command &$command, $definition) {
     if (!empty($definition->arguments)) {
       $argumentCount = 0;
       $numRequiredArguments = $definition->{'required-arguments'};
@@ -113,12 +127,12 @@ class DrushCommandList implements DrushSiteAliasAwareInterface {
   /**
    * Merge command options.
    *
-   * @param DrushCommand $command
+   * @param Command $command
    *   The command to merge the options into.
    * @param $definition
    *   The input definition.
    */
-  protected function mergeCommandOptions(DrushCommand $command, $definition) {
+  protected function mergeCommandOptions(Command $command, $definition) {
     if (!empty($definition->options)) {
       foreach ($definition->options as $optionName => $option) {
         if (empty($option->hidden)) {
@@ -145,7 +159,7 @@ class DrushCommandList implements DrushSiteAliasAwareInterface {
             $defaultValue = NULL;
           }
 
-          $command->addOption($optionName, '', $mode, $description, $defaultValue);
+          $command->addOption(ltrim($optionName, '-'), '', $mode, $description, $defaultValue);
         }
       }
     }
@@ -155,9 +169,9 @@ class DrushCommandList implements DrushSiteAliasAwareInterface {
    * Query all available Drush commands.
    *
    * @return array
-   *   An array conaining information about all available Drush commands.
+   *   An array containing information about all available Drush commands.
    *
-   * @throws \Exception
+   * @throws \RuntimeException
    */
   protected function query() {
     static $result;
@@ -165,28 +179,16 @@ class DrushCommandList implements DrushSiteAliasAwareInterface {
     if (!isset($result)) {
       $result = array();
 
-      $processBuilder = new DrushProcessBuilder();
+      // Fetch available Drush commands.
+      $process = $this->drush()
+        ->runProcess('help', array(), array('format' => 'json'), new NullOutput());
 
-      $process = $processBuilder
-        ->setDrushSiteAlias($this->getDrushSiteAlias())
-        ->setArguments(array(
-          'command' => 'help',
-        ))
-        ->setOptions(array(
-          '--format' => 'json'
-        ))
-        ->getProcess();
-
-      $process->run();
-
-      if (!$process->isSuccessful()) {
-        throw new \Exception('Unable to load Drush command definitions.');
-      }
-
+      // Unable to parse Drush command definitions?
       if (!$json = json_decode($process->getOutput())) {
-        throw new \Exception('Unable to parse Drush command definitions.');
+        throw new \RuntimeException('Unable to parse Drush command definitions.');
       }
 
+      // Build Drush command list.
       foreach ($json as $groupName => $group) {
         if (!empty($group->commands)) {
           foreach ($group->commands as $commandName => $commandDefinition) {
