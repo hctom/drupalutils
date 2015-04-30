@@ -43,8 +43,13 @@ class Application extends SymfonyConsoleApplication {
   protected function getDefaultCommands() {
     $defaultCommands = parent::getDefaultCommands();
 
+    // Drush command help.
     $defaultCommands[] = new HelpCommand();
+
+    // Install site.
     $defaultCommands[] = new InstallSiteCommand();
+
+    // List Drush commands.
     $defaultCommands[] = new ListCommand();
 
     return $defaultCommands;
