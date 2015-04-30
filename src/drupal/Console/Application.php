@@ -39,7 +39,7 @@ class Application extends SymfonyConsoleApplication {
     // Drupal utilities configuration found?
     if (property_exists($siteAliasDetails, 'drupalutils') && property_exists($siteAliasDetails->drupalutils, 'commands')) {
       // Command list is not an array?
-      if (!empty($siteAliasDetails->drupalutils->commands) && !is_object($siteAliasDetails->drupalutils->commands)) {
+      if (!empty($siteAliasDetails->drupalutils->commands) && !is_array($siteAliasDetails->drupalutils->commands)) {
         throw new \RuntimeException('Invalid command configuration found.');
       }
 
