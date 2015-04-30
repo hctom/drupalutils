@@ -246,12 +246,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/drush-ops/drush.git",
-                "reference": "681bf4d81e7e0ec02a1044a444f52a31ae8568ac"
+                "reference": "0f4e59a9ceb1c95fdd4dfff925cc131fec9d83c1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/drush-ops/drush/zipball/681bf4d81e7e0ec02a1044a444f52a31ae8568ac",
-                "reference": "681bf4d81e7e0ec02a1044a444f52a31ae8568ac",
+                "url": "https://api.github.com/repos/drush-ops/drush/zipball/0f4e59a9ceb1c95fdd4dfff925cc131fec9d83c1",
+                "reference": "0f4e59a9ceb1c95fdd4dfff925cc131fec9d83c1",
                 "shasum": ""
             },
             "require": {
@@ -322,7 +322,7 @@
             ],
             "description": "Drush is a command line shell and scripting interface for Drupal, a veritable Swiss Army knife designed to make life easier for those of us who spend some of our working hours hacking away at the command prompt.",
             "homepage": "http://www.drush.org",
-            "time": "2015-04-22 12:40:13"
+            "time": "2015-04-30 00:18:09"
         },
         {
             "name": "pear/console_table",
