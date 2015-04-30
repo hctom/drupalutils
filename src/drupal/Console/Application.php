@@ -45,7 +45,6 @@ class Application extends SymfonyConsoleApplication {
 
       // Process command list.
       foreach ($siteAliasDetails->drupalutils->commands as $commandName => $class) {
-        $output->writeln($commandName . ': ' . $class);
         // Command class exists?
         if (!class_exists($class)) {
           throw new \RuntimeException('Command class not found: ' . $class);
