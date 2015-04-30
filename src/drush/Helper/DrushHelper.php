@@ -13,6 +13,7 @@ use hctom\DrushWrapper\Console\Application;
 use Symfony\Component\Console\Helper\InputAwareHelper;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Logger\ConsoleLogger;
 use Symfony\Component\Console\Output\NullOutput;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Process\Process;
@@ -292,12 +293,10 @@ class DrushHelper extends InputAwareHelper {
     // Build Drush process.
     $process = $this->getProcess($commandName, $arguments, $options);
 
-    // Debug: Output Drush command.
-    if (isset($output)) {
-      /*if ($output->isDebug()) {
-        // TODO Implement a logger for this?
-        $output->writeln('<comment>Drush:</comment> ' . $process->getCommandLine());
-      }*/
+    // Log Drush command.
+    if ($output) {
+      $logger = new ConsoleLogger($this->getOutput());
+      $logger->debug($process->getCommandLine());
     }
 
     // Run process and write output (if any).

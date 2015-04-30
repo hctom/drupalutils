@@ -16,6 +16,7 @@ use Symfony\Component\ClassLoader\Psr4ClassLoader;
 use Symfony\Component\Console\Application as SymfonyConsoleApplication;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console\Logger\ConsoleLogger;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
@@ -51,12 +52,16 @@ class Application extends SymfonyConsoleApplication {
           throw new \RuntimeException('Command class not found: ' . $class);
         }
 
-        if ($this->has($commandName)) {
-          // TODO Log that an existing ocmmand is overridden.
+        $command = new $class();
+
+        // Log overridden command.
+        if ($this->has($command->getName())) {
+          $logger = new ConsoleLogger($output);
+          $logger->debug('Overridden command: ' . $command->getName() . ' => ' . $class);
         }
 
         // Add custom command.
-        $this->add(new $class());
+        $this->add($command);
       }
     }
   }
@@ -136,6 +141,8 @@ class Application extends SymfonyConsoleApplication {
    *   An output instance.
    */
   protected function initializeClassLoader(InputInterface $input, OutputInterface $output) {
+    $logger = new ConsoleLogger($output);
+
     // Fetch Drush site alias details.
     $siteAliasDetails = $this->getHelperSet()->get('drush')
       ->setInput($input)
@@ -155,8 +162,8 @@ class Application extends SymfonyConsoleApplication {
       $autoLoader = new Psr4ClassLoader();
       foreach ($siteAliasDetails->drupalutils->autoload as $autoLoadStandard => $autoLoadDefinitions) {
         foreach ($autoLoadDefinitions as $key => $value) {
-          // TODO Log namespace registration.
           $autoLoader->addPrefix($key, $value);
+          $logger->debug('Registered namespace: ' . $key . ' => ' . $value);
         }
       }
       $autoLoader->register();
