@@ -38,7 +38,7 @@ class DrupalHelper extends Helper {
    */
   protected function ensureAbsolutePath($path) {
     if (!$this->fileSystem()->isAbsolutePath($path)) {
-      $path = realpath($this->getRootPath() . DIRECTORY_SEPARATOR . $path);
+      $path = realpath($this->getRootDirectoryPath() . DIRECTORY_SEPARATOR . $path);
     }
 
     return $path;
@@ -85,7 +85,7 @@ class DrupalHelper extends Helper {
    *
    * @throws \RuntimeException
    */
-  public function getFileDirectoryPath() {
+  public function getFilesDirectoryPath() {
     if (!property_exists($this->getCoreStatus(), 'files')) {
       throw new \RuntimeException("Unable to determine Drupal's file directory path.");
     }
@@ -133,7 +133,7 @@ class DrupalHelper extends Helper {
    *
    * @throws \RuntimeException
    */
-  public function getRootPath() {
+  public function getRootDirectoryPath() {
     if (!property_exists($this->getCoreStatus(), 'root')) {
       throw new \RuntimeException("Unable to determine Drupal's root path.");
     }
@@ -149,7 +149,7 @@ class DrupalHelper extends Helper {
    *
    * @throws \RuntimeException
    */
-  public function getSitePath() {
+  public function getSiteDirectoryPath() {
     if (!property_exists($this->getCoreStatus(), 'site')) {
       throw new \RuntimeException("Unable to determine Drupal's site path.");
     }
@@ -165,7 +165,7 @@ class DrupalHelper extends Helper {
    *
    * @throws \RuntimeException
    */
-  public function getTemporaryFileDirectoryPath() {
+  public function getTemporaryFilesDirectoryPath() {
     if (!property_exists($this->getCoreStatus(), 'temp')) {
       throw new \RuntimeException("Unable to determine Drupal's temporary files directory path.");
     }
