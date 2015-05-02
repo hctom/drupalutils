@@ -38,7 +38,8 @@ class DrupalHelper extends Helper {
    */
   protected function ensureAbsolutePath($path) {
     if (!$this->fileSystem()->isAbsolutePath($path)) {
-      $path = realpath($this->getRootDirectoryPath() . DIRECTORY_SEPARATOR . $path);
+      // TODO Ensure realpath.
+      $path = $this->getRootDirectoryPath() . DIRECTORY_SEPARATOR . $path;
     }
 
     return $path;
