@@ -72,7 +72,7 @@ abstract class TaskedCommand extends Command {
       $taskCounter = sprintf($taskCountFormat, $taskCount) . '/' . sprintf($taskCountFormat, count($tasks));
       $taskTitle = '<comment>' . $task->getTitle() . '</comment>';
       $output->writeln('');
-      $output->writeln(str_pad($this->formatter()->formatSection($taskCounter, $taskTitle) . ' ', $terminalDimensions[0], '>'));
+      $output->writeln(str_pad($this->formatter()->formatSection($taskCounter, $taskTitle) . ' ', $terminalDimensions[0], '-'));
       $output->writeln('');
 
       // Run task and abort, if an error occurred.
