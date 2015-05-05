@@ -296,7 +296,7 @@ class DrushHelper extends InputAwareHelper {
     // Log Drush command.
     if ($output) {
       $logger = new ConsoleLogger($this->getOutput());
-      $logger->debug($process->getCommandLine());
+      $logger->debug('Drush: ' . $process->getCommandLine());
     }
 
     // Run process and write output (if any).
