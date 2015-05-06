@@ -14,7 +14,8 @@
     "symfony/process": "~2.1",
     "symfony/filesystem": "~2.6",
     "psr/log": "~1.0",
-    "symfony/class-loader": "~2.6"
+    "symfony/class-loader": "~2.6",
+    "monolog/monolog": "^1.13"
   },
   "bin": [
     "drupalutils"
