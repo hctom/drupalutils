@@ -15,7 +15,8 @@
     "symfony/filesystem": "~2.6",
     "psr/log": "~1.0",
     "symfony/class-loader": "~2.6",
-    "monolog/monolog": "^1.13"
+    "monolog/monolog": "^1.13",
+    "symfony/monolog-bridge": "^2.6"
   },
   "bin": [
     "drupalutils"
