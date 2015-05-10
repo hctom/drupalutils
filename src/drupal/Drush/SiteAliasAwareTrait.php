@@ -8,7 +8,7 @@
 namespace hctom\DrupalUtils\Drush;
 
 /**
- * Drupal utilities: Drush site alias aware trait.
+ * SiteAliasAwareTrait provides methods for working with the Drush site alias.
  */
 trait SiteAliasAwareTrait {
 

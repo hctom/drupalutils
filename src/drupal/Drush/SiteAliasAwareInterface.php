@@ -8,7 +8,8 @@
 namespace hctom\DrupalUtils\Drush;
 
 /**
- * Drupal utilities: Drush site alias aware interface.
+ * SiteAliasAwareInterface should be implemented by classes that depend on the
+ * Drush site alias.
  */
 interface SiteAliasAwareInterface {
 
