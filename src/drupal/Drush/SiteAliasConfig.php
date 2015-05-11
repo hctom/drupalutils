@@ -8,8 +8,7 @@
 namespace hctom\DrupalUtils\Drush;
 
 /**
- * The SiteAliasConfig class provides a typed object of the configuration for
- * the used Drush site alias.
+ * Provides a typed object of the configuration for the Drush site alias.
  */
 class SiteAliasConfig {
 

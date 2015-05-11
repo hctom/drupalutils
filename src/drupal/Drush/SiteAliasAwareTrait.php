@@ -8,7 +8,7 @@
 namespace hctom\DrupalUtils\Drush;
 
 /**
- * SiteAliasAwareTrait provides methods for working with the Drush site alias.
+ * Provides methods for working with a Drush site alias.
  */
 trait SiteAliasAwareTrait {
 

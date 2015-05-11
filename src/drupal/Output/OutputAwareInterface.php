@@ -10,8 +10,7 @@ namespace hctom\DrupalUtils\Output;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
- * OutputAwareInterface should be implemented by classes that depend on the
- * output.
+ * Should be implemented by classes that depend on the output.
  */
 interface OutputAwareInterface {
 

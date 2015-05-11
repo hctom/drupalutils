@@ -10,7 +10,7 @@ namespace hctom\DrupalUtils\Output;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
- * OutputAwareTrait provides methods for working with the output.
+ * Provides methods for working with the output.
  */
 trait OutputAwareTrait {
 

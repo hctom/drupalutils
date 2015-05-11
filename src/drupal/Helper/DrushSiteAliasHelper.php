@@ -14,7 +14,7 @@ use Symfony\Component\Console\Helper\Helper;
 use Symfony\Component\Process\Exception\RuntimeException;
 
 /**
- * The DrushSiteAliasHelper class provides helpers for the Drupal site alias.
+ * Provides helpers for the Drupal site alias.
  */
 class DrushSiteAliasHelper extends Helper implements SiteAliasAwareInterface {
 

@@ -181,7 +181,7 @@ class ProcessHelper extends Helper implements LoggerAwareInterface, OutputAwareI
    *   An optional message to display on success.
    * @param string|null $errorMessage
    *   An optional message to display on error.
-   * @param callable|null $callback
+   * @param callable|bool|null $callback
    *   A PHP callback to run whenever there is some output available on STDOUT
    *   or STDERR.
    *
@@ -217,7 +217,7 @@ class ProcessHelper extends Helper implements LoggerAwareInterface, OutputAwareI
    *   An optional message to display on success.
    * @param string|null $errorMessage
    *   An optional message to display on error.
-   * @param callable|null $callback
+   * @param callable|bool|null $callback
    *   A PHP callback to run whenever there is some output available on STDOUT
    *   or STDERR.
    *

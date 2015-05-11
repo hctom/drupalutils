@@ -8,8 +8,7 @@
 namespace hctom\DrupalUtils\Drush;
 
 /**
- * SiteAliasAwareInterface should be implemented by classes that depend on the
- * Drush site alias.
+ * Should be implemented by classes that depend on the Drush site alias.
  */
 interface SiteAliasAwareInterface {
 

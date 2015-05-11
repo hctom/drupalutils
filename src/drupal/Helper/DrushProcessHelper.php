@@ -11,7 +11,7 @@ use hctom\DrupalUtils\Drush\SiteAliasAwareInterface;
 use hctom\DrupalUtils\Drush\SiteAliasAwareTrait;
 
 /**
- * The DrushProcessHelper class provides helpers to run external Drush processes.
+ * Provides helpers to run external Drush processes.
  */
 class DrushProcessHelper extends ProcessHelper implements SiteAliasAwareInterface {
 
