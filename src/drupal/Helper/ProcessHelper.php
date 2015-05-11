@@ -11,6 +11,7 @@ use hctom\DrupalUtils\Output\OutputAwareInterface;
 use hctom\DrupalUtils\Output\OutputAwareTrait;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Helper\Helper;
 use Symfony\Component\Process\Exception\LogicException;
 use Symfony\Component\Process\Exception\RuntimeException;
@@ -109,6 +110,16 @@ class ProcessHelper extends Helper implements LoggerAwareInterface, OutputAwareI
     }
 
     return $this->commandName;
+  }
+
+  /**
+   * Return logger.
+   *
+   * @return LoggerInterface
+   *   The logger.
+   */
+  public function getLogger() {
+    return $this->logger;
   }
 
   /**
@@ -217,7 +228,7 @@ class ProcessHelper extends Helper implements LoggerAwareInterface, OutputAwareI
     $process = $this->getProcess();
 
     // Log process.
-    $this->logger->debug('Starting process: <code>{commandLine}</code>', array(
+    $this->getLogger()->debug('Starting process: <code>{commandLine}</code>', array(
       'commandLine' => $this->escapeString($process->getCommandLine()),
     ));
 
