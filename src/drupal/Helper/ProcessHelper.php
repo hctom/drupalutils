@@ -257,10 +257,19 @@ class ProcessHelper extends Helper implements LoggerAwareInterface, OutputAwareI
       $this->getOutput()->writeln(sprintf('<bg=green> </>  <info>%s</info>', $successMessage));
     }
 
-    // Not successful -> Display error message (if any).
-    elseif (!$process->isSuccessful() && $errorMessage !== NULL) {
-      // TODO Use a logger.
-      $this->getOutput()->writeln(sprintf('<error> %s </error>', $errorMessage));
+    // Not successful
+    elseif (!$process->isSuccessful()) {
+      // Display error ourpur (if needed)
+      if ($callback === FALSE) {
+        // TODO Use a logger.
+        $this->getOutput()->writeln($process->getErrorOutput());
+      }
+
+      // Display error message (if any).
+      if ($errorMessage !== NULL) {
+        // TODO Use a logger.
+        $this->getOutput()->writeln(sprintf('<error> %s </error>', $errorMessage));
+      }
     }
 
     return $process;
