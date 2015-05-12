@@ -8,12 +8,15 @@
 namespace hctom\DrupalUtils\Command;
 
 use hctom\DrupalUtils\Helper\DrupalHelper;
-use hctom\DrushWrapper\Helper\DrushHelper;
+use hctom\DrupalUtils\Helper\DrushHelper;
+use hctom\DrupalUtils\Helper\DrushProcessHelper;
+use hctom\DrupalUtils\Helper\FileSystemHelper;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Command\Command as SymfonyConsoleCommand;
 use Symfony\Component\Console\Helper\FormatterHelper;
 
 /**
- * Drupal utilities command base class.
+ * Base class for all Drupal Utilities commands.
  */
 abstract class Command extends SymfonyConsoleCommand {
 
@@ -23,7 +26,7 @@ abstract class Command extends SymfonyConsoleCommand {
    * @return DrupalHelper
    *   The Drupal helper object.
    */
-  public function drupal() {
+  protected function getDrupalHelper() {
     return $this->getHelper('drupal');
   }
 
@@ -33,8 +36,28 @@ abstract class Command extends SymfonyConsoleCommand {
    * @return DrushHelper
    *   The Drush helper object.
    */
-  public function drush() {
+  protected function getDrushHelper() {
     return $this->getHelper('drush');
+  }
+
+  /**
+   * Return Drush process helper.
+   *
+   * @return DrushProcessHelper
+   *   The resetted Drush process helper object.
+   */
+  protected function getDrushProcessHelper() {
+    return $this->getHelper('drush_process')->reset();
+  }
+
+  /**
+   * Return file system helper.
+   *
+   * @return FileSystemHelper
+   *   The file system helper object.
+   */
+  protected function getFileSystemHelper() {
+    return $this->getHelperSet()->get('filesystem');
   }
 
   /**
@@ -43,8 +66,18 @@ abstract class Command extends SymfonyConsoleCommand {
    * @return FormatterHelper
    *   The formatter helper object.
    */
-  public function formatter() {
+  protected function getFormatterHelper() {
     return $this->getHelper('formatter');
+  }
+
+  /**
+   * Return logger.
+   *
+   * @return LoggerInterface
+   *   The console logger object.
+   */
+  protected function getLogger() {
+    return $this->getApplication()->getLogger();
   }
 
 }
