@@ -48,6 +48,13 @@ class ProcessHelper extends Helper implements LoggerAwareInterface, OutputAwareI
   private $options;
 
   /**
+   * The working directory.
+   *
+   * @var string
+   */
+  private $workingDirectory;
+
+  /**
    * Build process arguments.
    *
    * @return array
@@ -148,6 +155,12 @@ class ProcessHelper extends Helper implements LoggerAwareInterface, OutputAwareI
   public function getProcess() {
     $processBuilder = $this->getProcessBuilder();
     $process = $processBuilder->getProcess();
+    $workingDirectory = $this->getWorkingDirectory();
+
+    // Set working directory (if specified).
+    if ($workingDirectory) {
+      $process->setWorkingDirectory($workingDirectory);
+    }
 
     return $process;
   }
@@ -169,6 +182,16 @@ class ProcessHelper extends Helper implements LoggerAwareInterface, OutputAwareI
     ));
 
     return $processBuilder;
+  }
+
+  /**
+   * Return working directory.
+   *
+   * @return string
+   *   The working directory to run the process from.
+   */
+  public function getWorkingDirectory() {
+    return $this->workingDirectory;
   }
 
   /**
@@ -206,6 +229,7 @@ class ProcessHelper extends Helper implements LoggerAwareInterface, OutputAwareI
    */
   public function reset() {
     return $this->setCommandName(NULL)
+      ->setWorkingDirectory(NULL)
       ->setArguments(array())
       ->setOptions(array());
   }
@@ -316,6 +340,21 @@ class ProcessHelper extends Helper implements LoggerAwareInterface, OutputAwareI
    */
   public function setOptions(array $options) {
     $this->options = $options;
+
+    return $this;
+  }
+
+  /**
+   * Set working directory.
+   *
+   * @param string $workingDirectory
+   *   The working directory to run the process from.
+   *
+   * @return static
+   *   A self-reference for method chaining.
+   */
+  public function setWorkingDirectory($workingDirectory) {
+    $this->workingDirectory = $workingDirectory;
 
     return $this;
   }
