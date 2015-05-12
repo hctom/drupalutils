@@ -20,6 +20,28 @@ class DrushProcessHelper extends ProcessHelper implements SiteAliasAwareInterfac
   /**
    * {@inheritdoc}
    */
+  protected function buildOptions() {
+    $options = parent::buildOptions();
+
+    // Assume 'yes' as answer to all prompts.
+    $options['yes'] = '--yes';
+
+    // Display even more information, including internal messages?
+    if ($this->getOutput()->isDebug()) {
+      $options['debug'] = '--debug';
+    }
+
+    // Display extra information about the command?
+    elseif ($this->getOutput()->isVeryVerbose()) {
+      $options['verbose'] = '--verbose';
+    }
+
+    return $options;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function getName() {
     return 'drush_process';
   }
