@@ -8,7 +8,7 @@
 namespace hctom\DrupalUtils\Task;
 
 /**
- * Drupal utilities task interface.
+ * Should be implemented by task command classes.
  */
 interface TaskInterface {
 
