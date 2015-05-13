@@ -10,14 +10,17 @@ namespace hctom\DrupalUtils\Helper;
 use hctom\DrupalUtils\Drush\SiteAliasAwareInterface;
 use hctom\DrupalUtils\Drush\SiteAliasAwareTrait;
 use hctom\DrupalUtils\Drush\SiteAliasConfig;
+use hctom\DrupalUtils\Output\OutputAwareInterface;
+use hctom\DrupalUtils\Output\OutputAwareTrait;
 use Symfony\Component\Console\Helper\Helper;
 use Symfony\Component\Process\Exception\RuntimeException;
 
 /**
  * Provides helpers for the Drupal site alias.
  */
-class DrushSiteAliasHelper extends Helper implements SiteAliasAwareInterface {
+class DrushSiteAliasHelper extends Helper implements OutputAwareInterface, SiteAliasAwareInterface {
 
+  use OutputAwareTrait;
   use SiteAliasAwareTrait;
 
   /**
@@ -55,7 +58,7 @@ class DrushSiteAliasHelper extends Helper implements SiteAliasAwareInterface {
           'format' => 'json',
           'full' => TRUE,
         ))
-        ->run('Loaded Drush site alias configuration', 'Unable to load Drush site alias configuration', FALSE);
+        ->run($this->getOutput()->isVerbose() ? 'Loaded Drush site alias configuration' : NULL, 'Unable to load Drush site alias configuration', FALSE);
 
       // Parse site configuration.
       if (!($data = json_decode($process->getOutput()))) {
