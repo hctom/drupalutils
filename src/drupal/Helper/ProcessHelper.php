@@ -80,7 +80,7 @@ class ProcessHelper extends Helper implements LoggerAwareInterface, OutputAwareI
       }
 
       // Option with value.
-      else {
+      elseif (!empty($option) || strlen($option) > 0) {
         $options[$optionName] = '--' . $optionName . '=' . $option;
       }
     }
