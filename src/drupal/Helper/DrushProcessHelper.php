@@ -26,16 +26,6 @@ class DrushProcessHelper extends ProcessHelper implements SiteAliasAwareInterfac
     // Assume 'yes' as answer to all prompts.
     $options['yes'] = '--yes';
 
-    // Display even more information, including internal messages?
-    if ($this->getOutput()->isDebug()) {
-      $options['debug'] = '--debug';
-    }
-
-    // Display extra information about the command?
-    elseif ($this->getOutput()->isVeryVerbose()) {
-      $options['verbose'] = '--verbose';
-    }
-
     return $options;
   }
 
