@@ -278,17 +278,17 @@
         },
         {
             "name": "symfony/monolog-bridge",
-            "version": "v2.6.6",
+            "version": "v2.6.7",
             "target-dir": "Symfony/Bridge/Monolog",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/MonologBridge.git",
-                "reference": "b1c7af8914b8ac26abbf2e962dc315d1c54a234b"
+                "reference": "3fae587cd4f3897829a591f57881a59db8b1dfd7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/MonologBridge/zipball/b1c7af8914b8ac26abbf2e962dc315d1c54a234b",
-                "reference": "b1c7af8914b8ac26abbf2e962dc315d1c54a234b",
+                "url": "https://api.github.com/repos/symfony/MonologBridge/zipball/3fae587cd4f3897829a591f57881a59db8b1dfd7",
+                "reference": "3fae587cd4f3897829a591f57881a59db8b1dfd7",
                 "shasum": ""
             },
             "require": {
@@ -323,17 +323,17 @@
             ],
             "authors": [
                 {
-                    "name": "Symfony Community",
-                    "homepage": "http://symfony.com/contributors"
-                },
-                {
                     "name": "Fabien Potencier",
                     "email": "fabien@symfony.com"
+                },
+                {
+                    "name": "Symfony Community",
+                    "homepage": "https://symfony.com/contributors"
                 }
             ],
             "description": "Symfony Monolog Bridge",
-            "homepage": "http://symfony.com",
-            "time": "2015-02-24 11:52:21"
+            "homepage": "https://symfony.com",
+            "time": "2015-05-02 15:18:45"
         },
         {
             "name": "symfony/process",
