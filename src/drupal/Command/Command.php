@@ -12,8 +12,8 @@ use hctom\DrupalUtils\Helper\DrushHelper;
 use hctom\DrupalUtils\Helper\DrushProcessHelper;
 use hctom\DrupalUtils\Helper\FileSystemHelper;
 use Psr\Log\LoggerInterface;
+use hctom\DrupalUtils\Helper\FormatterHelper;
 use Symfony\Component\Console\Command\Command as SymfonyConsoleCommand;
-use Symfony\Component\Console\Helper\FormatterHelper;
 
 /**
  * Base class for all Drupal Utilities commands.
