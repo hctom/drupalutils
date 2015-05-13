@@ -10,7 +10,7 @@ namespace hctom\DrupalUtils\Task;
 use hctom\DrupalUtils\Command\Command;
 
 /**
- * Drupal utilities task base class.
+ * Base class for Drupal utilities task commands.
  */
 abstract class Task extends Command implements TaskInterface {
 
