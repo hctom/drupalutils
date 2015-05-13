@@ -29,7 +29,7 @@ class DrushSiteAliasHelper extends Helper implements OutputAwareInterface, SiteA
    * @return DrushProcessHelper
    *   The resetted Drush process helper object.
    */
-  protected function drushProcess() {
+  protected function getDrushProcessHelper() {
     return $this->getHelperSet()->get('drush_process')->reset();
   }
 
@@ -49,7 +49,7 @@ class DrushSiteAliasHelper extends Helper implements OutputAwareInterface, SiteA
     $siteAliasWithoutAtChar = ltrim($siteAlias, '@');
 
     if (!isset($config[$siteAlias])) {
-      $process = $this->drushProcess()
+      $process = $this->getDrushProcessHelper()
         ->setCommandName('site-alias')
         ->setArguments(array(
           'site' => $siteAlias,
