@@ -20,11 +20,13 @@ abstract class ClearCacheTask extends Task {
    * {@inheritdoc}
    */
   public function execute(InputInterface $input, OutputInterface $output) {
-    return $this->drush()
-      ->runCommand(array(
-        'command' => 'drush:cache-clear',
+    return $this->getDrushProcessHelper()
+      ->setCommandName('cache-clear')
+      ->setArguments(array(
         'type' => $this->getType(),
-      ), $input);
+      ))
+      ->mustRun('Cleared cache(s)', 'Unable to clear cache(s)')
+      ->getExitCode();
   }
 
   /**
