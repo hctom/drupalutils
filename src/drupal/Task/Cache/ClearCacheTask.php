@@ -12,7 +12,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
- * Drupal utilities task base class: Clear cache.
+ * Task command base class to clear Drupal caches.
  */
 abstract class ClearCacheTask extends Task {
 
@@ -30,6 +30,8 @@ abstract class ClearCacheTask extends Task {
   }
 
   /**
+   * Return cache type.
+   *
    * @return string
    *   The name of the particular cache to clear. Return 'all' to clear all
    *   caches.
