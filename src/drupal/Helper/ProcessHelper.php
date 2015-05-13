@@ -19,7 +19,7 @@ use Symfony\Component\Process\Process;
 use Symfony\Component\Process\ProcessBuilder;
 
 /**
- * The ProcessHelper class provides helpers to run external processes.
+ * Provides helpers to run external processes.
  */
 class ProcessHelper extends Helper implements LoggerAwareInterface, OutputAwareInterface {
 
@@ -285,7 +285,7 @@ class ProcessHelper extends Helper implements LoggerAwareInterface, OutputAwareI
       ));
     }
 
-    // Not successful
+    // Not successful.
     elseif (!$process->isSuccessful()) {
       // Display error output (if not already).
       if ($callback === FALSE || ($callback === NULL && !$this->getOutput()->isVerbose())) {
