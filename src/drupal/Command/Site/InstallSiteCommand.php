@@ -12,7 +12,7 @@ use hctom\DrupalUtils\Task\Site\InstallSiteTask;
 use hctom\DrupalUtils\Task\User\LoginTask;
 
 /**
- * Drupal utilities command class: Install site.
+ * Provides a command to perform the installation of a Drupal site.
  */
 class InstallSiteCommand extends TaskedCommand {
 
@@ -25,7 +25,7 @@ class InstallSiteCommand extends TaskedCommand {
       ->setDescription('Install a Drupal site.')
       ->setHelp(
 <<<EOT
-The <info>%command.name%</info> command installs a Drupal site:
+The <info>%command.name%</info> command performs the installation of a Drupal site:
 
 <info>%command.full_name%</info>
 EOT
