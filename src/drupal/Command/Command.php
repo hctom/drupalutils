@@ -11,8 +11,8 @@ use hctom\DrupalUtils\Helper\DrupalHelper;
 use hctom\DrupalUtils\Helper\DrushHelper;
 use hctom\DrupalUtils\Helper\DrushProcessHelper;
 use hctom\DrupalUtils\Helper\FileSystemHelper;
-use Psr\Log\LoggerInterface;
 use hctom\DrupalUtils\Helper\FormatterHelper;
+use hctom\DrupalUtils\Log\LoggerInterface;
 use Symfony\Component\Console\Command\Command as SymfonyConsoleCommand;
 
 /**
