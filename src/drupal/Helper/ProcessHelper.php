@@ -7,11 +7,11 @@
 
 namespace hctom\DrupalUtils\Helper;
 
+use hctom\DrupalUtils\Log\LoggerInterface;
 use hctom\DrupalUtils\Output\OutputAwareInterface;
 use hctom\DrupalUtils\Output\OutputAwareTrait;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
-use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Helper\Helper;
 use Symfony\Component\Process\Exception\LogicException;
 use Symfony\Component\Process\Exception\RuntimeException;
@@ -23,8 +23,8 @@ use Symfony\Component\Process\ProcessBuilder;
  */
 class ProcessHelper extends Helper implements LoggerAwareInterface, OutputAwareInterface {
 
+  use OutputAwareTrait;
   use LoggerAwareTrait;
-  use OutputAwareTrait; // TODO Use a logger only.
 
   /**
    * The name of the command to run.
@@ -215,7 +215,12 @@ class ProcessHelper extends Helper implements LoggerAwareInterface, OutputAwareI
     $process = $this->run($successMessage, $errorMessage, $callback);
 
     if (!$process->isSuccessful()) {
-      throw new RuntimeException('Unable to run process: ' . $process->getCommandLine());
+      if ($this->getOutput()->isDebug()) {
+        throw new RuntimeException('Unable to run process');
+      }
+      else {
+        throw new RuntimeException(sprintf('Unable to run process: %s', $process->getCommandLine()));
+      }
     }
 
     return $process;
@@ -252,13 +257,11 @@ class ProcessHelper extends Helper implements LoggerAwareInterface, OutputAwareI
     $process = $this->getProcess();
 
     // Log process.
-    $this->getLogger()->debug('Starting process: <code>{commandLine}</code>', array(
+    $this->getLogger()->debug('<label>Starting process:</label> <code>{commandLine}</code>', array(
       'commandLine' => $this->escapeString($process->getCommandLine()),
     ));
 
     $process->run(function($type, $buffer) use ($callback) {
-      $processOutputPrefix = '<bg=' . ($type === Process::ERR ? 'red' : 'white') . '> </>  ';
-
       // Display output?
       if ($callback !== FALSE) {
         // Custom callback?
@@ -266,33 +269,35 @@ class ProcessHelper extends Helper implements LoggerAwareInterface, OutputAwareI
           call_user_func($callback, $type, $buffer);
         }
 
-        // Default callback (if verbose).
-        elseif ($this->getOutput()->isVerbose()) {
-          // TODO Use a logger.
-          $buffer = $processOutputPrefix . str_replace("\n", "\n" . $processOutputPrefix, trim($buffer));
-          $this->getOutput()->writeln($buffer);
+        // Default callback.
+        else {
+          $this->getLogger()->notice('<processOutput>{output}</processOutput>', array(
+            'output' => trim($buffer),
+          ));
         }
       }
     });
 
     // Successful -> Display success message (if any).
     if ($process->isSuccessful() && $successMessage !== NULL) {
-      // TODO Use a logger.
-      $this->getOutput()->writeln(sprintf('<bg=green> </>  <info>%s</info>', $successMessage));
+      $this->getLogger()->always('<success>{message}</success>', array(
+        'message' => $successMessage,
+      ));
     }
 
     // Not successful
     elseif (!$process->isSuccessful()) {
-      // Display error ourpur (if needed)
-      if ($callback === FALSE) {
-        // TODO Use a logger.
-        $this->getOutput()->writeln($process->getErrorOutput());
+      // Display error output (if not already).
+      if ($callback === FALSE || ($callback === NULL && !$this->getOutput()->isVerbose())) {
+        $this->getLogger()->always('<processOutput>{output}</processOutput>', array(
+          'output' => trim($process->getErrorOutput()),
+        ));
       }
-
       // Display error message (if any).
       if ($errorMessage !== NULL) {
-        // TODO Use a logger.
-        $this->getOutput()->writeln(sprintf('<error> %s </error>', $errorMessage));
+        $this->getLogger()->always('<failure>{message}</failure>', array(
+          'message' => $errorMessage,
+        ));
       }
     }
 
