@@ -7,91 +7,39 @@
 
 namespace hctom\DrupalUtils\Helper;
 
-use hctom\DrushWrapper\Helper\DrushHelper;
+use hctom\DrupalUtils\Output\OutputAwareInterface;
+use hctom\DrupalUtils\Output\OutputAwareTrait;
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerAwareTrait;
 use Symfony\Component\Console\Helper\Helper;
-use Symfony\Component\Console\Output\NullOutput;
-use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Process\Exception\RuntimeException;
 
 /**
- * Drupal utilities Drupal helper class.
+ * Provides helpers for Drupal.
  */
-class DrupalHelper extends Helper {
+class DrupalHelper extends Helper  implements LoggerAwareInterface, OutputAwareInterface {
+
+  use LoggerAwareTrait;
+  use OutputAwareTrait;
+
+  /**
+   * Return Drush process helper.
+   *
+   * @return DrushProcessHelper
+   *   The resetted Drush process helper object.
+   */
+  protected function getDrushProcessHelper() {
+    return $this->getHelperSet()->get('drush_process')->reset();
+  }
 
   /**
    * Return Drush helper.
    *
-   * @return DrushHelper
+   * @return DrushSiteAliasHelper
    *   The Drush helper object.
    */
-  protected function drush() {
-    return $this->getHelperSet()->get('drush');
-  }
-
-  /**
-   * Ensure absolute path.
-   *
-   * @param $path
-   *   The path to rewrite (if necessary).
-   *
-   * @return string
-   *   The absolute path.
-   */
-  protected function ensureAbsolutePath($path) {
-    if (!$this->fileSystem()->isAbsolutePath($path)) {
-      // TODO Ensure realpath.
-      $path = $this->getRootDirectoryPath() . DIRECTORY_SEPARATOR . $path;
-    }
-
-    return $path;
-  }
-
-  /**
-   * Return file system helper.
-   *
-   * @return Filesystem
-   *   The file system helper object.
-   */
-  protected function fileSystem() {
-    return new Filesystem();
-  }
-
-  /**
-   * Return Drupal core status.
-   *
-   * @return \stdClass
-   *   An object containing information about the core status.
-   */
-  protected function getCoreStatus() {
-    static $status;
-
-    if (!isset($status)) {
-      // Fetch core status via Drush.
-      $process = $this->drush()
-        ->runProcess('core-status', array(), array('format' => 'json'), new NullOutput());
-
-      // Unable to parse Drupal core status information?
-      if (!($status = json_decode($process->getOutput()))) {
-        throw new \RuntimeException('Unable to parse Drupal core status information.');
-      }
-    }
-
-    return $status;
-  }
-
-  /**
-   * Return Drupal's file directory path.
-   *
-   * @return string
-   *   The absolute path of the file directory.
-   *
-   * @throws \RuntimeException
-   */
-  public function getFilesDirectoryPath() {
-    if (!property_exists($this->getCoreStatus(), 'files')) {
-      throw new \RuntimeException("Unable to determine Drupal's file directory path.");
-    }
-
-    return $this->ensureAbsolutePath($this->getCoreStatus()->files);
+  protected function getDrushSiteAliasHelper() {
+    return $this->getHelperSet()->get('drush_site_alias');
   }
 
   /**
@@ -99,24 +47,19 @@ class DrupalHelper extends Helper {
    *
    * @return string
    *   The environment indicator.
-   *
-   * @throws \RuntimeException
    */
   public function getEnvironment() {
-    $details = $this->drush()
-      ->getSiteAliasDetails();
+    return $this->getDrushSiteAliasHelper()->getConfig()->getEnvironment();
+  }
 
-    // No Drupal utilities configuration found?
-    if (!property_exists($details, 'drupalutils')) {
-      throw new \RuntimeException('Unable to determine Drupal environment indicator.');
-    }
-
-    // No environment indicator set?
-    elseif (!property_exists($details->drupalutils, 'environment') || empty($details->drupalutils->environment)) {
-      throw new \RuntimeException('No environment indicator has been set for Drupal.');
-    }
-
-    return $details->drupalutils->environment;
+  /**
+   * Return file system helper.
+   *
+   * @return FileSystemHelper
+   *   The file system helper object.
+   */
+  protected function getFileSystemHelper() {
+    return $this->getHelperSet()->get('filesystem');
   }
 
   /**
@@ -127,19 +70,42 @@ class DrupalHelper extends Helper {
   }
 
   /**
+   * Return Drupal's public files directory path.
+   *
+   * @return string
+   *   The absolute path of the public files directory.
+   *
+   * @throws \RuntimeException
+   */
+  public function getPublicFilesDirectoryPath() {
+    static $path;
+
+    if (!isset($path)) {
+      $process = $this->getDrushProcessHelper()
+        ->setCommandName('core-status')
+        ->setOptions(array(
+          'fields' => 'files',
+          'field-labels' => '0',
+        ))
+        ->run(NULL, "Unable to determine Drupal's public files directory path", FALSE);
+      $path = trim($process->getOutput());
+    }
+
+    if (!$path) {
+      throw new RuntimeException("Unable to determine Drupal's public files directory path");
+    }
+
+    return $this->getFileSystemHelper()->makePathAbsolute($path);
+  }
+
+  /**
    * Return Drupal's root path.
    *
    * @return string
    *   The absolute path of the docroot.
-   *
-   * @throws \RuntimeException
    */
   public function getRootDirectoryPath() {
-    if (!property_exists($this->getCoreStatus(), 'root')) {
-      throw new \RuntimeException("Unable to determine Drupal's root path.");
-    }
-
-    return $this->getCoreStatus()->root;
+    return $this->getDrushSiteAliasHelper()->getConfig()->getRootPath();
   }
 
   /**
@@ -151,11 +117,25 @@ class DrupalHelper extends Helper {
    * @throws \RuntimeException
    */
   public function getSiteDirectoryPath() {
-    if (!property_exists($this->getCoreStatus(), 'site')) {
-      throw new \RuntimeException("Unable to determine Drupal's site path.");
+    static $path;
+
+    if (!isset($path)) {
+      $process = $this->getDrushProcessHelper()
+        ->setCommandName('core-status')
+        ->setOptions(array(
+          'fields' => 'site',
+          'field-labels' => '0',
+        ))
+        ->run(NULL, "Unable to determine Drupal's site directory path", FALSE);
+
+      $path = trim($process->getOutput());
     }
 
-    return $this->ensureAbsolutePath($this->getCoreStatus()->site);
+    if (!$path) {
+      throw new \RuntimeException("Unable to determine Drupal's site directory path");
+    }
+
+    return $this->getFileSystemHelper()->makePathAbsolute($path);
   }
 
   /**
@@ -167,11 +147,25 @@ class DrupalHelper extends Helper {
    * @throws \RuntimeException
    */
   public function getTemporaryFilesDirectoryPath() {
-    if (!property_exists($this->getCoreStatus(), 'temp')) {
-      throw new \RuntimeException("Unable to determine Drupal's temporary files directory path.");
+    static $path;
+
+    if (!isset($path)) {
+      $process = $this->getDrushProcessHelper()
+        ->setCommandName('core-status')
+        ->setOptions(array(
+          'fields' => 'temp',
+          'field-labels' => '0',
+        ))
+        ->run(NULL, "Unable to determine Drupal's temporary files directory path", FALSE);
+
+      $path = trim($process->getOutput());
     }
 
-    return $this->ensureAbsolutePath($this->getCoreStatus()->temp);
+    if (!$path) {
+      throw new RuntimeException("Unable to determine Drupal's temporary files directory path");
+    }
+
+    return $this->getFileSystemHelper()->makePathAbsolute($$path);
   }
 
   /**
@@ -183,11 +177,25 @@ class DrupalHelper extends Helper {
    * @throws \RuntimeException
    */
   public function getVersion() {
-    if (!property_exists($this->getCoreStatus(), 'drupal-version')) {
-      throw new \RuntimeException('Unable to determine Drupal version.');
+    static $version;
+
+    if (!isset($version)) {
+      $process = $this->getDrushProcessHelper()
+        ->setCommandName('core-status')
+        ->setOptions(array(
+          'fields' => 'drupal-version',
+          'field-labels' => '0',
+        ))
+        ->run(NULL, 'Unable to determine Drupal version', FALSE);
+
+      $version = trim($process->getOutput());
     }
 
-    return $this->getCoreStatus()->{'drupal-version'};
+    if (!$version) {
+      throw new RuntimeException('Unable to determine Drupal version');
+    }
+
+    return $version;
   }
 
 }
