@@ -8,7 +8,7 @@
 namespace hctom\DrupalUtils\Task\Cache;
 
 /**
- * Drupal utilities task class: Clear all caches.
+ * Provides a task command to clear all Drupal caches.
  */
 class ClearAllCachesTask extends ClearCacheTask {
 
