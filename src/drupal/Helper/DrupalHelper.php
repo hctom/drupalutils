@@ -12,6 +12,7 @@ use hctom\DrupalUtils\Output\OutputAwareTrait;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use Symfony\Component\Console\Helper\Helper;
+use Symfony\Component\Filesystem\Exception\IOException;
 use Symfony\Component\Process\Exception\RuntimeException;
 
 /**
@@ -102,10 +103,20 @@ class DrupalHelper extends Helper  implements LoggerAwareInterface, OutputAwareI
    * Return Drupal's root path.
    *
    * @return string
-   *   The absolute path of the docroot.
+   *   The absolute path of Drupal's document root.
    */
   public function getRootDirectoryPath() {
-    return $this->getDrushSiteAliasHelper()->getConfig()->getRootPath();
+    /* @var FilesystemHelper $filesystem */
+    $filesystem = $this->getHelperSet()->get('filesystem');
+
+    $path = $this->getDrushSiteAliasHelper()->getConfig()->getRootPath();
+
+    // Root directory path is not absolute?
+    if (!$filesystem->isAbsolutePath($path)) {
+      throw new IOException(sprintf("No absolute path provided for Drupal's document root"));
+    }
+
+    return $path;
   }
 
   /**
