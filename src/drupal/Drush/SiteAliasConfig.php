@@ -132,7 +132,7 @@ class SiteAliasConfig {
     $config = $this->getConfig();
 
     if (!property_exists($config, 'root')) {
-      throw new \RuntimeException("Unable to determine Drupal's document root path.");
+      throw new \RuntimeException("Unable to determine Drupal's document root path");
     }
 
     return $config->root;

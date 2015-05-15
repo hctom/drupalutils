@@ -29,7 +29,7 @@ trait SiteAliasAwareTrait {
    */
   public function getSiteAlias() {
     if (!$this->siteAlias) {
-      throw new \RuntimeException('No Drush site alias has been specified.');
+      throw new \RuntimeException('No Drush site alias has been specified');
     }
 
     return $this->siteAlias;
