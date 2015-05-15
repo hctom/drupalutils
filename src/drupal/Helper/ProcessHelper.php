@@ -254,11 +254,14 @@ class ProcessHelper extends Helper implements LoggerAwareInterface, OutputAwareI
    *   The process that ran.
    */
   public function run($successMessage = NULL, $errorMessage = NULL, $callback = NULL) {
+    /* @var FormatterHelper $formatter */
+    $formatter = $this->getHelperSet()->get('formatter');
+
     $process = $this->getProcess();
 
     // Log process.
     $this->getLogger()->debug('<label>Starting process:</label> <code>{commandLine}</code>', array(
-      'commandLine' => $this->escapeString($process->getCommandLine()),
+      'commandLine' => $formatter->formatCode($this->escapeString($process->getCommandLine())),
     ));
 
     $process->run(function($type, $buffer) use ($callback) {
