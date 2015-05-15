@@ -11,7 +11,7 @@ use hctom\DrupalUtils\Task\Task;
 use Symfony\Component\Filesystem\Filesystem;
 
 /**
- * Drupal utilities task base class: File system operation.
+ * Task command base class for file system operations.
  */
 abstract class FilesystemTask extends Task {
 
