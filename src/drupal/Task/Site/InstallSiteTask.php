@@ -12,7 +12,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
- * Drupal utilities task class: Install site.
+ * Provides a task command to perform the installation of a Drupal site.
  */
 class InstallSiteTask extends Task {
 
@@ -28,20 +28,22 @@ class InstallSiteTask extends Task {
    * {@inheritdoc}
    */
   public function execute(InputInterface $input, OutputInterface $output) {
-    return $this->drush()
-      ->runCommand(array(
-        'command' => 'drush:site-install',
+    return $this->getDrushProcessHelper()
+      ->setCommandName('site-install')
+      ->setArguments(array(
         'profile' => $this->getInstallProfile(),
-        '--account-mail' => $this->getAccountMail(),
-        '--account-name' => $this->getAccountName(),
-        '--account-pass' => $this->getAccountPassword(),
-        '--clean-url' => $this->getCleanUrlEnabled(),
-        '--locale' => $this->getLocale(),
-        '--site-mail' => $this->getSiteMail(),
-        '--site-name' => $this->getSiteName(),
-        '--sites-subdir' => $this->getSiteDirectoryName(),
-        '--yes' => TRUE,
-      ), $input);
+      ))
+      ->setOptions(array(
+        'account-mail' => $this->getAccountMail(),
+        'account-name' => $this->getAccountName(),
+        'account-pass' => $this->getAccountPassword(),
+        'clean-url' => $this->getCleanUrlEnabled(),
+        'locale' => $this->getLocale(),
+        'site-mail' => $this->getSiteMail(),
+        'site-name' => $this->getSiteName(),
+        'sites-subdir' => $this->getSiteDirectoryName(),
+      ))
+      ->mustRun('Installed Drupal site', 'Unable to install Drupal site');
   }
 
   /**
