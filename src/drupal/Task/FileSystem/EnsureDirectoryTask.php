@@ -2,10 +2,10 @@
 
 /**
  * @file
- * Contains hctom\DrupalUtils\Task\FileSystem\EnsureDirectoryTask.
+ * Contains hctom\DrupalUtils\Task\Filesystem\EnsureDirectoryTask.
  */
 
-namespace hctom\DrupalUtils\Task\FileSystem;
+namespace hctom\DrupalUtils\Task\Filesystem;
 
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -14,7 +14,7 @@ use Symfony\Component\Filesystem\Exception\IOException;
 /**
  * Drupal utilities task base class: Ensure directory.
  */
-abstract class EnsureDirectoryTask extends FileSystemTask {
+abstract class EnsureDirectoryTask extends FilesystemTask {
 
   /**
    * {@inheritdoc}
@@ -24,7 +24,7 @@ abstract class EnsureDirectoryTask extends FileSystemTask {
     $mode = $this->getMode();
 
     // Files directory exists?
-    if ($this->fileSystem()->exists($path)) {
+    if ($this->getFilesystemHelper()->exists($path)) {
       // Is a directory?
       if (!is_dir($path)) {
         throw new IOException(sprintf('"%s" is not a directory', $path), 0, NULL, $path);
@@ -33,11 +33,11 @@ abstract class EnsureDirectoryTask extends FileSystemTask {
       $output->writeln(sprintf('"<comment>%s</comment>" already exists', $path));
     }
     else {
-      $this->fileSystem()->mkdir($path, $mode);
+      $this->getFilesystemHelper()->mkdir($path, $mode);
     }
 
     // Ensure permissions.
-    $this->fileSystem()->chmod($path, $mode);
+    $this->getFilesystemHelper()->chmod($path, $mode);
   }
 
   /**

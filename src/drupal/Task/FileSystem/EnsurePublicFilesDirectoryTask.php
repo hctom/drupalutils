@@ -2,10 +2,10 @@
 
 /**
  * @file
- * Contains hctom\DrupalUtils\Task\FileSystem\EnsurePublicFileDirectoryTask.
+ * Contains hctom\DrupalUtils\Task\Filesystem\EnsurePublicFileDirectoryTask.
  */
 
-namespace hctom\DrupalUtils\Task\FileSystem;
+namespace hctom\DrupalUtils\Task\Filesystem;
 
 /**
  * Drupal utilities task base class: Ensure public files directory.

@@ -10,7 +10,7 @@ namespace hctom\DrupalUtils\Command;
 use hctom\DrupalUtils\Helper\DrupalHelper;
 use hctom\DrupalUtils\Helper\DrushHelper;
 use hctom\DrupalUtils\Helper\DrushProcessHelper;
-use hctom\DrupalUtils\Helper\FileSystemHelper;
+use hctom\DrupalUtils\Helper\FilesystemHelper;
 use hctom\DrupalUtils\Helper\FormatterHelper;
 use hctom\DrupalUtils\Log\LoggerInterface;
 use Symfony\Component\Console\Command\Command as SymfonyConsoleCommand;
@@ -53,10 +53,10 @@ abstract class Command extends SymfonyConsoleCommand {
   /**
    * Return file system helper.
    *
-   * @return FileSystemHelper
+   * @return FilesystemHelper
    *   The file system helper object.
    */
-  protected function getFileSystemHelper() {
+  protected function getFilesystemHelper() {
     return $this->getHelperSet()->get('filesystem');
   }
 

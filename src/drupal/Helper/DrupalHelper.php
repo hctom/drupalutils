@@ -55,10 +55,10 @@ class DrupalHelper extends Helper  implements LoggerAwareInterface, OutputAwareI
   /**
    * Return file system helper.
    *
-   * @return FileSystemHelper
+   * @return FilesystemHelper
    *   The file system helper object.
    */
-  protected function getFileSystemHelper() {
+  protected function getFilesystemHelper() {
     return $this->getHelperSet()->get('filesystem');
   }
 
@@ -95,7 +95,7 @@ class DrupalHelper extends Helper  implements LoggerAwareInterface, OutputAwareI
       throw new RuntimeException("Unable to determine Drupal's public files directory path");
     }
 
-    return $this->getFileSystemHelper()->makePathAbsolute($path);
+    return $this->getFilesystemHelper()->makePathAbsolute($path);
   }
 
   /**
@@ -135,7 +135,7 @@ class DrupalHelper extends Helper  implements LoggerAwareInterface, OutputAwareI
       throw new \RuntimeException("Unable to determine Drupal's site directory path");
     }
 
-    return $this->getFileSystemHelper()->makePathAbsolute($path);
+    return $this->getFilesystemHelper()->makePathAbsolute($path);
   }
 
   /**
@@ -165,7 +165,7 @@ class DrupalHelper extends Helper  implements LoggerAwareInterface, OutputAwareI
       throw new RuntimeException("Unable to determine Drupal's temporary files directory path");
     }
 
-    return $this->getFileSystemHelper()->makePathAbsolute($$path);
+    return $this->getFilesystemHelper()->makePathAbsolute($$path);
   }
 
   /**

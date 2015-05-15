@@ -2,10 +2,10 @@
 
 /**
  * @file
- * Contains hctom\DrupalUtils\Task\FileSystem\EnsureSiteDirectoryTask.
+ * Contains hctom\DrupalUtils\Task\Filesystem\EnsureSiteDirectoryTask.
  */
 
-namespace hctom\DrupalUtils\Task\FileSystem;
+namespace hctom\DrupalUtils\Task\Filesystem;
 
 /**
  * Drupal utilities task base class: Ensure site directory.
