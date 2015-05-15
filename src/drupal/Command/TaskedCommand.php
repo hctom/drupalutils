@@ -7,14 +7,14 @@
 
 namespace hctom\DrupalUtils\Command;
 
-use hctom\DrupalUtils\Console\Application;
 use hctom\DrupalUtils\Task\Task;
+use hctom\DrupalUtils\Task\TaskInterface;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
- * Drupal utilities tasked command base class.
+ * Base class for all Drupal Utilities task commands.
  */
 abstract class TaskedCommand extends Command {
 
@@ -30,60 +30,53 @@ abstract class TaskedCommand extends Command {
    * Execute all registered tasks.
    *
    * @param InputInterface $input
-   *   An InputInterface instance.
+   *   The input.
    * @param OutputInterface $output
-   *   An OutputInterface instance.
+   *   The output.
    *
    * @return null|int
    *   NULL or 0 if everything went fine, or an error code.
    */
   public function executeTasks(InputInterface $input, OutputInterface $output) {
-    $taskCount = 0;
-
     // Determine task list.
     $tasks = $this->getTasks();
 
-    // Set up sub-application.
-    $subApp = new Application();
+    // Create and set up sub-application.
+    $subApp = clone $this->getApplication();
     $subApp->setAutoExit(FALSE);
     $subApp->addCommands($tasks);
 
-    // Execute tasks.
+    // Run tasks.
+    $taskCount = 0;
     foreach ($tasks as $task) {
-      $subInput = array(
-        'command' => $task->getName(),
-      );
-
-      // TODO Better method of passing global options to sub-application.
-      foreach ($input->getOptions() as $optionName => $option) {
-        if (!empty($option) || strlen($option) > 0) {
-          $subInput['--' . ltrim($optionName, '-')] = $option;
-        }
+      // Does not implement task interface?
+      if (!$task instanceof TaskInterface) {
+        throw new \RuntimeException('Invalid task class ' . get_class($task) . ' for ' . $task->getName());
       }
-      // FIXME Verbosity get's lost during executions.
-      $subInput['--verbose'] = $output->getVerbosity();
 
       // Increase task counter.
       $taskCount++;
 
-      // Output task counter/title.
-      $terminalDimensions = $this->getApplication()->getTerminalDimensions();
-      $taskCountFormat = '%0' . strlen(count($tasks)) . 'd';
-      $taskCounter = sprintf($taskCountFormat, $taskCount) . '/' . sprintf($taskCountFormat, count($tasks));
-      $taskTitle = '<comment>' . $task->getTitle() . '</comment>';
-      $output->writeln('');
-      $output->writeln(str_pad($this->formatter()->formatSection($taskCounter, $taskTitle) . ' ', $terminalDimensions[0], '-'));
-      $output->writeln('');
+      // Find task command object.
+      $command = $subApp->find($task->getName());
 
-      // Run task and abort, if an error occurred.
-      if (($exitCode = $subApp->run(new ArrayInput($subInput), $output))) {
+      // Prepare task command arguments.
+      $arguments = array(
+        'command' => $task->getName(),
+      );
+
+      // Output task information.
+      $this->getLogger()->always($this->getFormatterHelper()->formatTaskInfo($command, $taskCount, count($tasks)));
+
+      // Run task command and abort, if an error occurred.
+      if (($exitCode = $command->run(new ArrayInput($arguments), $output))) {
         return $exitCode;
       }
     }
   }
 
   /**
-   * Return tasks (including default tasks).
+   * Return tasks.
    *
    * @return Task[]
    *   An array of task objects.
