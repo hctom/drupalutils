@@ -15,14 +15,4 @@ use Symfony\Component\Filesystem\Filesystem;
  */
 abstract class FileSystemTask extends Task {
 
-  /**
-   * Return file system helper.
-   *
-   * @return Filesystem
-   *   The file system helper object.
-   */
-  protected function fileSystem() {
-    return new Filesystem();
-  }
-
 }
