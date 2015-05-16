@@ -41,7 +41,7 @@ class SymlinkEnvHtaccessTask extends SymLinkTask {
    * {@inheritdoc}
    */
   public function getTitle() {
-    return 'Symbolic link to environment specific .htaccess file';
+    return 'Symlink environment specific .htaccess file';
   }
 
 }

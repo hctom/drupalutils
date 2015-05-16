@@ -41,7 +41,7 @@ class SymlinkEnvSettingsTask extends SymlinkTask {
    * {@inheritdoc}
    */
   public function getTitle() {
-    return 'Symbolic link to environment specific settings.php file';
+    return 'Symlink environment specific settings.php file';
   }
 
 }
