@@ -12,7 +12,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
- * Drupal utilities task class: Log in user.
+ * Provides a task command to log in a user.
  */
 class LoginTask extends Task {
 
@@ -28,14 +28,17 @@ class LoginTask extends Task {
    * {@inheritdoc}
    */
   protected function execute(InputInterface $input, OutputInterface $output) {
-    return $this->drush()
-      ->runCommand(array(
-        'command' => 'drush:user-login',
+    return $this->getDrushProcessHelper()
+      ->setCommandName('user-login')
+      ->setArguments(array(
         'user' => $this->getUser(),
         'path' => $this->getRedirectPath(),
+      ))
+      ->setOptions(array(
         '--browser' => $this->getBrowser(),
         '--redirect-port' => $this->getRedirectPort(),
-      ), $input);
+      ), $input)
+      ->mustRun('Created one time login link', 'Unable to log in user');
   }
 
   /**
