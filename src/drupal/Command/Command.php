@@ -14,6 +14,7 @@ use hctom\DrupalUtils\Helper\FilesystemHelper;
 use hctom\DrupalUtils\Helper\FormatterHelper;
 use hctom\DrupalUtils\Log\LoggerInterface;
 use Symfony\Component\Console\Command\Command as SymfonyConsoleCommand;
+use Symfony\Component\Console\Helper\QuestionHelper;
 
 /**
  * Base class for all Drupal Utilities commands.
@@ -78,6 +79,16 @@ abstract class Command extends SymfonyConsoleCommand {
    */
   protected function getLogger() {
     return $this->getApplication()->getLogger();
+  }
+
+  /**
+   * Return question helper.
+   *
+   * @return QuestionHelper
+   *   The question helper object.
+   */
+  protected function getQuestionHelper() {
+    return $this->getHelper('question');
   }
 
 }
