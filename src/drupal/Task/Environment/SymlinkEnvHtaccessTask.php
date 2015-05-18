@@ -2,10 +2,10 @@
 
 /**
  * @file
- * Contains hctom\DrupalUtils\Task\Filesystem\SymLink\SymLinkEnvHtaccessTask.
+ * Contains hctom\DrupalUtils\Task\Environment\SymLinkEnvHtaccessTask.
  */
 
-namespace hctom\DrupalUtils\Task\Filesystem\SymLink;
+namespace hctom\DrupalUtils\Task\Environment;
 
 use hctom\DrupalUtils\Task\Filesystem\SymLinkTask;
 
@@ -20,7 +20,7 @@ class SymlinkEnvHtaccessTask extends SymLinkTask {
    */
   protected function configure() {
     $this
-      ->setName('task:symlink:htaccess.env');
+      ->setName('task:environment:htaccess:symlink');
   }
 
   /**
