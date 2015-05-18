@@ -61,15 +61,21 @@ abstract class TaskedCommand extends Command {
       $command = $subApp->find($task->getName());
 
       // Prepare task command arguments.
-      $arguments = array(
+      $parameters = array(
         'command' => $task->getName(),
       );
 
       // Output task information.
       $this->getLogger()->always($this->getFormatterHelper()->formatTaskInfo($command, $taskCount, count($tasks)));
 
+      // Build command input.
+      $commandInput = new ArrayInput($parameters);
+      if ($input->getOption('no-interaction')) {
+        $commandInput->setInteractive(FALSE);
+      }
+
       // Run task command and abort, if an error occurred.
-      if (($exitCode = $command->run(new ArrayInput($arguments), $output))) {
+      if (($exitCode = $command->run($commandInput, $output))) {
         return $exitCode;
       }
     }
