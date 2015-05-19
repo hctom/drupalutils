@@ -10,13 +10,13 @@
     }
   ],
   "require": {
-    "symfony/console": "~2.3",
-    "symfony/process": "~2.1",
-    "symfony/filesystem": "~2.6",
     "psr/log": "~1.0",
     "symfony/class-loader": "~2.6",
+    "symfony/console": "~2.3",
+    "symfony/filesystem": "~2.6",
     "monolog/monolog": "^1.13",
     "symfony/monolog-bridge": "^2.6",
+    "symfony/process": "~2.1",
     "symfony/templating": "^2.6"
   },
   "bin": [
