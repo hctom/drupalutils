@@ -33,6 +33,23 @@ class FormatterHelper extends SymfonyFormatterHelper implements OutputAwareInter
   function formatCode($code) {
     return '<code>' . $code . '</code>';
   }
+  
+  /**
+   * Format counter number.
+   *
+   * @param int $count
+   *   The counter number to format.
+   * @param $total
+   *   The total value of the counter.
+   *
+   * @return string
+   *   The formatted counter number.
+   */
+  function formatCounterNumber($count, $total) {
+    $countFormat = '%0' . $this->strlen($total) . 'd';
+
+    return sprintf($countFormat, $count);
+  }
 
   /**
    * Format a message as a block of text that fills the full width of the terminal.
@@ -103,6 +120,21 @@ class FormatterHelper extends SymfonyFormatterHelper implements OutputAwareInter
   }
 
   /**
+   * Format question.
+   *
+   * @param string $question
+   *   The question to ask.
+   * @param null|mixed $defaultValue
+   *   The default value (if any).
+   *
+   * @return string
+   *   The formatted question.
+   */
+  function formatQuestion($question, $defaultValue = NULL) {
+    return $question . ': ' . (!empty($defaultValue) ? '<comment>[' . $defaultValue . ']</comment> ' : '') . '';
+  }
+
+  /**
    * Format task information.
    *
    * @param TaskInterface $task
@@ -117,8 +149,7 @@ class FormatterHelper extends SymfonyFormatterHelper implements OutputAwareInter
    */
   function formatTaskInfo(TaskInterface $task, $count, $total) {
     // Build counter.
-    $countFormat = '%0' . $this->strlen($total) . 'd';
-    $counter = '  ' . sprintf($countFormat, $count) . '/' . sprintf($countFormat, $total) . '  ';
+    $counter = '  ' . $this->formatCounterNumber($count, $total) . '/' . $this->formatCounterNumber($count, $total) . '  ';
 
     // Prepare information to display.
     $info = array(
