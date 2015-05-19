@@ -7,7 +7,6 @@
 
 namespace hctom\DrupalUtils\Command;
 
-use hctom\DrupalUtils\Task\Task;
 use hctom\DrupalUtils\Task\TaskInterface;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputInterface;
@@ -86,7 +85,7 @@ abstract class TaskedCommand extends Command {
   /**
    * Return tasks.
    *
-   * @return Task[]
+   * @return TaskInterface[]
    *   An array of task objects.
    */
   public function getTasks() {
