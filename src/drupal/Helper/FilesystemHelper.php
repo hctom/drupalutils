@@ -20,7 +20,7 @@ class FilesystemHelper extends Helper {
    * @see Filesystem::dumpFile()
    */
   public function dumpFile($filename, $content, $mode = 0666) {
-    return $this->getFilesystem()->dumpFile($filename, $content, $mode);
+    $this->getFilesystem()->dumpFile($filename, $content, $mode);
   }
 
   /**
