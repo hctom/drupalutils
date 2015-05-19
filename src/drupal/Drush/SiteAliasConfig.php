@@ -121,6 +121,24 @@ class SiteAliasConfig {
   }
 
   /**
+   * Return Drupal's URI host.
+   *
+   * @return string
+   *   The host name of the Drupal site URI.
+   *
+   * @throws \RuntimeException
+   */
+  public function getHostName() {
+    $config = $this->getConfig();
+
+    if (!property_exists($config, 'uri')) {
+      throw new \RuntimeException("Unable to determine Drupal's URI host name");
+    }
+
+    return parse_url($config->uri) ? parse_url($config->uri, PHP_URL_HOST) : $config->uri;
+  }
+
+  /**
    * Return Drupal's root path.
    *
    * @return string
