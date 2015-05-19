@@ -9,6 +9,7 @@ namespace hctom\DrupalUtils\Helper;
 
 use Symfony\Component\Console\Helper\Helper;
 use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Process\Exception\RuntimeException;
 
 /**
  * Provides helpers for the file system.
@@ -84,6 +85,29 @@ class FilesystemHelper extends Helper {
     $relativeDirectoryPath = $this->getFilesystem()->makePathRelative($endPathDirectory, $startPath);
 
     return $relativeDirectoryPath . $endPathFilename;
+  }
+
+  /**
+   * Read a file's contents.
+   *
+   * @param string $path
+   *   The path of the file to read.
+   *
+   * @return string
+   *   The file's contents.
+   */
+  public function readFile($path) {
+    // File does not exist?
+    if (!file_exists($path)) {
+      throw new RuntimeException(sprintf('File "%s" does not exist', $path));
+    }
+
+    // Is not a file?
+    if (!is_file($path)) {
+      throw new RuntimeException(sprint('"%s" is not a file', $path));
+    }
+
+    return file_get_contents($path);
   }
 
   /**
