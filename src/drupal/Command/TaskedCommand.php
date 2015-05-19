@@ -47,6 +47,9 @@ abstract class TaskedCommand extends Command {
     $subApp->setAutoExit(FALSE);
     $subApp->addCommands($tasks);
 
+    // Log table of contents.
+    $this->logTableOfContents($tasks);
+
     // Run tasks.
     $taskCount = 0;
     foreach ($tasks as $task) {
@@ -92,6 +95,26 @@ abstract class TaskedCommand extends Command {
     $tasks = array();
 
     return $tasks;
+  }
+
+  /**
+   * Log table of contents.
+   *
+   * @param TaskInterface[] $tasks
+   *   All task objects that are about to be executed.
+   */
+  protected function logTableOfContents(array $tasks) {
+    $this->getLogger()->always('');
+
+    $this->getLogger()->always('<label>Tasks to execute ({total}):</label>', array(
+      'total' => count($tasks),
+    ));
+
+    $this->getLogger()->always('');
+
+    foreach (array_values($tasks) as $i => $task) {
+      $this->getLogger()->always('    ' . $this->getFormatterHelper()->formatCounterNumber($i + 1, count($tasks)) . '. ' . $task->getTitle());
+    }
   }
 
 }
