@@ -88,11 +88,9 @@ class FormatterHelper extends SymfonyFormatterHelper implements OutputAwareInter
 
     // Path is abosolute?
     if ($filesystem->isAbsolutePath($path)) {
-      $rootDirectory = $drupal->getRootDirectoryPath();
-
       // Make path relative (if not debug).
       if (!$this->getOutput()->isDebug()) {
-        $path = $filesystem->makePathRelative($path, $rootDirectory);
+        $path = $filesystem->makePathRelative($path);
 
         // Remove './' prefix (if any).
         if (preg_match('!^' . preg_quote('./', '!') . '!', $path)) {
