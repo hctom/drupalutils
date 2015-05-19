@@ -429,19 +429,19 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/drush-ops/drush.git",
-                "reference": "0f4e59a9ceb1c95fdd4dfff925cc131fec9d83c1"
+                "reference": "271dd8367f18ebf55b8c7cf1c1e80c4b01466802"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/drush-ops/drush/zipball/cf1117b9bfe6f99e9ed8f94e8e582df0ae7a5df0",
-                "reference": "0f4e59a9ceb1c95fdd4dfff925cc131fec9d83c1",
+                "url": "https://api.github.com/repos/drush-ops/drush/zipball/271dd8367f18ebf55b8c7cf1c1e80c4b01466802",
+                "reference": "271dd8367f18ebf55b8c7cf1c1e80c4b01466802",
                 "shasum": ""
             },
             "require": {
                 "d11wtq/boris": "~1.0",
                 "pear/console_table": "~1.2.0",
                 "php": ">=5.3.0",
-                "symfony/var-dumper": "2.6.3",
+                "symfony/var-dumper": "^2.6.3",
                 "symfony/yaml": "~2.2"
             },
             "require-dev": {
@@ -457,7 +457,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "7.0.x-dev"
+                    "dev-master": "8.0.x-dev"
                 }
             },
             "autoload": {
@@ -505,7 +505,7 @@
             ],
             "description": "Drush is a command line shell and scripting interface for Drupal, a veritable Swiss Army knife designed to make life easier for those of us who spend some of our working hours hacking away at the command prompt.",
             "homepage": "http://www.drush.org",
-            "time": "2015-04-30 00:18:09"
+            "time": "2015-05-18 21:11:31"
         },
         {
             "name": "pear/console_table",
