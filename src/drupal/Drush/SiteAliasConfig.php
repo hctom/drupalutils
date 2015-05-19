@@ -135,7 +135,7 @@ class SiteAliasConfig {
       throw new \RuntimeException("Unable to determine Drupal's URI host name");
     }
 
-    return parse_url($config->uri) ? parse_url($config->uri, PHP_URL_HOST) : $config->uri;
+    return parse_url($config->uri, PHP_URL_HOST) ? parse_url($config->uri, PHP_URL_HOST) : $config->uri;
   }
 
   /**
