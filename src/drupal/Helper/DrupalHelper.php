@@ -124,8 +124,6 @@ class DrupalHelper extends Helper  implements LoggerAwareInterface, OutputAwareI
    *
    * @return string
    *   The absolute path of the site directory.
-   *
-   * @throws \RuntimeException
    */
   public function getSiteDirectoryPath() {
     static $path;
@@ -140,10 +138,21 @@ class DrupalHelper extends Helper  implements LoggerAwareInterface, OutputAwareI
         ->run(NULL, "Unable to determine Drupal's site directory path", FALSE);
 
       $path = trim($process->getOutput());
-    }
 
-    if (!$path) {
-      throw new \RuntimeException("Unable to determine Drupal's site directory path");
+      // Fall back to 'sites/[HOSTNAME-FROM-URI]' (if exists).
+      if (!$path) {
+        if (($drushSiteAliasConfig = $this->getDrushSiteAliasHelper()->getConfig())) {
+          $path = 'sites' . DIRECTORY_SEPARATOR . $drushSiteAliasConfig->getHostName();
+          if (!is_dir($this->getFilesystemHelper()->makePathAbsolute($path))) {
+            $path = NULL;
+          }
+        }
+      }
+
+      // Fall back to 'sites/default'.
+      if (!$path) {
+        $path = 'sites' . DIRECTORY_SEPARATOR . 'default';
+      }
     }
 
     return $this->getFilesystemHelper()->makePathAbsolute($path);
