@@ -39,7 +39,9 @@ abstract class TaskedCommand extends Command {
    */
   public function executeTasks(InputInterface $input, OutputInterface $output) {
     // Determine task list.
-    $tasks = $this->getTasks();
+    if (!($tasks = $this->getTasks())) {
+      throw new \RuntimeException(sprintf('No tasks supplied for "%s"', $this->getName()));
+    }
 
     // Create and set up sub-application.
     $subApp = clone $this->getApplication();
