@@ -2,7 +2,7 @@
 
 /**
  * @file
- * Contains hctom\DrupalUtils\Task\User\LoginTask.
+ * Contains hctom\DrupalUtils\Task\User\UserLoginTask.
  */
 
 namespace hctom\DrupalUtils\Task\User;
@@ -14,7 +14,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 /**
  * Provides a task command to log in a user.
  */
-class LoginTask extends Task {
+class UserLoginTask extends Task {
 
   /**
    * {@inheritdoc}
@@ -28,7 +28,7 @@ class LoginTask extends Task {
    * {@inheritdoc}
    */
   protected function execute(InputInterface $input, OutputInterface $output) {
-    return $this->getDrushProcessHelper()
+    $process = $this->getDrushProcessHelper()
       ->setCommandName('user-login')
       ->setArguments(array(
         'user' => $this->getUser(),
@@ -39,6 +39,13 @@ class LoginTask extends Task {
         '--redirect-port' => $this->getRedirectPort(),
       ), $input)
       ->mustRun('Created one time login link', 'Unable to log in user');
+
+    // Display one time login link.
+    if ($process->isSuccessful() && !$output->isVerbose()) {
+      $output->writeln($process->getOutput());
+    }
+
+    return $process->getExitCode();
   }
 
   /**
