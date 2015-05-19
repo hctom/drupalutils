@@ -8,6 +8,7 @@
 namespace hctom\DrupalUtils\Helper;
 
 use Symfony\Component\Console\Helper\Helper;
+use Symfony\Component\Filesystem\Exception\IOException;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Process\Exception\RuntimeException;
 
@@ -15,6 +16,62 @@ use Symfony\Component\Process\Exception\RuntimeException;
  * Provides helpers for the file system.
  */
 class FilesystemHelper extends Helper {
+
+  /**
+   * Back up file or directory.
+   *
+   * @param string $path
+   *   The path of the item to back up.
+   *
+   * @return string
+   *   The path of the backed up item.
+   *
+   * @throws IOException
+   */
+  public function backup($path) {
+    $suffix = 'backup.' . time();
+
+    // Item is a file.
+    if (is_file($path)) {
+      $info = pathinfo($path);
+
+      if (empty($info['filename'])) {
+        $target = dirname($path) . DIRECTORY_SEPARATOR . $info['basename'] . '.' . $suffix;
+      }
+      else {
+        $target = dirname($path) . DIRECTORY_SEPARATOR . $info['filename'] . '.' . $suffix . '.' . $info['extension'];
+      }
+    }
+
+    // Item is a directory?
+    elseif (is_dir($path)) {
+      $target = $path . '.' . $suffix;
+    }
+
+    // Unknown item type.
+    else {
+      throw new IOException(sprintf('Unable to back up "%s"', $path), 0, NULL, $path);
+    }
+
+    // Back up item.
+    $this->rename($path, $target);
+
+    return $target;
+  }
+
+  /**
+   * @see Filesystem::chgrp()
+   */
+  public function chgrp($files, $group, $recursive = false) {
+    $this->getFilesystem()->chgrp($files, $group, $recursive);
+  }
+
+  /**
+   * @see Filesystem::chmod()
+   */
+  public function chmod($files, $mode, $umask = 0000, $recursive = false) {
+    $this->getFilesystem()->chmod($files, $mode, $umask, $recursive);
+  }
 
   /**
    * @see Filesystem::dumpFile()

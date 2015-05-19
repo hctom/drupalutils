@@ -32,46 +32,6 @@ abstract class SymlinkTask extends FilesystemTask {
   const MODE_ERROR_IF_EXISTS = 'error-if-exists';
 
   /**
-   * Back up file or directory.
-   *
-   * @param string $path
-   *   The path of the item to back up.
-   */
-  protected function backup($path) {
-    $suffix = 'backup.' . time();
-
-    // Item is a file.
-    if (is_file($path)) {
-      $info = pathinfo($path);
-
-      if (empty($info['filename'])) {
-        $target = dirname($path) . DIRECTORY_SEPARATOR . $info['basename'] . '.' . $suffix;
-      }
-      else {
-        $target = dirname($path) . DIRECTORY_SEPARATOR . $info['filename'] . '.' . $suffix . '.' . $info['extension'];
-      }
-    }
-
-    // Item is a directory?
-    elseif (is_dir($path)) {
-      $target = $path . '.' . $suffix;
-    }
-
-    // Unknown item type.
-    else {
-      throw new IOException(sprintf('Unable to back up "%s" to allow a symbolic link at that location', $path), 0, NULL, $path);
-    }
-
-    // Back up item.
-    $this->getFilesystemHelper()->rename($path, $target);
-
-    $this->getLogger()->notice('Created a backup of {original} ==> {backup} to allow a symbolic link at that location', array(
-      'original' => $this->getFormatterHelper()->formatPath($path),
-      'backup' => $this->getFormatterHelper()->formatPath($target),
-    ));
-  }
-
-  /**
    * {@inheritdoc}
    */
   protected function execute(InputInterface $input, OutputInterface $output) {
@@ -203,7 +163,12 @@ abstract class SymlinkTask extends FilesystemTask {
     switch ($mode) {
       case static::MODE_BACKUP_IF_EXISTS:
         // Backup exsiting item.
-        $this->backup($link);
+        $backup = $this->getFilesystemHelper()->backup($link);
+
+        $this->getLogger()->notice('Created a backup of {original} ==> {backup}', array(
+          'original' => $this->getFormatterHelper()->formatPath($link),
+          'backup' => $this->getFormatterHelper()->formatPath($backup),
+        ));
         break;
 
       case static::MODE_DELETE_IF_EXISTS:
