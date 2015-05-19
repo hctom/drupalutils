@@ -33,7 +33,7 @@ class FormatterHelper extends SymfonyFormatterHelper implements OutputAwareInter
   function formatCode($code) {
     return '<code>' . $code . '</code>';
   }
-  
+
   /**
    * Format counter number.
    *
