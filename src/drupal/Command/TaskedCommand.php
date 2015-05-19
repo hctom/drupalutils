@@ -53,7 +53,7 @@ abstract class TaskedCommand extends Command {
     foreach ($tasks as $task) {
       // Does not implement task interface?
       if (!$task instanceof TaskInterface) {
-        throw new \RuntimeException('Invalid task class ' . get_class($task) . ' for ' . $task->getName());
+        throw new \RuntimeException(sprintf('Invalid task class "%s" for "%s"', get_class($task), $task->getName()));
       }
 
       // Increase task counter.
