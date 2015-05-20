@@ -12,7 +12,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
- * Drupal utilities task class: Revert all features.
+ * Provides a task command to revert all features.
  */
 class RevertAllFeaturesTask extends Task {
 
@@ -28,10 +28,24 @@ class RevertAllFeaturesTask extends Task {
    * {@inheritdoc}
    */
   protected function execute(InputInterface $input, OutputInterface $output) {
-    return $this->drush()
-      ->runCommand(array(
-        'command' => 'drush:features-revert-all',
-      ), $input);
+    if (!$this->getDrupalHelper()->moduleExists('system')) {
+      $this->getLogger()->always('<warning>Task has been skipped: Required {module} module is not enabled</warning>', array(
+        'module' => '<code>features</code>',
+      ));
+    }
+
+    else {
+      return $this->getDrushProcessHelper()
+        ->setCommandName('features-revert-all')
+        ->setOptions(array(
+          'force' => $this->getForce() ? TRUE : FALSE,
+        ))
+        ->run('Reverted all features', 'Unable to revert all features');
+    }
+  }
+
+  public function getForce() {
+    return FALSE;
   }
 
   /**
