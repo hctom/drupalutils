@@ -18,11 +18,9 @@ abstract class FeaturesTask extends Task {
    * {@inheritdoc}
    */
   protected function getRequiredModules() {
-    $modules = array_merge(parent::getRequiredModules(), array(
+    return array_merge(parent::getRequiredModules(), array(
       'features',
     ));
-
-    return $modules;
   }
 
 }
