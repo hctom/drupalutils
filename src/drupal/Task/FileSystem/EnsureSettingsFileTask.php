@@ -19,7 +19,7 @@ abstract class EnsureSettingsFileTask extends EnsureFileTask {
    *   The path of the directory containing all settings files.
    */
   protected function getSiteSettingsDirectory() {
-    return $this->getFilesystemHelper()->makePathAbsolute($this->getDrupalHelper()->getSiteDirectoryPath() . DIRECTORY_SEPARATOR . 'settings');
+    return $this->getDrupalHelper()->getSiteDirectoryPath() . DIRECTORY_SEPARATOR . 'settings';
   }
 
 }
