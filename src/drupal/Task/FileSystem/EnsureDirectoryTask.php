@@ -12,50 +12,42 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Filesystem\Exception\IOException;
 
 /**
- * Drupal utilities task base class: Ensure directory.
+ * Task command base class to ensure a directory.
  */
-abstract class EnsureDirectoryTask extends FilesystemTask {
+abstract class EnsureDirectoryTask extends EnsureItemTask {
 
   /**
    * {@inheritdoc}
    */
   protected function execute(InputInterface $input, OutputInterface $output) {
+    $filesystem = $this->getFilesystemHelper();
     $path = $this->getPath();
-    $mode = $this->getMode();
 
-    // Files directory exists?
-    if ($this->getFilesystemHelper()->exists($path)) {
-      // Is a directory?
-      if (!is_dir($path)) {
+    // Directory exists?
+    if ($filesystem->exists($path)) {
+      // Is not a directory?
+      if (!$filesystem->isDirectory($path)) {
         throw new IOException(sprintf('"%s" is not a directory', $path), 0, NULL, $path);
       }
 
-      $output->writeln(sprintf('"<comment>%s</comment>" already exists', $path));
+      $this->getLogger()->notice('Directory {path} already exists', array(
+        'path' => $this->getFormatterHelper()->formatPath($path),
+      ));
     }
+
+    // Directory not found -> create directory.
     else {
-      $this->getFilesystemHelper()->mkdir($path, $mode);
+      $filesystem->mkdir($path, $this->getFileMode());
     }
 
-    // Ensure permissions.
-    $this->getFilesystemHelper()->chmod($path, $mode);
-  }
+    // Call parent to ensure permissions/group.
+    $exitCode = parent::execute($input, $output);
 
-  /**
-   * Return path.
-   *
-   * @return string
-   *   The path of the directory to ensure.
-   */
-  abstract public function getPath();
+    $this->getLogger()->always('<success>Ensured {path} directory</success>', array(
+      'path' => $this->getFormatterHelper()->formatPath($path),
+    ));
 
-  /**
-   * Return file mode.
-   *
-   * @return int
-   *   The file mode to apply to the directory to ensure.
-   */
-  public function getMode() {
-    return 0777;
+    return $exitCode;
   }
 
 }

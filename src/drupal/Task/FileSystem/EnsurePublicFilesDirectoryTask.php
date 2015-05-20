@@ -8,7 +8,7 @@
 namespace hctom\DrupalUtils\Task\Filesystem;
 
 /**
- * Drupal utilities task base class: Ensure public files directory.
+ * Provides a task command to ensure the public files directory.
  */
 class EnsurePublicFilesDirectoryTask extends EnsureDirectoryTask {
 
@@ -24,15 +24,14 @@ class EnsurePublicFilesDirectoryTask extends EnsureDirectoryTask {
    * {@inheritdoc}
    */
   function getPath() {
-    return $this->drupal()->getFilesDirectoryPath();
+    return $this->getDrupalHelper()->getPublicFilesDirectoryPath();
   }
-
 
   /**
    * {@inheritdoc}
    */
   public function getTitle() {
-    return 'Ensure files directory';
+    return 'Ensure public files directory';
   }
 
 }
