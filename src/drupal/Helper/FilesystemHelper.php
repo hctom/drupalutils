@@ -212,6 +212,13 @@ class FilesystemHelper extends Helper {
   }
 
   /**
+   * @see Filesystem::mkdir()
+   */
+  public function mkdir($dirs, $mode = 0777) {
+    $this->getFilesystem()->mkdir($dirs, $mode);
+  }
+
+  /**
    * Read a file's contents.
    *
    * @param string $path
