@@ -23,7 +23,7 @@ abstract class Task extends Command implements TaskInterface {
     foreach ($this->getRequiredModules() as $moduleName) {
       if (!$this->getDrupalHelper()->moduleExists($moduleName)) {
         $this->getLogger()->always('<warning>Skipped task: Required {module} module is not enabled</warning>', array(
-          'module' => '<code>features</code>',
+          'module' => '<code>' . $moduleName . '</code>',
         ));
 
         return;
