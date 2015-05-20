@@ -29,7 +29,7 @@ class RevertAllFeaturesTask extends Task {
    */
   protected function execute(InputInterface $input, OutputInterface $output) {
     if (!$this->getDrupalHelper()->moduleExists('features')) {
-      $this->getLogger()->always('<warning>Task has been skipped: Required {module} module is not enabled</warning>', array(
+      $this->getLogger()->always('<warning>Skipped task: Required {module} module is not enabled</warning>', array(
         'module' => '<code>features</code>',
       ));
     }
