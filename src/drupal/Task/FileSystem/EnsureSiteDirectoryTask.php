@@ -8,7 +8,7 @@
 namespace hctom\DrupalUtils\Task\Filesystem;
 
 /**
- * Drupal utilities task base class: Ensure site directory.
+ * Provides a task command to ensure the site directory.
  */
 class EnsureSiteDirectoryTask extends EnsureDirectoryTask {
 
@@ -24,9 +24,8 @@ class EnsureSiteDirectoryTask extends EnsureDirectoryTask {
    * {@inheritdoc}
    */
   function getPath() {
-    return $this->drupal()->getSiteDirectoryPath();
+    return $this->getDrupalHelper()->getSiteDirectoryPath();
   }
-
 
   /**
    * {@inheritdoc}
