@@ -104,17 +104,20 @@ abstract class TaskedCommand extends Command {
    *   All task objects that are about to be executed.
    */
   protected function logTableOfContents(array $tasks) {
-    $this->getLogger()->always('');
+    $formatter = $this->getFormatterHelper();
 
+    $this->getLogger()->always('');
     $this->getLogger()->always('<label>Tasks to execute ({total}):</label>', array(
       'total' => count($tasks),
     ));
-
     $this->getLogger()->always('');
 
+    $toc = array();
     foreach (array_values($tasks) as $i => $task) {
-      $this->getLogger()->always('    ' . $this->getFormatterHelper()->formatCounterNumber($i + 1, count($tasks)) . '. ' . $task->getTitle());
+      $toc[] = $formatter->formatCounterNumber($i + 1, count($tasks)) . '. ' . $task->getTitle();
     }
+
+    $this->getLogger()->always($formatter->formatFullWidthBlock($toc, 'toc', TRUE));
   }
 
 }
