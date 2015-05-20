@@ -33,7 +33,7 @@ class FilesystemHelper extends Helper {
     $suffix = 'backup.' . time();
 
     // Item is a file.
-    if (is_file($path)) {
+    if ($this->isFile($path)) {
       $info = pathinfo($path);
 
       if (empty($info['filename'])) {
@@ -129,6 +129,24 @@ class FilesystemHelper extends Helper {
   }
 
   /**
+   * Item is a file?
+   *
+   * @param string $path
+   *   The path of the item to check.
+   *
+   * @return bool
+   *   Whether the item is file or not. This method returns FALSE if the item is
+   *   a symbolic link to a file.
+   */
+  public function isFile($path) {
+    if (!$this->exists($path)) {
+      return FALSE;
+    }
+
+    return is_file($path) && !$this->isSymlink($path);
+  }
+
+  /**
    * Item is a symbolic link?
    *
    * @param string $path
@@ -191,7 +209,7 @@ class FilesystemHelper extends Helper {
     }
 
     // Is not a file?
-    if (!is_file($path)) {
+    if (!$this->isFile($path)) {
       throw new RuntimeException(sprint('"%s" is not a file', $path));
     }
 
