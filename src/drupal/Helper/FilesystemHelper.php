@@ -129,6 +129,23 @@ class FilesystemHelper extends Helper {
   }
 
   /**
+   * Item is a symbolic link?
+   *
+   * @param string $path
+   *   The path of the item to check.
+   *
+   * @return bool
+   *   Whether the item is a symbolic link.
+   */
+  public function isSymlink($path) {
+    if (!$this->exists($path)) {
+      return FALSE;
+    }
+
+    return is_link($path);
+  }
+
+  /**
    * Return absolute path.
    *
    * @param $path
