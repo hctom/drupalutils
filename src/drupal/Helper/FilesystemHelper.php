@@ -82,6 +82,19 @@ class FilesystemHelper extends Helper {
   }
 
   /**
+   * Item exists?
+   *
+   * @param string $path
+   *   The path of the item to check.
+   *
+   * @return bool
+   *   Whether the item exists or not.
+   */
+  public function exists($path) {
+    return file_exists($path);
+  }
+
+  /**
    * Return Drupal helper.
    *
    * @return DrupalHelper
@@ -156,7 +169,7 @@ class FilesystemHelper extends Helper {
    */
   public function readFile($path) {
     // File does not exist?
-    if (!file_exists($path)) {
+    if (!$this->exists($path)) {
       throw new RuntimeException(sprintf('File "%s" does not exist', $path));
     }
 
@@ -193,7 +206,7 @@ class FilesystemHelper extends Helper {
    */
   public function runPhpFileInIsolation($path) {
     // File exists?
-    if (!file_exists($path)) {
+    if (!$this->exists($path)) {
       throw new RuntimeException(sprintf('File "%s" does not exist', $path));
     }
 
