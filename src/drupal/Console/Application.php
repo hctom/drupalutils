@@ -188,6 +188,9 @@ EOT;
 
     // Success.
     $output->getFormatter()->setStyle('success', new OutputFormatterStyle('green'));
+
+    // Warning.
+    $output->getFormatter()->setStyle('warning', new OutputFormatterStyle('magenta'));
   }
 
   /**
