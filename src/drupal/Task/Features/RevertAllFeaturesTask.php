@@ -7,14 +7,13 @@
 
 namespace hctom\DrupalUtils\Task\Features;
 
-use hctom\DrupalUtils\Task\Task;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * Provides a task command to revert all features.
  */
-class RevertAllFeaturesTask extends Task {
+class RevertAllFeaturesTask extends FeaturesTask {
 
   /**
    * {@inheritdoc}
@@ -45,17 +44,6 @@ class RevertAllFeaturesTask extends Task {
    */
   public function getForce() {
     return FALSE;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  protected function getRequiredModules() {
-    $modules = array_merge(parent::getRequiredModules(), array(
-      'features',
-    ));
-
-    return $modules;
   }
 
   /**
