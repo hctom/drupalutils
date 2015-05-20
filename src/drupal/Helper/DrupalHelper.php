@@ -128,6 +128,8 @@ class DrupalHelper extends Helper  implements LoggerAwareInterface, OutputAwareI
   public function getSiteDirectoryPath() {
     static $path;
 
+    $filesystem = $this->getFilesystemHelper();
+
     if (!isset($path)) {
       $process = $this->getDrushProcessHelper()
         ->setCommandName('core-status')
@@ -143,7 +145,7 @@ class DrupalHelper extends Helper  implements LoggerAwareInterface, OutputAwareI
       if (!$path) {
         if (($drushSiteAliasConfig = $this->getDrushSiteAliasHelper()->getConfig())) {
           $path = 'sites' . DIRECTORY_SEPARATOR . $drushSiteAliasConfig->getHostName();
-          if (!is_dir($this->getFilesystemHelper()->makePathAbsolute($path))) {
+          if (!$filesystem->isDirectory($filesystem->makePathAbsolute($path))) {
             $path = NULL;
           }
         }
@@ -155,7 +157,7 @@ class DrupalHelper extends Helper  implements LoggerAwareInterface, OutputAwareI
       }
     }
 
-    return $this->getFilesystemHelper()->makePathAbsolute($path);
+    return $filesystem->makePathAbsolute($path);
   }
 
   /**
@@ -185,7 +187,7 @@ class DrupalHelper extends Helper  implements LoggerAwareInterface, OutputAwareI
       throw new RuntimeException("Unable to determine Drupal's temporary files directory path");
     }
 
-    return $this->getFilesystemHelper()->makePathAbsolute($$path);
+    return $this->getFilesystemHelper()->makePathAbsolute($path);
   }
 
   /**
