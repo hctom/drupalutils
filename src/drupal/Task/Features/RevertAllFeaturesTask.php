@@ -28,7 +28,7 @@ class RevertAllFeaturesTask extends Task {
    * {@inheritdoc}
    */
   protected function execute(InputInterface $input, OutputInterface $output) {
-    if (!$this->getDrupalHelper()->moduleExists('system')) {
+    if (!$this->getDrupalHelper()->moduleExists('features')) {
       $this->getLogger()->always('<warning>Task has been skipped: Required {module} module is not enabled</warning>', array(
         'module' => '<code>features</code>',
       ));
