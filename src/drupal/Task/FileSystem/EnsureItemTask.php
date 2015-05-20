@@ -29,7 +29,7 @@ abstract class EnsureItemTask extends FilesystemTask {
 
     // File permissions are already set to the correct value?
     if ($originalFileModeOctal === $fileModeOctal) {
-      $this->getLogger()->notice('File permissions of {path} already set to {mode}', array(
+      $this->getLogger()->notice('<label>Permissions already set:</label> {path} ==> {mode}', array(
         'mode' => '<comment>' . $fileModeOctal . '</comment>',
         'path' => $this->getFormatterHelper()->formatPath($path),
       ));
@@ -40,13 +40,13 @@ abstract class EnsureItemTask extends FilesystemTask {
       $this->getFilesystemHelper()->chmod($path, $fileMode, 0000, $recursive);
 
       if ($recursive) {
-        $this->getLogger()->notice('Recursively set file permissions of {path} to {mode}', array(
+        $this->getLogger()->notice('<label>Recursively set permissions:</label> {path} ==> {mode}', array(
           'mode' => '<comment>' . $fileModeOctal . '</comment>',
           'path' => $this->getFormatterHelper()->formatPath($path),
         ));
       }
       else {
-        $this->getLogger()->notice('Set file permissions of {path} to {mode}', array(
+        $this->getLogger()->notice('<label>Set permissions:</label> {path} ==> {mode}', array(
           'mode' => '<comment>' . $fileModeOctal . '</comment>',
           'path' => $this->getFormatterHelper()->formatPath($path),
         ));
@@ -68,7 +68,7 @@ abstract class EnsureItemTask extends FilesystemTask {
 
       // Group is already set to the correct value?
       if ($group['name'] == $originalGroup['name']) {
-        $this->getLogger()->notice('Group of {path} already set to {group}', array(
+        $this->getLogger()->notice('<label>Group already set:</label> {path} ==> {group}', array(
           'group' => '<comment>' . $group['name'] . '</comment>',
           'path' => $this->getFormatterHelper()->formatPath($path),
         ));
@@ -79,13 +79,13 @@ abstract class EnsureItemTask extends FilesystemTask {
         $filesystem->chgrp($path, $group['name'], $recursive);
 
         if ($recursive) {
-          $this->getLogger()->notice('Recursively set group of {group} to {path}', array(
+          $this->getLogger()->notice('<label>Recursively set group:</label> {group} ==> {path}', array(
             'group' => '<comment>' . $group['name'] . '</comment>',
             'path' => $this->getFormatterHelper()->formatPath($path),
           ));
         }
         else {
-          $this->getLogger()->notice('Set group of {path} to {group}', array(
+          $this->getLogger()->notice('<label>Set group:</label> {path} ==> {group}', array(
             'group' => '<comment>' . $group['name'] . '</comment>',
             'path' => $this->getFormatterHelper()->formatPath($path),
           ));

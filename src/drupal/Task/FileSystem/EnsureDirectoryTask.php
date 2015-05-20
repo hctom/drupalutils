@@ -39,7 +39,7 @@ abstract class EnsureDirectoryTask extends EnsureItemTask {
 
     // Directory already exists.
     else {
-      $this->getLogger()->notice('Directory {path} already exists', array(
+      $this->getLogger()->notice('<label>Directory already exists:</label> {path}', array(
         'path' => $this->getFormatterHelper()->formatPath($path),
       ));
     }
