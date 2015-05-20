@@ -14,17 +14,7 @@ use Symfony\Component\Process\Exception\RuntimeException;
 /**
  * Task command base class to ensure a file.
  */
-abstract class EnsureFileTask extends FilesystemTask {
-
-  /**
-   * Mode: Skip if exists.
-   */
-  const MODE_REBUILD_IF_EXISTS = 'rebuild-if-exists';
-
-  /**
-   * Mode: Rebuild if exists.
-   */
-  const MODE_SKIP_IF_EXISTS = 'skip-if-exists';
+abstract class EnsureFileTask extends EnsureItemTask {
 
   /**
    * @param InputInterface $input
@@ -39,6 +29,7 @@ abstract class EnsureFileTask extends FilesystemTask {
     return array();
   }
 
+  // TODO Method really needed when template engine has been implemented?
   /**
    * Dump content into a file.
    *
@@ -46,18 +37,13 @@ abstract class EnsureFileTask extends FilesystemTask {
    *   The file to be written to.
    * @param array|string $content
    *   The data to write into the file.
-   * @param int $fileMode
-   *   The file mode (octal) to apply.
    */
-  protected function dumpFile($filename, $content, $fileMode) {
+  protected function dumpFile($filename, $content) {
     // Prepare content.
     $content = implode("\n\n", is_array($content) ? $content : array($content)) . "\n";
 
     // Dump file.
-    $this->getFilesystemHelper()->dumpFile($filename, $content);
-
-    // Ensure file mode.
-    $this->getFilesystemHelper()->chmod($filename, $fileMode);
+    $this->getFilesystemHelper()->dumpFile($filename, $content, $this->getFileMode());
   }
 
   /**
@@ -65,67 +51,65 @@ abstract class EnsureFileTask extends FilesystemTask {
    */
   protected function execute(InputInterface $input, OutputInterface $output) {
     $filename = $this->getFilesystemHelper()->makePathAbsolute($this->getPath());
-    $mode = $this->getMode();
+    $filesystem = $this->getFilesystemHelper();
+    $formatter = $this->getFormatterHelper();
 
-    // File does not exist.
-    if (!file_exists($filename)) {
-      $this->dumpFile($filename, $this->buildContent($input, $output), $this->getFileMode());
+    // File does not exist -> create file.
+    if (!$filesystem->exists($filename)) {
+      $this->dumpFile($filename, $this->buildContent($input, $output));
 
-      $this->getLogger()->always('<success>Created {filename} file</success>', array(
-        'filename' => $this->getFormatterHelper()->formatPath($filename),
+      $this->getLogger()->notice('<label>Created file:</label> {path}', array(
+        'path' => $formatter->formatPath($filename),
       ));
     }
 
-    // Existing item is a file?
-    elseif (!is_file($filename)) {
+    // Existing item is not a file.
+    elseif (!$filesystem->isFile($filename)) {
       throw new RuntimeException(sprint('"%s" is not a file', $filename));
     }
 
-    // Skip if exists?
-    elseif ($mode === static::MODE_SKIP_IF_EXISTS) {
-      $this->getLogger()->always('<success>File {filename} already exists</success>', array(
-        'filename' => $this->getFormatterHelper()->formatPath($filename),
+    // Skip if exists.
+    elseif ($this->getSkipIfExists()) {
+      $this->getLogger()->notice('<label>File already exists:</label> {path}', array(
+        'path' => $formatter->formatPath($filename),
       ));
     }
 
-    // Rebuild if exists?
-    elseif ($mode === static::MODE_REBUILD_IF_EXISTS) {
-      $this->dumpFile($filename, $this->buildContent($input, $output), $this->getFileMode());
+    // Rebuild file.
+    else {
+      $this->dumpFile($filename, $this->buildContent($input, $output));
 
-      $this->getLogger()->always('<success>Rebuilt {filename} file</success>', array(
-        'filename' => $this->getFormatterHelper()->formatPath($filename),
+      $this->getLogger()->notice('<label>Rebuilt file:</label> {path}', array(
+        'path' => $formatter->formatPath($filename),
       ));
     }
+
+    // Call parent to ensure permissions/group.
+    $exitCode = parent::execute($input, $output);
+
+    $this->getLogger()->always('<success>Ensured {path} file</success>', array(
+      'path' => $this->getFormatterHelper()->formatPath($filename),
+    ));
+
+    return $exitCode;
   }
 
   /**
-   * Return file mode.
-   *
-   * @return int
-   *   The file mode to apply to the file to ensure.
+   * {@inheritdoc}
    */
   public function getFileMode() {
     return 0644;
   }
 
   /**
-   * Return ensure file mode.
+   * Skip if exists?
    *
-   * @return string
-   *   The ensure file mode. Possible values:
-   *     - static::MODE_REBUILD_IF_EXISTS: Rebuild existing file.
-   *     - static::MODE_SKIP_IF_EXISTS: Skip existing item (default).
+   * @return bool
+   *   Whether to skip the file if it already exists. Return FALSE to rebuild
+   *   the existing file.
    */
-  public function getMode() {
-    return static::MODE_SKIP_IF_EXISTS;
+  public function getSkipIfExists() {
+    return TRUE;
   }
-
-  /**
-   * Return path.
-   *
-   * @return string
-   *   The path of the file to ensure.
-   */
-  abstract public function getPath();
 
 }
