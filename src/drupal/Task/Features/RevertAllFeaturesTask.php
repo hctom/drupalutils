@@ -28,20 +28,12 @@ class RevertAllFeaturesTask extends Task {
    * {@inheritdoc}
    */
   protected function execute(InputInterface $input, OutputInterface $output) {
-    if (!$this->getDrupalHelper()->moduleExists('features')) {
-      $this->getLogger()->always('<warning>Skipped task: Required {module} module is not enabled</warning>', array(
-        'module' => '<code>features</code>',
-      ));
-    }
-
-    else {
-      return $this->getDrushProcessHelper()
-        ->setCommandName('features-revert-all')
-        ->setOptions(array(
-          'force' => $this->getForce() ? TRUE : FALSE,
-        ))
-        ->run('Reverted all features', 'Unable to revert all features');
-    }
+    return $this->getDrushProcessHelper()
+      ->setCommandName('features-revert-all')
+      ->setOptions(array(
+        'force' => $this->getForce() ? TRUE : FALSE,
+      ))
+      ->run('Reverted all features', 'Unable to revert all features');
   }
 
   /**
@@ -53,6 +45,17 @@ class RevertAllFeaturesTask extends Task {
    */
   public function getForce() {
     return FALSE;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  protected function getRequiredModules() {
+    $modules = array_merge(parent::getRequiredModules(), array(
+      'features',
+    ));
+
+    return $modules;
   }
 
   /**
