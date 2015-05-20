@@ -44,6 +44,13 @@ class RevertAllFeaturesTask extends Task {
     }
   }
 
+  /**
+   * Force revert?
+   *
+   * @return bool
+   *   Whether to revert even if Features module assumes components' state
+   *   are default.
+   */
   public function getForce() {
     return FALSE;
   }
