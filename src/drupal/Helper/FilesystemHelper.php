@@ -63,14 +63,14 @@ class FilesystemHelper extends Helper {
   /**
    * @see Filesystem::chgrp()
    */
-  public function chgrp($files, $group, $recursive = false) {
+  public function chgrp($files, $group, $recursive = FALSE) {
     $this->getFilesystem()->chgrp($files, $group, $recursive);
   }
 
   /**
    * @see Filesystem::chmod()
    */
-  public function chmod($files, $mode, $umask = 0000, $recursive = false) {
+  public function chmod($files, $mode, $umask = 0000, $recursive = FALSE) {
     $this->getFilesystem()->chmod($files, $mode, $umask, $recursive);
   }
 
