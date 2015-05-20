@@ -26,6 +26,10 @@ abstract class EnsureDirectoryTask extends EnsureItemTask {
     // Directory not found -> create directory.
     if (!$filesystem->exists($path)) {
       $filesystem->mkdir($path, $this->getFileMode());
+
+      $this->getLogger()->notice('<label>Created directory:</label> {path}', array(
+        'path' => $this->getFormatterHelper()->formatPath($path),
+      ));
     }
 
     // Existing item is not a directory.
