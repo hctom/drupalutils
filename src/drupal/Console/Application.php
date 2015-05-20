@@ -189,6 +189,9 @@ EOT;
     // Success.
     $output->getFormatter()->setStyle('success', new OutputFormatterStyle('green'));
 
+    // Table of contents.
+    $output->getFormatter()->setStyle('toc', new OutputFormatterStyle('white', 'blue'));
+
     // Warning.
     $output->getFormatter()->setStyle('warning', new OutputFormatterStyle('magenta'));
   }
