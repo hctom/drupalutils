@@ -45,7 +45,7 @@ class FilesystemHelper extends Helper {
     }
 
     // Item is a directory?
-    elseif (is_dir($path)) {
+    elseif ($this->isDirectory($path)) {
       $target = $path . '.' . $suffix;
     }
 
@@ -126,6 +126,24 @@ class FilesystemHelper extends Helper {
    */
   public function isAbsolutePath($path) {
     return $this->getFilesystem()->isAbsolutePath($path);
+  }
+
+  /**
+   * Item is a directory?
+   *
+   * @param string $path
+   *   The path of the item to check.
+   *
+   * @return bool
+   *   Whether the item is directory or not. This method returns FALSE if the
+   *   item is a symbolic link to a directory.
+   */
+  public function isDirectory($path) {
+    if (!$this->exists($path)) {
+      return FALSE;
+    }
+
+    return is_dir($path) && !$this->isSymlink($path);
   }
 
   /**
