@@ -28,7 +28,7 @@ abstract class EnsureDirectoryTask extends EnsureItemTask {
       $filesystem->mkdir($path, $this->getFileMode());
     }
 
-    // Is not a directory?
+    // Existing item is not a directory.
     elseif (!$filesystem->isDirectory($path)) {
       throw new IOException(sprintf('"%s" is not a directory', $path), 0, NULL, $path);
     }
