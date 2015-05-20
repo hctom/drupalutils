@@ -23,21 +23,21 @@ abstract class EnsureDirectoryTask extends EnsureItemTask {
     $filesystem = $this->getFilesystemHelper();
     $path = $this->getPath();
 
-    // Directory exists?
-    if ($filesystem->exists($path)) {
-      // Is not a directory?
-      if (!$filesystem->isDirectory($path)) {
-        throw new IOException(sprintf('"%s" is not a directory', $path), 0, NULL, $path);
-      }
+    // Directory not found -> create directory.
+    if (!$filesystem->exists($path)) {
+      $filesystem->mkdir($path, $this->getFileMode());
+    }
 
+    // Is not a directory?
+    elseif (!$filesystem->isDirectory($path)) {
+      throw new IOException(sprintf('"%s" is not a directory', $path), 0, NULL, $path);
+    }
+
+    // Directory already exists.
+    else {
       $this->getLogger()->notice('Directory {path} already exists', array(
         'path' => $this->getFormatterHelper()->formatPath($path),
       ));
-    }
-
-    // Directory not found -> create directory.
-    else {
-      $filesystem->mkdir($path, $this->getFileMode());
     }
 
     // Call parent to ensure permissions/group.
