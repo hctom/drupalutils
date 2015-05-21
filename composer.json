@@ -17,7 +17,7 @@
     "monolog/monolog": "^1.13",
     "symfony/monolog-bridge": "^2.6",
     "symfony/process": "~2.1",
-    "symfony/templating": "^2.6"
+    "twig/twig": "~1.0"
   },
   "bin": [
     "drupalutils"
