@@ -18,6 +18,7 @@ use hctom\DrupalUtils\Helper\DrushProcessHelper;
 use hctom\DrupalUtils\Helper\DrushSiteAliasHelper;
 use hctom\DrupalUtils\Helper\FilesystemHelper;
 use hctom\DrupalUtils\Helper\FormatterHelper;
+use hctom\DrupalUtils\Helper\TwigHelper;
 use hctom\DrupalUtils\Log\Logger;
 use hctom\DrupalUtils\Log\LoggerInterface;
 use hctom\DrupalUtils\Output\OutputAwareInterface;
@@ -288,6 +289,9 @@ EOT;
 
     // Formatter helper.
     $helperSet->set(new FormatterHelper());
+
+    // Twig templating helper.
+    $helperSet->set(new TwigHelper());
 
     return $helperSet;
   }

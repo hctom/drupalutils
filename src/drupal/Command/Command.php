@@ -12,6 +12,7 @@ use hctom\DrupalUtils\Helper\DrushHelper;
 use hctom\DrupalUtils\Helper\DrushProcessHelper;
 use hctom\DrupalUtils\Helper\FilesystemHelper;
 use hctom\DrupalUtils\Helper\FormatterHelper;
+use hctom\DrupalUtils\Helper\TwigHelper;
 use hctom\DrupalUtils\Log\LoggerInterface;
 use Symfony\Component\Console\Command\Command as SymfonyConsoleCommand;
 use Symfony\Component\Console\Helper\QuestionHelper;
@@ -89,6 +90,16 @@ abstract class Command extends SymfonyConsoleCommand {
    */
   protected function getQuestionHelper() {
     return $this->getHelper('question');
+  }
+
+  /**
+   * Return Twig templating helper.
+   *
+   * @return TwigHelper
+   *   The Twig templating helper object.
+   */
+  protected function getTwigHelper() {
+    return $this->getHelper('twig');
   }
 
 }
