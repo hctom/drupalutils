@@ -21,6 +21,8 @@ use hctom\DrupalUtils\Helper\FormatterHelper;
 use hctom\DrupalUtils\Log\Logger;
 use hctom\DrupalUtils\Log\LoggerInterface;
 use hctom\DrupalUtils\Output\OutputAwareInterface;
+use hctom\DrupalUtils\Package\PackagePathAwareInterface;
+use hctom\DrupalUtils\Package\PackagePathAwareTrait;
 use Monolog\Formatter\LineFormatter;
 use Monolog\Processor\PsrLogMessageProcessor;
 use Psr\Log\LoggerAwareInterface;
@@ -37,9 +39,10 @@ use Symfony\Component\Console\Output\OutputInterface;
 /**
  * Drupal utilities application class.
  */
-class Application extends SymfonyConsoleApplication implements LoggerAwareInterface {
+class Application extends SymfonyConsoleApplication implements LoggerAwareInterface, PackagePathAwareInterface {
 
   use LoggerAwareTrait;
+  use PackagePathAwareTrait;
 
   /**
    * Logo.
@@ -236,6 +239,11 @@ EOT;
       // Inject logger into helper.
       if ($helper instanceof LoggerAwareInterface) {
         $helper->setLogger($this->getLogger());
+      }
+
+      // Inject root path into helper.
+      if ($helper instanceof PackagePathAwareInterface) {
+        $helper->setPackagePath($this->getPackagePath());
       }
 
       // Inject terminal dimensions.

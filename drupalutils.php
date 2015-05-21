@@ -35,4 +35,5 @@ require DRUPALUTILS_COMPOSER_AUTOLOAD;
 
 // Initialize and run Application.
 $app = new Application('Drupal utilities', '1.0.0');
+$app->setPackagePath(__DIR__);
 $app->run();
