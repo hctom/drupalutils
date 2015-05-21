@@ -281,7 +281,7 @@ EOT;
 
     // Run PHP file.
     $process = new PhpProcess($php);
-    $process->run();
+    $process->mustRun();
 
     // Unable to parse variables?
     if (($variables = json_decode(trim($process->getOutput()))) === NULL) {
