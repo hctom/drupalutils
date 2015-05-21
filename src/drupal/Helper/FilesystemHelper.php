@@ -203,6 +203,7 @@ class FilesystemHelper extends Helper {
    */
   public function makePathRelative($endPath, $startPath = NULL) {
     $startPath = $startPath === NULL ? $this->getDrupalHelper()->getRootDirectoryPath() : $startPath;
+    $endPath = $this->isAbsolutePath($endPath) ? $endPath : $this->makePathAbsolute($endPath);
     $endPathDirectory = pathinfo($endPath, PATHINFO_DIRNAME);
     $endPathFilename = pathinfo($endPath, PATHINFO_BASENAME);
 

@@ -39,7 +39,7 @@ EOT;
 
     // Add includes to file content.
     foreach ($this->getIncludes() as $include) {
-      $path = $this->getFilesystemHelper()->makePathRelative($this->getFilesystemHelper()->makePathAbsolute($include['path']));
+      $path = $this->getFilesystemHelper()->makePathRelative($include['path']);
 
       $content[] = <<<EOT
 // {$include['comment']}.
