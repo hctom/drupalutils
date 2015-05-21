@@ -32,7 +32,7 @@ class RevertAllFeaturesTask extends FeaturesTask {
       ->setOptions(array(
         'force' => $this->getForce() ? TRUE : FALSE,
       ))
-      ->run('Reverted all features', 'Unable to revert all features');
+      ->mustRun('Reverted all features', 'Unable to revert all features');
   }
 
   /**
