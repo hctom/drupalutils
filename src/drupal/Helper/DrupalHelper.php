@@ -131,15 +131,24 @@ class DrupalHelper extends Helper  implements LoggerAwareInterface, OutputAwareI
     $filesystem = $this->getFilesystemHelper();
 
     if (!isset($path)) {
+      $path = NULL;
+
       $process = $this->getDrushProcessHelper()
         ->setCommandName('core-status')
         ->setOptions(array(
-          'fields' => 'site',
-          'field-labels' => '0',
+          'pipe' => TRUE,
         ))
         ->run(NULL, "Unable to determine Drupal's site directory path", FALSE);
 
-      $path = trim($process->getOutput());
+      // Error parsing core status.
+      if (($status = json_decode($process->getOutput())) === NULL) {
+        throw new RuntimeException('Unable to parse site directory path');
+      }
+
+      // Does not contain site directory path.
+      if (property_exists($status, 'site')) {
+        $path = $status->site;
+      }
 
       // Fall back to 'sites/[HOSTNAME-FROM-URI]' (if exists).
       if (!$path) {
