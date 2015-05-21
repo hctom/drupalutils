@@ -60,13 +60,13 @@ class DrushSiteAliasHelper extends Helper implements OutputAwareInterface, SiteA
         ))
         ->run($this->getOutput()->isVerbose() ? 'Loaded Drush site alias configuration' : NULL, 'Unable to load Drush site alias configuration', FALSE);
 
-      // Parse site configuration.
+      // Error parsing site configuration.
       if (($data = json_decode($process->getOutput())) === NULL) {
         throw new RuntimeException(sprintf('Unable to parse "%s" Drush site alias details', $siteAlias));
       }
 
-      // Does not contain site configuration?
-      if (!isset($data->{$siteAliasWithoutAtChar})) {
+      // Does not contain site configuration.
+      if (!property_exists($data, $siteAliasWithoutAtChar)) {
         throw new RuntimeException(sprintf('Unable to locate "%s" Drush site alias details', $siteAlias));
       }
 
