@@ -18,7 +18,7 @@ use Symfony\Component\Process\Exception\RuntimeException;
 /**
  * Provides helpers for Drupal.
  */
-class DrupalHelper extends Helper  implements LoggerAwareInterface, OutputAwareInterface {
+class DrupalHelper extends Helper implements LoggerAwareInterface, OutputAwareInterface {
 
   use LoggerAwareTrait;
   use OutputAwareTrait;
