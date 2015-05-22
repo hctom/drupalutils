@@ -54,4 +54,14 @@ abstract class ProjectTask extends Task {
     return array('ctools', 'views');
   }
 
+  /**
+   * Single project given?
+   *
+   * @return bool
+   *   Whether a single project is given (TRUE) or a list of projects (FALSE).
+   */
+  protected function isSingleProject() {
+    return count($this->getProjectNames()) == 1;
+  }
+
 }
