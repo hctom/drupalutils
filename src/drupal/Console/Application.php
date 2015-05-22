@@ -98,8 +98,8 @@ EOT;
       if ($this->has($command->getName())) {
         $this->getLogger()
           ->debug('<label>Registered overriding command:</label> {command} ==> {class}', array(
-            'command' => $formatter->formatCode($command->getName()),
-            'class' => $formatter->formatCode(ltrim($class, '\\')),
+            'command' => $formatter->formatInlineCode($command->getName()),
+            'class' => $formatter->formatInlineCode(ltrim($class, '\\')),
           ));
       }
 
@@ -107,8 +107,8 @@ EOT;
       else {
         $this->getLogger()
           ->debug('<label>Registered new command:</label> {command} ==> {class}', array(
-            'command' => $formatter->formatCode($command->getName()),
-            'class' => $formatter->formatCode(ltrim($class, '\\')),
+            'command' => $formatter->formatInlineCode($command->getName()),
+            'class' => $formatter->formatInlineCode(ltrim($class, '\\')),
           ));
       }
 
@@ -385,7 +385,7 @@ EOT;
 
               $this->getLogger()
                 ->debug('<label>Registered PSR-4 class loader prefix:</label> {prefix} ==> {baseDir}', array(
-                  'prefix' => $formatter->formatCode(rtrim($namespace, '\\')),
+                  'prefix' => $formatter->formatInlineCode(rtrim($namespace, '\\')),
                   'baseDir' => $formatter->formatPath($path),
                 ));
             }

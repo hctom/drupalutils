@@ -30,7 +30,7 @@ class FormatterHelper extends SymfonyFormatterHelper implements OutputAwareInter
    * @return string
    *   The formatted source code.
    */
-  function formatCode($code) {
+  function formatInlineCode($code) {
     return '<code>' . $code . '</code>';
   }
 
@@ -160,8 +160,8 @@ class FormatterHelper extends SymfonyFormatterHelper implements OutputAwareInter
     if ($this->getOutput()->isDebug()) {
       $info = array_merge($info, array(
         '',
-        $this->formatLabel('<label>Name:</label>') . '   ' . $this->formatCode($task->getName()),
-        $this->formatLabel('<label>Class:</label>') . '  ' . $this->formatCode(get_class($task)),
+        $this->formatLabel('<label>Name:</label>') . '   ' . $this->formatInlineCode($task->getName()),
+        $this->formatLabel('<label>Class:</label>') . '  ' . $this->formatInlineCode(get_class($task)),
       ));
     }
 
