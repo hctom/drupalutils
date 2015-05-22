@@ -27,7 +27,7 @@ abstract class ProjectTask extends Task {
    * @return null|int
    *   NULL or 0 if everything went fine, or an error code.
    */
-  public function doExecute(InputInterface $input, OutputInterface $output) {
+  protected function doExecute(InputInterface $input, OutputInterface $output) {
     return NULL;
   }
 

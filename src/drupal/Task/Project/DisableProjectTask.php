@@ -18,7 +18,7 @@ abstract class DisableProjectTask extends ProjectTask {
   /**
    * {@inheritdoc}
    */
-  public function doExecute(InputInterface $input, OutputInterface $output) {
+  protected function doExecute(InputInterface $input, OutputInterface $output) {
     $isSingleProject = $this->isSingleProject();
     $successMessage = $isSingleProject ? 'Disabled project' : 'Disabled projects';
     $errorMessage = $isSingleProject ? 'Unable to disable project' : 'Unable to disable projects';
