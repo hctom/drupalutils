@@ -13,15 +13,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 /**
  * Provides a task command to enable modules/themes.
  */
-class EnableProjectTask extends ProjectTask {
-
-  /**
-   * {@inheritdoc}
-   */
-  protected function configure() {
-    $this
-      ->setName('task:project:enable');
-  }
+abstract class EnableProjectTask extends ProjectTask {
 
   /**
    * {@inheritdoc}

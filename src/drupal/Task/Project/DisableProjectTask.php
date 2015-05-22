@@ -13,15 +13,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 /**
  * Provides a task command to disable modules/themes.
  */
-class DisableProjectTask extends ProjectTask {
-
-  /**
-   * {@inheritdoc}
-   */
-  protected function configure() {
-    $this
-      ->setName('task:project:disable');
-  }
+abstract class DisableProjectTask extends ProjectTask {
 
   /**
    * {@inheritdoc}
