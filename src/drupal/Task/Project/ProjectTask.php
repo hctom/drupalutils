@@ -36,7 +36,7 @@ abstract class ProjectTask extends Task {
    */
   public function execute(InputInterface $input, OutputInterface $output) {
     if (!$this->getProjectNames()) {
-      $this->getLogger()->always('<success>No project(s) given</success>');
+      $this->getLogger()->always('<success>No project given</success>');
 
       return;
     }
