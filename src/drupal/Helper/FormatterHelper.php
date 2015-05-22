@@ -23,14 +23,20 @@ class FormatterHelper extends SymfonyFormatterHelper implements OutputAwareInter
   use TerminalDimensionsAwareTrait;
 
   /**
-   * Format source code.
+   * Format source code block.
    *
    * @param string $code
    *   The source code.
    * @return string
-   *   The formatted source code.
+   *   The formatted source code block.
    */
-  function formatInlineCode($code) {
+  function formatCodeBlock($code) {
+    $result = array();
+    foreach (explode("\n", $code) as $line) {
+      $result[] = '<bg=cyan> </>  <code>' . $line . '</code>';
+    }
+
+    return implode("\n", $result);
     return '<code>' . $code . '</code>';
   }
 
@@ -74,6 +80,18 @@ class FormatterHelper extends SymfonyFormatterHelper implements OutputAwareInter
     }
 
     return $this->formatBlock($messages, $style, $large);
+  }
+
+  /**
+   * Format inline source code.
+   *
+   * @param string $code
+   *   The source code.
+   * @return string
+   *   The formatted inline source code.
+   */
+  function formatInlineCode($code) {
+    return '<code>' . $code . '</code>';
   }
 
   /**
