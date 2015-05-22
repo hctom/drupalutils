@@ -2,7 +2,7 @@
 
 /**
  * @file
- * Contains hctom\DrupalUtils\Task\Theme\DisableBartikTheme.
+ * Contains hctom\DrupalUtils\Task\Theme\DisableBartikThemeTask.
  */
 
 namespace hctom\DrupalUtils\Task\Theme;
