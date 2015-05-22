@@ -51,7 +51,7 @@ abstract class TaskedCommand extends Command {
 
     // Prompt if tasks should be executed.
     $defaultValue = 'yes';
-    $question = new ConfirmationQuestion($formatter->formatQuestion('Execute tasks', $defaultValue), $defaultValue);
+    $question = new ConfirmationQuestion($formatter->formatQuestion('Continue', $defaultValue), $defaultValue);
     $continue = $this->getQuestionHelper()->ask($input, $output, $question);
 
     if ($continue) {
