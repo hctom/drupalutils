@@ -41,6 +41,26 @@ class FormatterHelper extends SymfonyFormatterHelper implements OutputAwareInter
   }
 
   /**
+   * Format comma-separated list.
+   *
+   * @param $list
+   *   An array of items.
+   *
+   * @param $style
+   *   An output formatter style name.
+   *
+   * @return string
+   *   The formatted comma-separated list.
+   */
+  public function formatCommaSeparatedList($list, $style) {
+    foreach ($list as &$listItem) {
+      $listItem = '<' . $style . '>' . $listItem . '</' . $style . '>';
+    }
+
+    return implode(', ', $list);
+  }
+
+  /**
    * Format counter number.
    *
    * @param int $count
