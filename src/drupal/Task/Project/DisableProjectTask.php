@@ -32,7 +32,7 @@ class DisableProjectTask extends ProjectTask {
     return $this->getDrushProcessHelper()
       ->setCommandName('pm-disable')
       ->setArguments($projectNames)
-      ->mustRun('Done', 'Unable to uninstall project(s)')
+      ->mustRun('Disabled project(s)', 'Unable to disable project(s)')
       ->getExitCode();
   }
 

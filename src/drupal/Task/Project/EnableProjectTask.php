@@ -36,7 +36,7 @@ class EnableProjectTask extends ProjectTask {
         'resolve-dependencies' => $this->getResolveDependencies(),
         'skip' => $this->getSkipAutomaticDownloading(),
       ))
-      ->mustRun('Done', 'Unable to enable project(s)');
+      ->mustRun('Enabled project(s)', 'Unable to enable project(s)');
 
     return $process->getExitCode();
   }
