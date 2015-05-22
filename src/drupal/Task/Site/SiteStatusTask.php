@@ -2,7 +2,7 @@
 
 /**
  * @file
- * Contains hctom\DrupalUtils\Task\Site\CoreStatusTask.
+ * Contains hctom\DrupalUtils\Task\Site\SiteStatusTask.
  */
 
 namespace hctom\DrupalUtils\Task\Site;
@@ -12,9 +12,9 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
- * Provides a task command to display Drupal core status information.
+ * Provides a task command to display Drupal site status information.
  */
-class CoreStatusTask extends Task {
+class SiteStatusTask extends Task {
 
   /**
    * {@inheritdoc}
