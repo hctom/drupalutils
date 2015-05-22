@@ -242,10 +242,14 @@ class ProcessHelper extends Helper implements LoggerAwareInterface, OutputAwareI
   /**
    * Run process.
    *
-   * @param string|null $successMessage
-   *   An optional message to display on success.
-   * @param string|null $errorMessage
-   *   An optional message to display on error.
+   * @param string|array|null $successMessage
+   *   An optional message to display on success. If an array is passed, the
+   *   first item is used as log message and the second item is used as log
+   *   context. Pass NULL to display no message.
+   * @param string|array|null $errorMessage
+   *   An optional message to display on error. If an array is passed, the first
+   *   item is used as log message and the second item is used as log context.
+   *   Pass NULL to display no message.
    * @param callable|bool|null $callback
    *   A PHP callback to run whenever there is some output available on STDOUT
    *   or STDERR.
@@ -283,9 +287,14 @@ class ProcessHelper extends Helper implements LoggerAwareInterface, OutputAwareI
 
     // Successful -> Display success message (if any).
     if ($process->isSuccessful() && $successMessage !== NULL) {
-      $this->getLogger()->always('<success>{message}</success>', array(
-        'message' => $successMessage,
-      ));
+      if (is_array($successMessage)) {
+        $this->getLogger()->always(array_shift($successMessage), array_shift($successMessage));
+      }
+      else {
+        $this->getLogger()->always('<success>{message}</success>', array(
+          'message' => $successMessage,
+        ));
+      }
     }
 
     // Not successful.
@@ -298,9 +307,14 @@ class ProcessHelper extends Helper implements LoggerAwareInterface, OutputAwareI
       }
       // Display error message (if any).
       if ($errorMessage !== NULL) {
-        $this->getLogger()->always('<failure>{message}</failure>', array(
-          'message' => $errorMessage,
-        ));
+        if (is_array($errorMessage)) {
+          $this->getLogger()->always(array_shift($errorMessage), array_shift($errorMessage));
+        }
+        else {
+          $this->getLogger()->always('<failure>{message}</failure>', array(
+            'message' => $errorMessage,
+          ));
+        }
       }
     }
 
