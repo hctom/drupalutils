@@ -27,18 +27,18 @@ class EnableProjectTask extends ProjectTask {
    * {@inheritdoc}
    */
   public function doExecute(InputInterface $input, OutputInterface $output) {
-    $projectNames = $this->getProjectNames();
+    $isSingleProject = $this->isSingleProject();
+    $successMessage = $isSingleProject ? 'Enabled project' : 'Enabled projects';
+    $errorMessage = $isSingleProject ? 'Unable to enable project' : 'Unable to enable projects';
 
-    $process = $this->getDrushProcessHelper()
+    return $this->getDrushProcessHelper()
       ->setCommandName('pm-enable')
-      ->setArguments($projectNames)
+      ->setArguments($this->getProjectNames())
       ->setOptions(array(
         'resolve-dependencies' => $this->getResolveDependencies(),
         'skip' => $this->getSkipAutomaticDownloading(),
       ))
-      ->mustRun('Enabled project(s)', 'Unable to enable project(s)');
-
-    return $process->getExitCode();
+      ->mustRun($successMessage, $errorMessage);
   }
 
   /**
@@ -65,7 +65,7 @@ class EnableProjectTask extends ProjectTask {
    * {@inheritdoc}
    */
   public function getTitle() {
-    return 'Enable projects';
+    return $this->isSingleProject() ? 'Enable project' : 'Enable projects';
   }
 
 }

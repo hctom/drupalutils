@@ -27,12 +27,14 @@ class DisableProjectTask extends ProjectTask {
    * {@inheritdoc}
    */
   public function doExecute(InputInterface $input, OutputInterface $output) {
-    $projectNames = $this->getProjectNames();
+    $isSingleProject = $this->isSingleProject();
+    $successMessage = $isSingleProject ? 'Disabled project' : 'Disabled projects';
+    $errorMessage = $isSingleProject ? 'Unable to disable project' : 'Unable to disable projects';
 
     return $this->getDrushProcessHelper()
       ->setCommandName('pm-disable')
-      ->setArguments($projectNames)
-      ->mustRun('Disabled project(s)', 'Unable to disable project(s)')
+      ->setArguments($this->getProjectNames())
+      ->mustRun($successMessage, $errorMessage)
       ->getExitCode();
   }
 
@@ -40,7 +42,7 @@ class DisableProjectTask extends ProjectTask {
    * {@inheritdoc}
    */
   public function getTitle() {
-    return 'Disable projects';
+    return $this->isSingleProject() ? 'Disable project' : 'Disable projects';
   }
 
 }
