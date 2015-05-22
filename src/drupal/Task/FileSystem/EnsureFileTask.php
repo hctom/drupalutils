@@ -38,25 +38,41 @@ abstract class EnsureFileTask extends EnsureItemTask {
   }
 
   /**
+   * Dump content into a file.
+   *
+   * @param string $content
+   *   The data to write into the file.
+   * @param $loggerMessage
+   *   The logger message to display.
+   * @param $loggerContext
+   *   The logger context.
+   */
+  protected function dumpFile($content, $loggerMessage, $loggerContext) {
+    $filesystem = $this->getFilesystemHelper();
+    $filename = $filesystem->makePathAbsolute($this->getPath());
+    $fileMode = $this->getFileMode();
+    $formatter = $this->getFormatterHelper();
+
+    $filesystem->dumpFile($filename, $content, $fileMode);
+
+    $this->getLogger()->notice($loggerMessage, $loggerContext);
+    $this->getLogger()->debug('<label>File content:</label>');
+    $this->getLogger()->debug($formatter->formatCodeBlock($content));
+  }
+
+  /**
    * {@inheritdoc}
    */
   protected function execute(InputInterface $input, OutputInterface $output) {
-    $filename = $this->getFilesystemHelper()->makePathAbsolute($this->getPath());
     $filesystem = $this->getFilesystemHelper();
+    $filename = $filesystem->makePathAbsolute($this->getPath());
     $formatter = $this->getFormatterHelper();
-    $fileMode = $this->getFileMode();
 
     // File does not exist -> create file.
     if (!$filesystem->exists($filename)) {
-      $content = $this->buildContent($input, $output);
-      $filesystem->dumpFile($filename, $content, $fileMode);
-
-      $this->getLogger()->notice('<label>Created file:</label> {path}', array(
+      $this->dumpFile($this->buildContent($input, $output), '<label>Created file:</label> {path}', array(
         'path' => $formatter->formatPath($filename),
       ));
-
-      $this->getLogger()->debug('<label>File content:</label>');
-      $this->getLogger()->debug($formatter->formatCodeBlock($content));
     }
 
     // Existing item is not a file.
@@ -73,22 +89,16 @@ abstract class EnsureFileTask extends EnsureItemTask {
 
     // Rebuild file.
     else {
-      $content = $this->buildContent($input, $output);
-      $filesystem->dumpFile($filename, $content, $fileMode);
-
-      $this->getLogger()->notice('<label>Rebuilt file:</label> {path}', array(
+      $this->dumpFile($this->buildContent($input, $output), '<label>Rebuilt file:</label> {path}', array(
         'path' => $formatter->formatPath($filename),
       ));
-
-      $this->getLogger()->debug('<label>File content:</label>');
-      $this->getLogger()->debug($formatter->formatCodeBlock($content));
     }
 
     // Call parent to ensure permissions/group.
     $exitCode = parent::execute($input, $output);
 
     $this->getLogger()->always('<success>Ensured {path} file</success>', array(
-      'path' => $this->getFormatterHelper()->formatPath($filename),
+      'path' => $formatter->formatPath($filename),
     ));
 
     return $exitCode;
