@@ -27,17 +27,17 @@ class FormatterHelper extends SymfonyFormatterHelper implements OutputAwareInter
    *
    * @param string $code
    *   The source code.
+   *
    * @return string
    *   The formatted source code block.
    */
-  function formatCodeBlock($code) {
-    $result = array();
-    foreach (explode("\n", $code) as $line) {
-      $result[] = '<bg=cyan> </>  <code>' . $line . '</code>';
+  function formatCodeBlock($code, $indentation = 0) {
+    $lines = explode("\n", $code);
+    foreach ($lines as $i => &$line) {
+      $line = ($i > 0 ? str_pad('', $indentation, ' ') : '') . '<fg=black;bg=white;options=bold> ' . $this->formatCounterNumber($i + 1, count($lines)) . ' </>  <code>' . $line . '</code>';
     }
 
-    return implode("\n", $result);
-    return '<code>' . $code . '</code>';
+    return implode("\n", $lines);
   }
 
   /**
