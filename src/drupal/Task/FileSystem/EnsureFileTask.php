@@ -22,28 +22,19 @@ abstract class EnsureFileTask extends EnsureItemTask {
    * @param OutputInterface $output
    *   The output.
    *
-   * @return array
+   * @return string
    *   The file contents.
    */
   public function buildContent(InputInterface $input, OutputInterface $output) {
-    return array();
-  }
+    $templateName = $this->getTemplateName();
+    $content = '';
 
-  // TODO Method really needed when template engine has been implemented?
-  /**
-   * Dump content into a file.
-   *
-   * @param string $filename
-   *   The file to be written to.
-   * @param array|string $content
-   *   The data to write into the file.
-   */
-  protected function dumpFile($filename, $content) {
-    // Prepare content.
-    $content = implode("\n\n", is_array($content) ? $content : array($content)) . "\n";
+    // Build file content from template (if any).
+    if ($templateName) {
+      $content = $this->getTwigHelper()->getTwig()->render($templateName, $this->getTemplateVariables($input, $output));
+    }
 
-    // Dump file.
-    $this->getFilesystemHelper()->dumpFile($filename, $content, $this->getFileMode());
+    return $content;
   }
 
   /**
@@ -53,14 +44,19 @@ abstract class EnsureFileTask extends EnsureItemTask {
     $filename = $this->getFilesystemHelper()->makePathAbsolute($this->getPath());
     $filesystem = $this->getFilesystemHelper();
     $formatter = $this->getFormatterHelper();
+    $fileMode = $this->getFileMode();
 
     // File does not exist -> create file.
     if (!$filesystem->exists($filename)) {
-      $this->dumpFile($filename, $this->buildContent($input, $output));
+      $content = $this->buildContent($input, $output);
+      $filesystem->dumpFile($filename, $content, $fileMode);
 
       $this->getLogger()->notice('<label>Created file:</label> {path}', array(
         'path' => $formatter->formatPath($filename),
       ));
+
+      $this->getLogger()->debug('<label>File content:</label>');
+      $this->getLogger()->debug($formatter->formatCodeBlock($content));
     }
 
     // Existing item is not a file.
@@ -77,11 +73,15 @@ abstract class EnsureFileTask extends EnsureItemTask {
 
     // Rebuild file.
     else {
-      $this->dumpFile($filename, $this->buildContent($input, $output));
+      $content = $this->buildContent($input, $output);
+      $filesystem->dumpFile($filename, $content, $fileMode);
 
       $this->getLogger()->notice('<label>Rebuilt file:</label> {path}', array(
         'path' => $formatter->formatPath($filename),
       ));
+
+      $this->getLogger()->debug('<label>File content:</label>');
+      $this->getLogger()->debug($formatter->formatCodeBlock($content));
     }
 
     // Call parent to ensure permissions/group.
@@ -110,6 +110,30 @@ abstract class EnsureFileTask extends EnsureItemTask {
    */
   public function getSkipIfExists() {
     return TRUE;
+  }
+
+  /**
+   * Return template name.
+   *
+   * @return string|null
+   *   The name of the template to generate the file. Return NULL to create an
+   *   empty file (default behavior).
+   */
+  protected function getTemplateName() {
+    return NULL;
+  }
+
+  /**
+   * Return template variables.
+   *
+   * @param InputInterface $input
+   * @param OutputInterface $output
+   * @return array
+   *   A keyed array of additional variables that should be passed to the file
+   *   creation template.
+   */
+  protected function getTemplateVariables(InputInterface $input, OutputInterface $output) {
+    return array();
   }
 
 }
