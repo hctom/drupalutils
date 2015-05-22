@@ -128,7 +128,7 @@ abstract class TaskedCommand extends Command {
       $toc[] = $formatter->formatCounterNumber($i + 1, count($tasks)) . '. ' . $task->getTitle();
     }
 
-    $this->getLogger()->always($formatter->formatFullWidthBlock($toc, 'toc', TRUE));
+    $this->getLogger()->always($formatter->formatBlock($toc, 'toc', TRUE));
   }
 
 }
