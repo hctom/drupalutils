@@ -31,7 +31,7 @@ class FormatterHelper extends SymfonyFormatterHelper implements OutputAwareInter
    * @return string
    *   The formatted source code block.
    */
-  function formatCodeBlock($code, $indentation = 0) {
+  public function formatCodeBlock($code, $indentation = 0) {
     $lines = explode("\n", $code);
     foreach ($lines as $i => &$line) {
       $line = ($i > 0 ? str_pad('', $indentation, ' ') : '') . '<fg=black;bg=white;options=bold> ' . $this->formatCounterNumber($i + 1, count($lines)) . ' </>  <code>' . $line . '</code>';
@@ -51,7 +51,7 @@ class FormatterHelper extends SymfonyFormatterHelper implements OutputAwareInter
    * @return string
    *   The formatted counter number.
    */
-  function formatCounterNumber($count, $total) {
+  public function formatCounterNumber($count, $total) {
     $countFormat = '%0' . $this->strlen($total) . 'd';
 
     return sprintf($countFormat, $count);
@@ -90,7 +90,7 @@ class FormatterHelper extends SymfonyFormatterHelper implements OutputAwareInter
    * @return string
    *   The formatted inline source code.
    */
-  function formatInlineCode($code) {
+  public function formatInlineCode($code) {
     return '<code>' . $code . '</code>';
   }
 
@@ -102,7 +102,7 @@ class FormatterHelper extends SymfonyFormatterHelper implements OutputAwareInter
    * @return string
    *   The formatted label.
    */
-  function formatLabel($label) {
+  public function formatLabel($label) {
     return '<label>' . $label . '</label>';
   }
 
@@ -114,7 +114,7 @@ class FormatterHelper extends SymfonyFormatterHelper implements OutputAwareInter
    * @return string
    *   The formatted path.
    */
-  function formatPath($path) {
+  public function formatPath($path) {
     /* @var DrupalHelper $drupal */
     $drupal = $this->getHelperSet()->get('drupal');
 
@@ -148,7 +148,7 @@ class FormatterHelper extends SymfonyFormatterHelper implements OutputAwareInter
    * @return string
    *   The formatted question.
    */
-  function formatQuestion($question, $defaultValue = NULL) {
+  public function formatQuestion($question, $defaultValue = NULL) {
     return $question . ': ' . (!empty($defaultValue) ? '<comment>[' . $defaultValue . ']</comment> ' : '') . '';
   }
 
@@ -165,7 +165,7 @@ class FormatterHelper extends SymfonyFormatterHelper implements OutputAwareInter
    * @return string
    *   The formatted task information.
    */
-  function formatTaskInfo(TaskInterface $task, $count, $total) {
+  public function formatTaskInfo(TaskInterface $task, $count, $total) {
     // Build counter.
     $counter = '  ' . $this->formatCounterNumber($count, $total) . '/' . $this->formatCounterNumber($count, $total) . '  ';
 
