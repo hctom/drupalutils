@@ -18,38 +18,36 @@ use Symfony\Component\Console\Output\OutputInterface;
 class EnsureEnvSettingsTask extends EnsureSettingsFileTask {
 
   /**
-   * {@inheritdoc}
+   * Build includes.
+   *
+   * @return array
+   *   An array of includes to add to the file.
    */
-  public function buildContent(InputInterface $input, OutputInterface $output) {
-    $content = array();
+  protected function buildIncludes() {
+    $settingsBasePath = $this->getSiteSettingsDirectory();
+    $environment = $this->getDrupalHelper()->getEnvironment();
 
-    // TODO Use template engine
-    // Build file content.
-    $content[] = <<<EOT
-<?php
+    return array(
+      // Required includes.
+      'default.settings.php' => array(
+        'comment' => 'Drupal default settings.',
+        'path' => 'sites/default/default.settings.php',
+      ),
 
-/**
- * @file
- * Settings file for the '{$this->getDrupalHelper()->getEnvironment()}' environment.
- */
-
-// Drupal default settings.
-require '{$this->getFilesystemHelper()->makePathRelative($this->getFilesystemHelper()->makePathAbsolute('sites/default/default.settings.php'))}';
-EOT;
-
-    // Add includes to file content.
-    foreach ($this->getIncludes() as $include) {
-      $path = $this->getFilesystemHelper()->makePathRelative($include['path']);
-
-      $content[] = <<<EOT
-// {$include['comment']}.
-if (file_exists('{$path}')) {
-  require '{$path}';
-}
-EOT;
-    }
-
-    return $content;
+      // Optional includes.
+      'db.ENVIRONMENT.inc' => array(
+        'path' => $settingsBasePath . DIRECTORY_SEPARATOR . 'db.' . $environment . '.inc',
+        'comment' => 'Database settings.',
+      ),
+      'settings.shared.inc' => array(
+        'path' => $settingsBasePath . DIRECTORY_SEPARATOR . 'shared.settings.inc',
+        'comment' => 'Configuration settings.',
+      ),
+      'conf.ENVIRONMENT.inc' => array(
+        'path' => $settingsBasePath . DIRECTORY_SEPARATOR . 'conf.' . $environment . '.inc',
+        'comment' => 'Configuration settings.',
+      ),
+    );
   }
 
   /**
@@ -60,21 +58,38 @@ EOT;
       ->setName('task:environment:settings:ensure');
   }
 
-  // TODO Docs
-  public function getIncludes() {
-    return array(
-      'database' => array(
-        'path' => $this->getSiteSettingsDirectory() . DIRECTORY_SEPARATOR . 'db.' . $this->getDrupalHelper()->getEnvironment() . '.inc',
-        'comment' => 'Database settings',
-      ),
-    );
-  }
-
   /**
    * {@inheritdoc}
    */
   public function getPath() {
     return $this->getDrupalHelper()->getSiteDirectoryPath() . DIRECTORY_SEPARATOR . 'settings.' . $this->getDrupalHelper()->getEnvironment() . '.php';
+  }
+
+  public function getSkipIfExists() {
+    return FALSE;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  protected function getTemplateName() {
+    return '@drupalutils/settings.ENVIRONMENT.php.twig';
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  protected function getTemplateVariables(InputInterface $input, OutputInterface $output) {
+    // Includes.
+    foreach ($this->buildIncludes() as $key => $include) {
+      // Ensure relative paths for all includes.
+      $include['path'] = $this->getFilesystemHelper()->makePathRelative($include['path']);
+
+      // Add include to variables.
+      $variables['includes'][$key] = $include;
+    }
+
+    return $variables;
   }
 
   /**

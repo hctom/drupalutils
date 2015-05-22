@@ -1,0 +1,22 @@
+{% extends "@drupalutils/php.twig" %}
+
+{# File comment #}
+
+{% block fileComment %}
+Settings file for the '{{ drupalutils.environment }}' environment.
+{% endblock %}
+
+{# PHP code #}
+
+{% block phpCode %}
+{# Includes #}
+{% for include in includes %}
+{% if loop.index0 > 0 %}
+
+{% endif %}
+// {{ include.comment }}
+if (file_exists('{{ include.path }}')) {
+  require_once '{{ include.path }}';
+}
+{% endfor %}
+{% endblock %}
