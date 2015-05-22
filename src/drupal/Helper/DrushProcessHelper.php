@@ -62,7 +62,8 @@ class DrushProcessHelper extends ProcessHelper implements SiteAliasAwareInterfac
     $options = parent::buildOptions();
 
     // Assume 'yes' or 'no' as answer to all prompts.
-    $options[$this->getAssumedAnswerToAllPrompts()] = '--' . $this->getAssumedAnswerToAllPrompts();
+    $assumedAnswer = $this->getAssumedAnswerToAllPrompts();
+    $options[$assumedAnswer] = '--' . $assumedAnswer;
 
     return $options;
   }
@@ -76,7 +77,7 @@ class DrushProcessHelper extends ProcessHelper implements SiteAliasAwareInterfac
    *     - static::ASSUMED_ANSWER_YES: Yes.
    */
   public function getAssumedAnswerToAllPrompts() {
-    return $this->assumedAnswerToAllPrompts ? $this->assumedAnswerToAllPrompts : static::ASSUMED_ANSWER_YES;
+    return empty($this->assumedAnswerToAllPrompts) ? static::ASSUMED_ANSWER_YES : $this->assumedAnswerToAllPrompts;
   }
 
   /**
