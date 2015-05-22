@@ -26,7 +26,7 @@ class DrushProcessHelper extends ProcessHelper implements SiteAliasAwareInterfac
   /**
    * Assumed answer: Yes.
    */
-  const ASSUMED_ANSWER_YES = 'no';
+  const ASSUMED_ANSWER_YES = 'yes';
 
   /**
    * Assumed answer to all prompt.
