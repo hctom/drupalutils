@@ -65,6 +65,9 @@ class EnsureEnvSettingsTask extends EnsureSettingsFileTask {
     return $this->getDrupalHelper()->getSiteDirectoryPath() . DIRECTORY_SEPARATOR . 'settings.' . $this->getDrupalHelper()->getEnvironment() . '.php';
   }
 
+  /**
+   * {@inheritdoc}
+   */
   public function getSkipIfExists() {
     return FALSE;
   }
@@ -80,6 +83,8 @@ class EnsureEnvSettingsTask extends EnsureSettingsFileTask {
    * {@inheritdoc}
    */
   protected function getTemplateVariables(InputInterface $input, OutputInterface $output) {
+    $variables = array();
+
     // Includes.
     foreach ($this->buildIncludes() as $key => $include) {
       // Ensure relative paths for all includes.
