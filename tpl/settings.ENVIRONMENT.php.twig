@@ -11,7 +11,7 @@ Settings file for the '{{ drupalutils.environment }}' environment.
 {% block phpCode %}
 {# Includes #}
 {% for include in includes %}
-{% if loop.index0 > 0 %}
+{% if not loop.first %}
 
 {% endif %}
 // {{ include.comment }}
