@@ -62,6 +62,14 @@ class TwigHelper extends Helper implements PackagePathAwareInterface {
         'autoescape' => FALSE,
       ));
 
+      // Add filter: var_export.
+      $twig->addFilter(new \Twig_SimpleFilter('var_export', function($var) {
+        $export = var_export($var, TRUE);
+        $export = preg_replace('/array\s+\(/', 'array(', $export);
+
+        return $export;
+      }));
+
       // Add global 'drupalutils' variable.
       $twig->addGlobal('drupalutils', (object) array(
         'environment' => $drupal->getEnvironment(),
