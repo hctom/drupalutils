@@ -1,0 +1,21 @@
+{% extends "@drupalutils/php.twig" %}
+
+{# File comment #}
+
+{% block fileComment %}
+Database settings for the '{{ drupalutils.environment }}' environment.
+{% endblock %}
+
+{# PHP code #}
+
+{% block phpCode %}
+{# Databases #}
+{% for db, targets in dbs %}
+{% for target, parameters in targets %}
+{% if not loop.first %}
+
+{% endif %}
+$databases['{{ db }}']['{{ target }}'] = {{ parameters|var_export }};
+{% endfor %}
+{% endfor %}
+{% endblock %}
