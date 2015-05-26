@@ -9,7 +9,7 @@ namespace hctom\DrupalUtils\Command\Site;
 
 use hctom\DrupalUtils\Command\TaskedCommand;
 use hctom\DrupalUtils\Task\Site\InstallSiteTask;
-use hctom\DrupalUtils\Task\User\LoginTask;
+use hctom\DrupalUtils\Task\User\UserLoginTask;
 
 /**
  * Provides a command to perform the installation of a Drupal site.
@@ -39,7 +39,7 @@ EOT
     $defaultTasks = parent::getTasks();
 
     $defaultTasks[] = new InstallSiteTask();
-    $defaultTasks[] = new LoginTask();
+    $defaultTasks[] = new UserLoginTask();
 
     return $defaultTasks;
   }
