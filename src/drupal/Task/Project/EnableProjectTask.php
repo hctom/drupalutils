@@ -11,7 +11,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
- * Provides a task command to enable modules/themes.
+ * Task base class for enabling modules/themes.
  */
 abstract class EnableProjectTask extends ProjectTask {
 
