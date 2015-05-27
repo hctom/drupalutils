@@ -214,6 +214,58 @@ class DrupalHelper extends Helper implements LoggerAwareInterface, OutputAwareIn
   }
 
   /**
+   * Return variable value.
+   *
+   * @param $variableName
+   *   The name of the variable to get the value of.
+   *
+   * @return mixed
+   *   The variable value.
+   */
+  public function getVariable($variableName) {
+    static $cache;
+
+    if (!isset($cache[$variableName])) {
+      $cache[$variableName] = FALSE;
+
+      // Prepare error message.
+      $errorMessage = array(
+        'Unable to determine value of {name} variable',
+        array(
+          'name' => $variableName,
+        ),
+      );
+
+      // Determine variable value via Drush.
+      $process = $this->getDrushProcessHelper()
+        ->setCommandName('variable-get')
+        ->setArguments(array(
+          'name' => $variableName,
+        ))
+        ->setOptions(array(
+          'exact' => TRUE,
+          'format' => 'json',
+          'pipe' => TRUE,
+        ))
+        ->mustRun(NULL, $errorMessage, FALSE);
+
+      // Unable to parse variable data.
+      if (($data = json_decode($process->getOutput())) === NULL) {
+        throw new RuntimeException(sprintf('Unable to parse variable value of "%s"', $variableName));
+      }
+
+      // Variable does not exist.
+      if (!property_exists($data, $variableName)) {
+        throw new RuntimeException(sprintf('Unable to determine value of "%s" variable', $variableName));
+      }
+
+      $cache[$variableName] = $data->$variableName;
+    }
+
+    return $cache[$variableName];
+  }
+
+  /**
    * Return Drupal version.
    *
    * @return string
