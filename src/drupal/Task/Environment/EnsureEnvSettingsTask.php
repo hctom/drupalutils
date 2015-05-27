@@ -30,22 +30,26 @@ class EnsureEnvSettingsTask extends EnsureSettingsFileTask {
     return array(
       // Required includes.
       'default.settings.php' => array(
-        'comment' => 'Drupal default settings.',
+        'comment' => 'Drupal: Default settings.',
         'path' => 'sites/default/default.settings.php',
       ),
 
       // Optional includes.
       'db.ENVIRONMENT.inc' => array(
         'path' => $settingsBasePath . DIRECTORY_SEPARATOR . 'db.' . $environment . '.inc',
-        'comment' => 'Database settings.',
-      ),
-      'settings.shared.inc' => array(
-        'path' => $settingsBasePath . DIRECTORY_SEPARATOR . 'shared.settings.inc',
-        'comment' => 'Shared configuration settings.',
+        'comment' => 'Environment: Database connections.',
       ),
       'conf.ENVIRONMENT.inc' => array(
         'path' => $settingsBasePath . DIRECTORY_SEPARATOR . 'conf.' . $environment . '.inc',
-        'comment' => 'Configuration settings.',
+        'comment' => 'Environment: Configuration variables.',
+      ),
+      'settings.shared.inc' => array(
+        'path' => $settingsBasePath . DIRECTORY_SEPARATOR . 'settings.shared.inc',
+        'comment' => 'Shared: Custom settings.',
+      ),
+      'settings.ENVIRONMENT.inc' => array(
+        'path' => $settingsBasePath . DIRECTORY_SEPARATOR . 'settings.' . $environment . '.inc',
+        'comment' => 'Environment: Custom settings.',
       ),
     );
   }
