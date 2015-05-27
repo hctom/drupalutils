@@ -72,6 +72,16 @@ class DrupalHelper extends Helper implements LoggerAwareInterface, OutputAwareIn
   }
 
   /**
+   * Return name of default theme.
+   *
+   * @return string
+   *   The name of the default theme.
+   */
+  public function getDefaultTheme() {
+    return $this->getVariable('theme_default');
+  }
+
+  /**
    * Return environment indicator.
    *
    * @return string
