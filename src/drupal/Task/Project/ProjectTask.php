@@ -2,7 +2,7 @@
 
 /**
  * @file
- * Contains hctom\DrupalUtils\Task\Project\Projectsask.
+ * Contains hctom\DrupalUtils\Task\Project\ProjectTask.
  */
 
 namespace hctom\DrupalUtils\Task\Project;
