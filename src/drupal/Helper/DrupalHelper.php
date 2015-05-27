@@ -40,7 +40,7 @@ class DrupalHelper extends Helper implements LoggerAwareInterface, OutputAwareIn
         ->setOptions(array(
           'pipe' => TRUE,
         ))
-        ->run(NULL, "Unable to determine Drupal's core status", FALSE);
+        ->mustRun(NULL, "Unable to determine Drupal's core status", FALSE);
 
       // Error parsing core status.
       if (($status = json_decode($process->getOutput())) === NULL) {
