@@ -35,8 +35,8 @@ class UserLoginTask extends Task {
         'path' => $this->getRedirectPath(),
       ))
       ->setOptions(array(
-        '--browser' => $this->getBrowser(),
-        '--redirect-port' => $this->getRedirectPort(),
+        'browser' => $this->getBrowser(),
+        'redirect-port' => $this->getRedirectPort(),
       ), $input)
       ->mustRun('Created one time login link', 'Unable to log in user');
 
