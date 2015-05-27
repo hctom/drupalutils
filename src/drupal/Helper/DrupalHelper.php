@@ -323,10 +323,10 @@ class DrupalHelper extends Helper implements LoggerAwareInterface, OutputAwareIn
         ->setArguments(array(
           'code' => "return module_exists('{$moduleName}');",
         ))
-      ->setOptions(array(
-        'format' => 'string'
-      ))
-      ->mustRun(NULL, sprintf('Unable to determine module status of "%s"', $moduleName), FALSE);
+        ->setOptions(array(
+          'format' => 'string'
+        ))
+        ->mustRun(NULL, sprintf('Unable to determine module status of "%s"', $moduleName), FALSE);
 
       $cache[$moduleName] = $process->getOutput() ? TRUE : FALSE;
     }
