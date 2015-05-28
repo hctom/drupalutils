@@ -8,8 +8,6 @@
 namespace hctom\DrupalUtils\Task\Environment;
 
 use hctom\DrupalUtils\Task\Filesystem\EnsureSettingsFileTask;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * Provides a task command to create an environment specific settings.php file
@@ -38,6 +36,10 @@ class EnsureEnvSettingsTask extends EnsureSettingsFileTask {
       'db.ENVIRONMENT.inc' => array(
         'path' => $settingsBasePath . DIRECTORY_SEPARATOR . 'db.' . $environment . '.inc',
         'comment' => 'Environment: Database connections.',
+      ),
+      'master.ENVIRONMENT.inc' => array(
+        'path' => $settingsBasePath . DIRECTORY_SEPARATOR . 'master.' . $environment . '.inc',
+        'comment' => 'Environment: Master modules.',
       ),
       'conf.ENVIRONMENT.inc' => array(
         'path' => $settingsBasePath . DIRECTORY_SEPARATOR . 'conf.' . $environment . '.inc',

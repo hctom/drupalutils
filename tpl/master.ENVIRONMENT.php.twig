@@ -1,0 +1,59 @@
+{% extends "@drupalutils/php.twig" %}
+
+{# File comment #}
+
+{% block fileComment %}
+Master module settings for the '{{ drupalutils.environment }}' environment.
+{% endblock %}
+
+{# PHP code #}
+
+{% block phpCode %}
+$conf['master_version'] = {{ master.version }};
+
+$conf['master_modules'] = array(
+{# Base master modules #}
+{% if master.baseModules %}
+  'base' => array(
+{% for module in master.baseModules %}
+    '{{ module }}',
+{% endfor %}
+  ),
+{% else %}
+  'base' => array(),
+{% endif %}
+{# Scope-specific master modules #}
+{% if master.modules %}
+  '{{ master.scope }}' => array(
+{% for module in master.modules %}
+    '{{ module }}',
+{% endfor %}
+  ),
+{% else %}
+  '{{ master.scope }}' => array(),
+{% endif %}
+);
+
+$conf['master_uninstall_blacklist'] = array(
+{# Base uninstall blacklist #}
+{% if master.uninstallBaseBlacklist%}
+  'base' => array(
+{% for module in master.uninstallBaseBlacklist %}
+    '{{ module }}',
+{% endfor %}
+  ),
+{% else %}
+  'base' => array(),
+{% endif %}
+{# Scope-specific uninstall blacklist #}
+{% if master.uninstallBlacklist %}
+  '{{ master.scope }}' => array(
+{% for module in master.uninstallBlacklist %}
+    '{{ module }}',
+{% endfor %}
+  ),
+{% else %}
+  '{{ master.scope }}' => array(),
+{% endif %}
+);
+{% endblock %}
