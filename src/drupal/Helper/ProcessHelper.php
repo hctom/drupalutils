@@ -278,7 +278,7 @@ class ProcessHelper extends Helper implements LoggerAwareInterface, OutputAwareI
 
         // Default callback.
         else {
-          $this->getLogger()->notice('<processOutput>{output}</processOutput>', array(
+          $this->getLogger()->info('<processOutput>{output}</processOutput>', array(
             'output' => trim($buffer),
           ));
         }
@@ -300,7 +300,7 @@ class ProcessHelper extends Helper implements LoggerAwareInterface, OutputAwareI
     // Not successful.
     elseif (!$process->isSuccessful()) {
       // Display error output (if not already).
-      if ($callback === FALSE || ($callback === NULL && !$this->getOutput()->isVerbose())) {
+      if ($callback === FALSE || ($callback === NULL && !$this->getOutput()->isVeryVerbose())) {
         $this->getLogger()->always('<processOutput>{output}</processOutput>', array(
           'output' => trim($process->getErrorOutput()),
         ));
