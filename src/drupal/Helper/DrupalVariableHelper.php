@@ -73,8 +73,8 @@ class DrupalVariableHelper extends Helper {
    * @param mixed $value
    *   The value to set.
    *
-   * @return int
-   *   0 if everything went fine, or an error code.
+   * @return null|int
+   *   NULL or 0 if everything went fine, or an error code.
    */
   public function setValue($name, $value) {
     return $this->getDrushProcessHelper()
