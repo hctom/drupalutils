@@ -66,6 +66,7 @@ class TwigHelper extends Helper implements PackagePathAwareInterface {
       $twig->addFilter(new \Twig_SimpleFilter('var_export', function($var) {
         $export = var_export($var, TRUE);
         $export = preg_replace('/array\s+\(/', 'array(', $export);
+        $export = preg_replace('/array\(\n\)/m', 'array()', $export);
 
         return $export;
       }));
