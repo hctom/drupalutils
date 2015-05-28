@@ -18,12 +18,13 @@ class DrupalCacheHelper extends Helper {
    * Flush cache(s).
    *
    * @param $type
-   *   The type of the cache to flush. Pass 'all' to flush all caches.
+   *   The type of the cache to flush. Pass 'all' to flush all caches (is the
+   *   default).
    *
    * @return null|int
    *   NULL or 0 if everything went fine, or an error code.
    */
-  public function flush($type) {
+  public function flush($type = 'all') {
     return $this->getDrushProcessHelper()
       ->setCommandName('cache-clear')
       ->setArguments(array(
