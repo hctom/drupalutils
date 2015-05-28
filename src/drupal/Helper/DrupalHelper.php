@@ -67,16 +67,12 @@ class DrupalHelper extends Helper {
    *   The name of the default theme.
    */
   public function getDefaultTheme() {
-    static $themeName;
+    $themeName = NULL;
+    $status = $this->getCoreStatus();
 
-    if (!isset($themeName)) {
-      $themeName = NULL;
-      $status = $this->getCoreStatus();
-
-      // Contains version.
-      if (property_exists($status, 'theme')) {
-        $themeName = $status->theme;
-      }
+    // Contains default theme.
+    if (property_exists($status, 'theme')) {
+      $themeName = $status->theme;
     }
 
     if (!$themeName) {
