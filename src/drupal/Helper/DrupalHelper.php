@@ -52,7 +52,7 @@ class DrupalHelper extends Helper implements LoggerAwareInterface {
    * Return Drush process helper.
    *
    * @return DrushProcessHelper
-   *   The resetted Drush process helper object.
+   *   The reset Drush process helper object.
    */
   protected function getDrushProcessHelper() {
     return $this->getHelperSet()->get('drush_process')->reset();
