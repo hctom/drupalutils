@@ -187,7 +187,7 @@ class FormatterHelper extends SymfonyFormatterHelper implements OutputAwareInter
    */
   public function formatTaskInfo(TaskInterface $task, $count, $total) {
     // Build counter.
-    $counter = '  ' . $this->formatCounterNumber($count, $total) . '/' . $this->formatCounterNumber($count, $total) . '  ';
+    $counter = '  ' . $this->formatCounterNumber($count, $total) . '/' . $this->formatCounterNumber($total, $total) . '  ';
 
     // Prepare information to display.
     $info = array(
