@@ -72,13 +72,6 @@ class EnsureEnvSettingsTask extends EnsureSettingsFileTask {
   /**
    * {@inheritdoc}
    */
-  public function getSkipIfExists() {
-    return FALSE;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
   protected function getTemplateName() {
     return '@drupalutils/settings.ENVIRONMENT.php.twig';
   }

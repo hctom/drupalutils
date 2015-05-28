@@ -116,7 +116,7 @@ abstract class EnsureFileTask extends EnsureItemTask {
    *   the existing file.
    */
   public function getSkipIfExists() {
-    return TRUE;
+    return $this->getFilesystemHelper()->exists($this->getPath()) && md5($this->buildContent()) === md5_file($this->getPath());
   }
 
   /**
