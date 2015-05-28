@@ -12,6 +12,7 @@ use hctom\DrupalUtils\Command\Site\InstallSiteCommand;
 use hctom\DrupalUtils\Drush\SiteAliasAwareInterface;
 use hctom\DrupalUtils\Drush\SiteAliasConfig;
 use hctom\DrupalUtils\Console\Terminal\TerminalDimensionsAwareInterface;
+use hctom\DrupalUtils\Helper\DrupalCacheHelper;
 use hctom\DrupalUtils\Helper\DrupalHelper;
 use hctom\DrupalUtils\Helper\DrupalVariableHelper;
 use hctom\DrupalUtils\Helper\DrushHelper;
@@ -276,6 +277,12 @@ EOT;
     // Drupal helper.
     $helperSet->set(new DrupalHelper());
 
+    // Drupal cache helper.
+    $helperSet->set(new DrupalCacheHelper());
+
+    // Druapl variable helper.
+    $helperSet->set(new DrupalVariableHelper());
+
     // Drush helper.
     $helperSet->set(new DrushHelper());
 
@@ -293,9 +300,6 @@ EOT;
 
     // Twig templating helper.
     $helperSet->set(new TwigHelper());
-
-    // Variable helper.
-    $helperSet->set(new DrupalVariableHelper());
 
     return $helperSet;
   }

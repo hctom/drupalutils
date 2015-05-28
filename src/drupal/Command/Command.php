@@ -7,6 +7,7 @@
 
 namespace hctom\DrupalUtils\Command;
 
+use hctom\DrupalUtils\Helper\DrupalCacheHelper;
 use hctom\DrupalUtils\Helper\DrupalHelper;
 use hctom\DrupalUtils\Helper\DrupalVariableHelper;
 use hctom\DrupalUtils\Helper\DrushHelper;
@@ -22,6 +23,16 @@ use Symfony\Component\Console\Helper\QuestionHelper;
  * Base class for all Drupal Utilities commands.
  */
 abstract class Command extends SymfonyConsoleCommand {
+
+  /**
+   * Return Drupal cache helper.
+   *
+   * @return DrupalCacheHelper
+   *   The Drupal cache helper object.
+   */
+  protected function getCacheHelper() {
+    return $this->getHelper('drupal_cache');
+  }
 
   /**
    * Return Drupal helper.
