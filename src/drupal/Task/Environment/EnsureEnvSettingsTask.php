@@ -86,7 +86,7 @@ class EnsureEnvSettingsTask extends EnsureSettingsFileTask {
   /**
    * {@inheritdoc}
    */
-  protected function getTemplateVariables(InputInterface $input, OutputInterface $output) {
+  protected function getTemplateVariables() {
     $variables = array();
 
     // Includes.

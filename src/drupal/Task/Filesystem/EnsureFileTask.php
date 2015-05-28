@@ -17,21 +17,18 @@ use Symfony\Component\Process\Exception\RuntimeException;
 abstract class EnsureFileTask extends EnsureItemTask {
 
   /**
-   * @param InputInterface $input
-   *   The input.
-   * @param OutputInterface $output
-   *   The output.
+   * Build file content.
    *
    * @return string
    *   The file contents.
    */
-  public function buildContent(InputInterface $input, OutputInterface $output) {
+  public function buildContent() {
     $templateName = $this->getTemplateName();
     $content = '';
 
     // Build file content from template (if any).
     if ($templateName) {
-      $content = $this->getTwigHelper()->getTwig()->render($templateName, $this->getTemplateVariables($input, $output));
+      $content = $this->getTwigHelper()->getTwig()->render($templateName, $this->getTemplateVariables());
     }
 
     return $content;
@@ -89,7 +86,7 @@ abstract class EnsureFileTask extends EnsureItemTask {
 
     // Rebuild file.
     else {
-      $this->dumpFile($this->buildContent($input, $output), '<label>Rebuilt file:</label> {path}', array(
+      $this->dumpFile($this->buildContent(), '<label>Rebuilt file:</label> {path}', array(
         'path' => $formatter->formatPath($filename),
       ));
     }
@@ -136,13 +133,11 @@ abstract class EnsureFileTask extends EnsureItemTask {
   /**
    * Return template variables.
    *
-   * @param InputInterface $input
-   * @param OutputInterface $output
    * @return array
    *   A keyed array of additional variables that should be passed to the file
    *   creation template.
    */
-  protected function getTemplateVariables(InputInterface $input, OutputInterface $output) {
+  protected function getTemplateVariables() {
     return array();
   }
 
