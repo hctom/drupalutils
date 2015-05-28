@@ -115,7 +115,7 @@ abstract class Command extends SymfonyConsoleCommand {
   }
 
   /**
-   * Return drupal variable helper.
+   * Return Drupal variable helper.
    *
    * @return DrupalVariableHelper
    *   The Drupal variable helper object.
