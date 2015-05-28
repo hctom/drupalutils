@@ -42,7 +42,7 @@ class UserLoginTask extends Task {
 
     // Display one time login link.
     if ($process->isSuccessful() && !$output->isVerbose()) {
-      $output->writeln($process->getOutput());
+      $output->writeln('<processOutput>' . $process->getOutput() . '</processOutput>');
     }
 
     return $process->getExitCode();
