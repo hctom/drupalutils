@@ -45,6 +45,11 @@ abstract class TaskedCommand extends Command {
       throw new \RuntimeException(sprintf('No tasks supplied for "%s"', $this->getName()));
     }
 
+    // Create and set up sub-application.
+    $subApp = clone $this->getApplication();
+    $subApp->setAutoExit(FALSE);
+    $subApp->addCommands($tasks);
+
     // Log table of contents.
     $this->logTableOfContents($tasks);
     $this->getLogger()->always('');
@@ -55,11 +60,6 @@ abstract class TaskedCommand extends Command {
     $continue = $this->getQuestionHelper()->ask($input, $output, $question);
 
     if ($continue) {
-      // Create and set up sub-application.
-      $subApp = clone $this->getApplication();
-      $subApp->setAutoExit(FALSE);
-      $subApp->addCommands($tasks);
-
       // Run tasks.
       $taskCount = 0;
       foreach ($tasks as $task) {
