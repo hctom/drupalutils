@@ -30,7 +30,8 @@ abstract class EnableProjectTask extends ProjectTask {
         'resolve-dependencies' => $this->getResolveDependencies(),
         'skip' => $this->getSkipAutomaticDownloading(),
       ))
-      ->mustRun($successMessage, $errorMessage);
+      ->mustRun($successMessage, $errorMessage)
+      ->getExitCode();
   }
 
   /**
