@@ -8,6 +8,7 @@
 namespace hctom\DrupalUtils\Command;
 
 use hctom\DrupalUtils\Helper\DrupalHelper;
+use hctom\DrupalUtils\Helper\DrupalVariableHelper;
 use hctom\DrupalUtils\Helper\DrushHelper;
 use hctom\DrupalUtils\Helper\DrushProcessHelper;
 use hctom\DrupalUtils\Helper\FilesystemHelper;
@@ -100,6 +101,16 @@ abstract class Command extends SymfonyConsoleCommand {
    */
   protected function getTwigHelper() {
     return $this->getHelper('twig');
+  }
+
+  /**
+   * Return drupal variable helper.
+   *
+   * @return DrupalVariableHelper
+   *   The Drupal variable helper object.
+   */
+  protected function getVariableHelper() {
+    return $this->getHelper('drupal_variable');
   }
 
 }
