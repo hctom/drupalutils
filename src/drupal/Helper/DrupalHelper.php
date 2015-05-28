@@ -29,20 +29,16 @@ class DrupalHelper extends Helper implements LoggerAwareInterface {
    * @throws RuntimeException
    */
   protected function getCoreStatus() {
-    static $status;
+    $process = $this->getDrushProcessHelper()
+      ->setCommandName('core-status')
+      ->setOptions(array(
+        'pipe' => TRUE,
+      ))
+      ->mustRun(NULL, "Unable to determine Drupal's core status", FALSE);
 
-    if (!isset($status)) {
-      $process = $this->getDrushProcessHelper()
-        ->setCommandName('core-status')
-        ->setOptions(array(
-          'pipe' => TRUE,
-        ))
-        ->mustRun(NULL, "Unable to determine Drupal's core status", FALSE);
-
-      // Error parsing core status.
-      if (($status = json_decode($process->getOutput())) === NULL) {
-        throw new RuntimeException("Unable to parse Drupal's core status");
-      }
+    // Error parsing core status.
+    if (($status = json_decode($process->getOutput())) === NULL) {
+      throw new RuntimeException("Unable to parse Drupal's core status");
     }
 
     return $status;
