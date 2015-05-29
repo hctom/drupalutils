@@ -21,7 +21,7 @@ class DrupalCacheHelper extends Helper {
    *   The type of the cache to flush. Pass 'all' to flush all caches (is the
    *   default).
    *
-   * @return null|int
+   * @return int|null
    *   NULL or 0 if everything went fine, or an error code.
    */
   public function flush($type = 'all') {

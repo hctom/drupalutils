@@ -73,7 +73,7 @@ class DrupalVariableHelper extends Helper {
    * @param mixed $value
    *   The value to set.
    *
-   * @return null|int
+   * @return int|null
    *   NULL or 0 if everything went fine, or an error code.
    */
   public function setValue($name, $value) {

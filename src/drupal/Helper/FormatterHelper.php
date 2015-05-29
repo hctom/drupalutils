@@ -162,7 +162,7 @@ class FormatterHelper extends SymfonyFormatterHelper implements OutputAwareInter
    *
    * @param string $question
    *   The question to ask.
-   * @param null|mixed $defaultValue
+   * @param mixed|null $defaultValue
    *   The default value (if any).
    *
    * @return string

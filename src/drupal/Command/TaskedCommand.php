@@ -34,7 +34,7 @@ abstract class TaskedCommand extends Command {
    * @param OutputInterface $output
    *   The output.
    *
-   * @return null|int
+   * @return int|null
    *   NULL or 0 if everything went fine, or an error code.
    */
   public function executeTasks(InputInterface $input, OutputInterface $output) {
