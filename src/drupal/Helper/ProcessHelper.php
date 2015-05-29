@@ -125,7 +125,7 @@ class ProcessHelper extends Helper implements LoggerAwareInterface, OutputAwareI
    * @return LoggerInterface
    *   The logger.
    */
-  public function getLogger() {
+  protected function getLogger() {
     return $this->logger;
   }
 
