@@ -51,7 +51,7 @@ abstract class ProjectTask extends Task {
    *   An array of module/theme names.
    */
   public function getProjectNames() {
-    return array('ctools', 'views');
+    return array();
   }
 
   /**
