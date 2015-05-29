@@ -65,6 +65,8 @@ class DrupalHelper extends Helper {
    *
    * @return string
    *   The name of the default theme.
+   *
+   * @throws RuntimeException
    */
   public function getDefaultTheme() {
     $themeName = NULL;
@@ -115,7 +117,7 @@ class DrupalHelper extends Helper {
    * @return string
    *   The absolute path of the public files directory.
    *
-   * @throws \RuntimeException
+   * @throws RuntimeException
    */
   public function getPublicFilesDirectoryPath() {
     static $path;
@@ -142,6 +144,8 @@ class DrupalHelper extends Helper {
    *
    * @return string
    *   The absolute path of Drupal's document root.
+   *
+   * @throws IOException
    */
   public function getRootDirectoryPath() {
     /* @var FilesystemHelper $filesystem */
@@ -202,7 +206,7 @@ class DrupalHelper extends Helper {
    * @return string
    *   The absolute path of the temporary files directory.
    *
-   * @throws \RuntimeException
+   * @throws RuntimeException
    */
   public function getTemporaryFilesDirectoryPath() {
     static $path;
@@ -230,7 +234,7 @@ class DrupalHelper extends Helper {
    * @return string
    *   The Drupal version.
    *
-   * @throws \RuntimeException
+   * @throws RuntimeException
    */
   public function getVersion() {
     static $version;
