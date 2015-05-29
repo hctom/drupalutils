@@ -7,33 +7,24 @@
 
 namespace hctom\DrupalUtils\Task\Theme;
 
-use hctom\DrupalUtils\Task\Project\DisableProjectTask;
-
 /**
  * Provides a task command to disable the 'Bartik' theme.
  */
-class DisableBartikThemeTask extends DisableProjectTask {
+class DisableBartikThemeTask extends DisableThemeTask {
 
   /**
    * {@inheritdoc}
    */
   protected function configure() {
     $this
-      ->setName('task:theme:bartik:disable');
+      ->setName('task:theme:disable:bartik');
   }
 
   /**
    * {@inheritdoc}
    */
-  public function getProjectNames() {
-    return array('bartik');
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function getTitle() {
-    return 'Disable "Bartik" theme';
+  public function getTheme() {
+    return 'bartik';
   }
 
 }
