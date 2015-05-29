@@ -19,19 +19,7 @@ abstract class EnableProjectTask extends ProjectTask {
    * {@inheritdoc}
    */
   protected function doExecute(InputInterface $input, OutputInterface $output) {
-    $isSingleProject = $this->isSingleProject();
-    $successMessage = $isSingleProject ? 'Enabled project' : 'Enabled projects';
-    $errorMessage = $isSingleProject ? 'Unable to enable project' : 'Unable to enable projects';
-
-    return $this->getDrushProcessHelper()
-      ->setCommandName('pm-enable')
-      ->setArguments($this->getProjectNames())
-      ->setOptions(array(
-        'resolve-dependencies' => $this->getResolveDependencies(),
-        'skip' => $this->getSkipAutomaticDownloading(),
-      ))
-      ->mustRun($successMessage, $errorMessage)
-      ->getExitCode();
+    return $this->getProjectHelper()->enable($this->getProjectNames(), $this->getResolveDependencies(), $this->getSkipAutomaticDownloading());
   }
 
   /**

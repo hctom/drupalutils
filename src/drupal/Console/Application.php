@@ -14,6 +14,7 @@ use hctom\DrupalUtils\Drush\SiteAliasConfig;
 use hctom\DrupalUtils\Console\Terminal\TerminalDimensionsAwareInterface;
 use hctom\DrupalUtils\Helper\DrupalCacheHelper;
 use hctom\DrupalUtils\Helper\DrupalHelper;
+use hctom\DrupalUtils\Helper\DrupalProjectHelper;
 use hctom\DrupalUtils\Helper\DrupalVariableHelper;
 use hctom\DrupalUtils\Helper\DrushHelper;
 use hctom\DrupalUtils\Helper\DrushProcessHelper;
@@ -279,6 +280,9 @@ EOT;
 
     // Drupal cache helper.
     $helperSet->set(new DrupalCacheHelper());
+
+    // Drupal project helper.
+    $helperSet->set(new DrupalProjectHelper());
 
     // Druapl variable helper.
     $helperSet->set(new DrupalVariableHelper());

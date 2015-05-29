@@ -9,6 +9,7 @@ namespace hctom\DrupalUtils\Command;
 
 use hctom\DrupalUtils\Helper\DrupalCacheHelper;
 use hctom\DrupalUtils\Helper\DrupalHelper;
+use hctom\DrupalUtils\Helper\DrupalProjectHelper;
 use hctom\DrupalUtils\Helper\DrupalVariableHelper;
 use hctom\DrupalUtils\Helper\DrushHelper;
 use hctom\DrupalUtils\Helper\DrushProcessHelper;
@@ -92,6 +93,16 @@ abstract class Command extends SymfonyConsoleCommand {
    */
   protected function getLogger() {
     return $this->getApplication()->getLogger();
+  }
+
+  /**
+   * Return Drupal project helper.
+   *
+   * @return DrupalProjectHelper
+   *   The Drupal project helper object.
+   */
+  protected function getProjectHelper() {
+    return $this->getHelper('drupal_project');
   }
 
   /**

@@ -19,15 +19,7 @@ abstract class DisableProjectTask extends ProjectTask {
    * {@inheritdoc}
    */
   protected function doExecute(InputInterface $input, OutputInterface $output) {
-    $isSingleProject = $this->isSingleProject();
-    $successMessage = $isSingleProject ? 'Disabled project' : 'Disabled projects';
-    $errorMessage = $isSingleProject ? 'Unable to disable project' : 'Unable to disable projects';
-
-    return $this->getDrushProcessHelper()
-      ->setCommandName('pm-disable')
-      ->setArguments($this->getProjectNames())
-      ->mustRun($successMessage, $errorMessage)
-      ->getExitCode();
+    return $this->getProjectHelper()->disable($this->getProjectNames());
   }
 
   /**

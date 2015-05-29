@@ -252,35 +252,4 @@ class DrupalHelper extends Helper {
     return $version;
   }
 
-  /**
-   * Module exists?
-   *
-   * @param $moduleName
-   *   The name of the module.
-   *
-   * @return bool
-   *   TRUE if the module is both installed and enabled, FALSE otherwise.
-   */
-  public function moduleExists($moduleName) {
-    static $cache = array();
-
-    if (!isset($cache[$moduleName])) {
-      $cache[$moduleName] = FALSE;
-
-      $process = $this->getDrushProcessHelper()
-        ->setCommandName('php-eval')
-        ->setArguments(array(
-          'code' => "return module_exists('{$moduleName}');",
-        ))
-        ->setOptions(array(
-          'format' => 'string'
-        ))
-        ->mustRun(NULL, sprintf('Unable to determine module status of "%s"', $moduleName), FALSE);
-
-      $cache[$moduleName] = $process->getOutput() ? TRUE : FALSE;
-    }
-
-    return $cache[$moduleName];
-  }
-
 }
