@@ -94,12 +94,12 @@ class DrupalProjectHelper extends Helper implements LoggerAwareInterface {
     );
 
     $successMessage = array(
-      $successMessage,
+      '<success>' . $successMessage . '</success>',
       $messageContext,
     );
 
     $errorMessage = array(
-      $errorMessage,
+      '<failure>' . $errorMessage . '</failure>',
       $messageContext,
     );
 
