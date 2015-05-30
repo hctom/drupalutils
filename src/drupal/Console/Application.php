@@ -9,6 +9,7 @@ namespace hctom\DrupalUtils\Console;
 
 use hctom\DrupalUtils\Command\Command;
 use hctom\DrupalUtils\Command\Site\InstallSiteCommand;
+use hctom\DrupalUtils\Command\Site\UpdateSiteCommand;
 use hctom\DrupalUtils\Drush\SiteAliasAwareInterface;
 use hctom\DrupalUtils\Drush\SiteAliasConfig;
 use hctom\DrupalUtils\Console\Terminal\TerminalDimensionsAwareInterface;
@@ -266,6 +267,9 @@ EOT;
 
     // Install site.
     $defaultCommands[] = new InstallSiteCommand();
+
+    // Update a site.
+    $defaultCommands[] = new UpdateSiteCommand();
 
     return $defaultCommands;
   }
