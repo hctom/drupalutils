@@ -23,14 +23,13 @@ use hctom\DrupalUtils\Helper\FilesystemHelper;
 use hctom\DrupalUtils\Helper\FormatterHelper;
 use hctom\DrupalUtils\Helper\TwigHelper;
 use hctom\DrupalUtils\Log\Logger;
-use hctom\DrupalUtils\Log\LoggerInterface;
+use hctom\DrupalUtils\Log\LoggerAwareInterface;
+use hctom\DrupalUtils\Log\LoggerAwareTrait;
 use hctom\DrupalUtils\Output\OutputAwareInterface;
 use hctom\DrupalUtils\Package\PackagePathAwareInterface;
 use hctom\DrupalUtils\Package\PackagePathAwareTrait;
 use Monolog\Formatter\LineFormatter;
 use Monolog\Processor\PsrLogMessageProcessor;
-use Psr\Log\LoggerAwareInterface;
-use Psr\Log\LoggerAwareTrait;
 use Symfony\Bridge\Monolog\Handler\ConsoleHandler;
 use Symfony\Component\ClassLoader\Psr4ClassLoader;
 use Symfony\Component\Console\Application as SymfonyConsoleApplication;
@@ -144,7 +143,10 @@ EOT;
    */
   protected function configureLogger(OutputInterface $output) {
     // Create and set up logger (if not already).
-    if (!$this->getLogger()) {
+    try {
+      $this->getLogger();
+    }
+    catch (\Exception $e) {
       // Create and set up line formatter (allowing inline line breaks).
       $format = "%message%\n";
       $formatter = new LineFormatter($format, NULL, TRUE);
@@ -352,16 +354,6 @@ EOT;
    */
   public function getHelp() {
     return self::$logo . parent::getHelp();
-  }
-
-  /**
-   * Return logger.
-   *
-   * @return LoggerInterface
-   *   The logger.
-   */
-  public function getLogger() {
-    return $this->logger;
   }
 
   /**

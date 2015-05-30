@@ -7,11 +7,11 @@
 
 namespace hctom\DrupalUtils\Helper;
 
+use hctom\DrupalUtils\Log\LoggerAwareInterface;
+use hctom\DrupalUtils\Log\LoggerAwareTrait;
 use hctom\DrupalUtils\Log\LoggerInterface;
 use hctom\DrupalUtils\Output\OutputAwareInterface;
 use hctom\DrupalUtils\Output\OutputAwareTrait;
-use Psr\Log\LoggerAwareInterface;
-use Psr\Log\LoggerAwareTrait;
 use Symfony\Component\Console\Helper\Helper;
 use Symfony\Component\Process\Exception\LogicException;
 use Symfony\Component\Process\Exception\RuntimeException;
@@ -23,8 +23,8 @@ use Symfony\Component\Process\ProcessBuilder;
  */
 class ProcessHelper extends Helper implements LoggerAwareInterface, OutputAwareInterface {
 
-  use OutputAwareTrait;
   use LoggerAwareTrait;
+  use OutputAwareTrait;
 
   /**
    * The name of the command to run.
@@ -117,16 +117,6 @@ class ProcessHelper extends Helper implements LoggerAwareInterface, OutputAwareI
     }
 
     return $this->commandName;
-  }
-
-  /**
-   * Return logger.
-   *
-   * @return LoggerInterface
-   *   The logger.
-   */
-  protected function getLogger() {
-    return $this->logger;
   }
 
   /**

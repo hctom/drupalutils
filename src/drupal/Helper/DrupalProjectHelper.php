@@ -7,9 +7,9 @@
 
 namespace hctom\DrupalUtils\Helper;
 
+use hctom\DrupalUtils\Log\LoggerAwareInterface;
+use hctom\DrupalUtils\Log\LoggerAwareTrait;
 use hctom\DrupalUtils\Log\LoggerInterface;
-use Psr\Log\LoggerAwareInterface;
-use Psr\Log\LoggerAwareTrait;
 use Symfony\Component\Console\Helper\Helper;
 use Symfony\Component\Process\Exception\InvalidArgumentException;
 use Symfony\Component\Process\Exception\RuntimeException;
@@ -224,16 +224,6 @@ class DrupalProjectHelper extends Helper implements LoggerAwareInterface {
    */
   protected function getFormatterHelper() {
     return $this->getHelperSet()->get('formatter');
-  }
-
-  /**
-   * Return logger.
-   *
-   * @return LoggerInterface
-   *   The logger.
-   */
-  protected function getLogger() {
-    return $this->logger;
   }
 
   /**
