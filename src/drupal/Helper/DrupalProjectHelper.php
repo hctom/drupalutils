@@ -252,7 +252,7 @@ class DrupalProjectHelper extends Helper implements LoggerAwareInterface {
    * @return \stdClass
    *   An object containing information about all available projects.
    */
-  protected function getProjectList($reset = FALSE) {
+  public function getProjectList($reset = FALSE) {
     static $projectList;
 
     if (!isset($projectList) || $reset) {
