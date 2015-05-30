@@ -8,11 +8,16 @@
 namespace hctom\DrupalUtils\Command\Site;
 
 use hctom\DrupalUtils\Command\TaskedCommand;
+use hctom\DrupalUtils\Task\Database\EnsureDefaultDatabaseSettingsTask;
+use hctom\DrupalUtils\Task\Environment\EnsureEnvSettingsTask;
+use hctom\DrupalUtils\Task\Environment\SymlinkEnvHtaccessTask;
+use hctom\DrupalUtils\Task\Environment\SymlinkEnvSettingsTask;
+use hctom\DrupalUtils\Task\Filesystem\EnsurePublicFilesDirectoryTask;
+use hctom\DrupalUtils\Task\Filesystem\EnsureSiteDirectoryTask;
 use hctom\DrupalUtils\Task\Site\InstallSiteTask;
-use hctom\DrupalUtils\Task\User\UserLoginTask;
 
 /**
- * Provides a command to perform the installation of a Drupal site.
+ * Provides a command to perform a basic installation of a Drupal site.
  */
 class InstallSiteCommand extends TaskedCommand {
 
@@ -22,6 +27,15 @@ class InstallSiteCommand extends TaskedCommand {
   protected function configure() {
     $this
       ->setName('site:install')
+      ->registerTasks(array(
+        new EnsureSiteDirectoryTask(),
+        new EnsureEnvSettingsTask(),
+        new SymlinkEnvHtaccessTask(),
+        new SymlinkEnvSettingsTask(),
+        new EnsureDefaultDatabaseSettingsTask(),
+        new InstallSiteTask(),
+        new EnsurePublicFilesDirectoryTask(),
+      ))
       ->setDescription('Install a Drupal site.')
       ->setHelp(
 <<<EOT
@@ -30,18 +44,6 @@ The <info>%command.name%</info> command performs the installation of a Drupal si
 <info>%command.full_name%</info>
 EOT
       );
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function getTasks() {
-    $defaultTasks = parent::getTasks();
-
-    $defaultTasks[] = new InstallSiteTask();
-    $defaultTasks[] = new UserLoginTask();
-
-    return $defaultTasks;
   }
 
 }
