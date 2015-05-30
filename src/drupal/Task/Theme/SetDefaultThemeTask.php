@@ -29,17 +29,22 @@ abstract class SetDefaultThemeTask extends EnableThemeTask {
   protected function doExecute(InputInterface $input, OutputInterface $output) {
     // Theme is already set as default.
     if ($this->getDrupalHelper()->getDefaultTheme() === $this->getTheme()) {
-      $this->getLogger()->always('<success>{name} is already set as default theme', array(
+      $this->getLogger()->always('<success>{name} is set as default theme', array(
         'name' => $this->getFormatterHelper()->formatInlineCode($this->getTheme()),
       ));
     }
 
-    // Theme was enabled.
-    elseif (!parent::doExecute($input, $output)) {
-      // Set default theme variable
-      $this->getVariableHelper()
-        ->setValue('theme_default', $this->getTheme());
+    // Unable to enable default theme.
+    elseif (($exitCode = parent::doExecute($input, $output))) {
+      return $exitCode;
+    }
 
+    // Unable to set default theme variable.
+    elseif (($exitCode = $this->getVariableHelper()->setValue('theme_default', $this->getTheme()))) {
+      return $exitCode;
+    }
+
+    else {
       $this->getLogger()->always('<success>Set {name} as default theme', array(
         'name' => $this->getFormatterHelper()->formatInlineCode($this->getTheme()),
       ));
