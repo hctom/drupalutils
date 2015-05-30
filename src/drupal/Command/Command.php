@@ -16,9 +16,13 @@ use hctom\DrupalUtils\Helper\DrushProcessHelper;
 use hctom\DrupalUtils\Helper\FilesystemHelper;
 use hctom\DrupalUtils\Helper\FormatterHelper;
 use hctom\DrupalUtils\Helper\TwigHelper;
+use hctom\DrupalUtils\Input\InputAwareInterface;
 use hctom\DrupalUtils\Log\LoggerInterface;
+use hctom\DrupalUtils\Output\OutputAwareInterface;
 use Symfony\Component\Console\Command\Command as SymfonyConsoleCommand;
 use Symfony\Component\Console\Helper\QuestionHelper;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * Base class for all Drupal Utilities commands.
@@ -133,6 +137,23 @@ abstract class Command extends SymfonyConsoleCommand {
    */
   protected function getVariableHelper() {
     return $this->getHelper('drupal_variable');
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  protected function initialize(InputInterface $input, OutputInterface $output) {
+    parent::initialize($input, $output);
+
+    // Save input (if needed).
+    if ($this instanceof InputAwareInterface) {
+      $this->setInput($input);
+    }
+
+    // Save output (if needed).
+    if ($this instanceof OutputAwareInterface) {
+      $this->setOutput($output);
+    }
   }
 
 }
