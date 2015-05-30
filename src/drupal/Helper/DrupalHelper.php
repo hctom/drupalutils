@@ -17,6 +17,30 @@ use Symfony\Component\Process\Exception\RuntimeException;
 class DrupalHelper extends Helper {
 
   /**
+   * Return name of administrative theme.
+   *
+   * @return string
+   *   The name of the administrative theme.
+   *
+   * @throws RuntimeException
+   */
+  public function getAdminTheme() {
+    $themeName = NULL;
+    $status = $this->getCoreStatus();
+
+    // Contains default theme.
+    if (property_exists($status, 'admin-theme')) {
+      $themeName = $status->{'admin-theme'};
+    }
+
+    if (!$themeName) {
+      throw new RuntimeException('Unable to determine administrative theme');
+    }
+
+    return $themeName;
+  }
+
+  /**
    * Return Drupal core status information.
    *
    * @return \stdClass
