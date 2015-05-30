@@ -102,7 +102,7 @@ class InstallSiteTask extends Task {
    *   The name of the profile to install (defaults to 'standard').
    */
   public function getInstallProfile() {
-    return NULL;
+    return 'standard';
   }
 
   /**
