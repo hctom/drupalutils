@@ -54,7 +54,7 @@ abstract class EnsureMasterModulesTask extends EnsureSettingsFileTask {
    */
   public function execute(InputInterface $input, OutputInterface $output) {
     if (!parent::execute($input, $output)) {
-      return $this->getDrushProcessHelper()
+      $exitCode = $this->getDrushProcessHelper()
         ->setCommandName('master-ensure-modules')
         ->setOptions(array(
           'no-cache-clear' => $this->getNoCacheClear(),
@@ -66,6 +66,13 @@ abstract class EnsureMasterModulesTask extends EnsureSettingsFileTask {
         ))
         ->mustRun('Ensured master modules', 'Unable to ensure master modules')
         ->getExitCode();
+
+      // Reload project list (if no error)
+      if (!$exitCode) {
+        $this->getProjectHelper()->getProjectList(TRUE);
+      }
+
+      return $exitCode;
     }
   }
 
