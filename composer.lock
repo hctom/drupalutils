@@ -278,7 +278,7 @@
         },
         {
             "name": "symfony/monolog-bridge",
-            "version": "v2.6.7",
+            "version": "v2.6.9",
             "target-dir": "Symfony/Bridge/Monolog",
             "source": {
                 "type": "git",
