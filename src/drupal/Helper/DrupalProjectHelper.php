@@ -128,7 +128,7 @@ class DrupalProjectHelper extends Helper implements LoggerAwareInterface {
       if ($this->isNotInstalled($projectName)) {
         unset ($projectNames[$key]);
 
-        $this->getLogger()->always('{project} is not installed', array(
+        $this->getLogger()->always('<success>{project} is not installed</success>', array(
           'project' => $formatter->formatInlineCode($projectName),
         ));
       }
@@ -137,7 +137,7 @@ class DrupalProjectHelper extends Helper implements LoggerAwareInterface {
       elseif ($this->isDisabled($projectName)) {
         unset ($projectNames[$key]);
 
-        $this->getLogger()->always('{project} is disabled', array(
+        $this->getLogger()->always('<success>{project} is disabled</success>', array(
           'project' => $formatter->formatInlineCode($projectName),
         ));
       }
@@ -168,7 +168,7 @@ class DrupalProjectHelper extends Helper implements LoggerAwareInterface {
       if ($this->isEnabled($projectName)) {
         unset ($projectNames[$key]);
 
-        $this->getLogger()->always('{project} is enabled', array(
+        $this->getLogger()->always('<success>{project} is enabled</success>', array(
           'project' => $this->getFormatterHelper()->formatInlineCode($projectName),
         ));
       }
@@ -416,7 +416,7 @@ class DrupalProjectHelper extends Helper implements LoggerAwareInterface {
       if ($this->isNotInstalled($projectName)) {
         unset($projectNames[$key]);
 
-        $this->getLogger()->always('{project} is not installed', array(
+        $this->getLogger()->always('<success>{project} is not installed</success>', array(
           'project' => $formatter->formatInlineCode($projectName),
         ));
       }
@@ -432,7 +432,7 @@ class DrupalProjectHelper extends Helper implements LoggerAwareInterface {
           continue;
         }
 
-        $this->getLogger()->always('{project} is not installed', array(
+        $this->getLogger()->always('<success>{project} is not installed</success>', array(
           'project' => $formatter->formatInlineCode($projectName),
         ));
       }
