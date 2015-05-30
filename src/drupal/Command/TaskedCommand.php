@@ -19,6 +19,13 @@ use Symfony\Component\Console\Question\ConfirmationQuestion;
 abstract class TaskedCommand extends Command {
 
   /**
+   * Task list.
+   *
+   * @var array
+   */
+  private $taskList = array();
+
+  /**
    * {@inheritdoc}
    */
   protected function execute(InputInterface $input, OutputInterface $output) {
@@ -103,9 +110,7 @@ abstract class TaskedCommand extends Command {
    *   An array of task objects.
    */
   public function getTasks() {
-    $tasks = array();
-
-    return $tasks;
+    return $this->taskList;
   }
 
   /**
@@ -129,6 +134,72 @@ abstract class TaskedCommand extends Command {
     }
 
     $this->getLogger()->always($formatter->formatBlock($toc, 'toc', TRUE));
+  }
+
+  /**
+   * Register task.
+   *
+   * @param TaskInterface $task
+   *   A task object to register.
+   *
+   * @return static
+   *   A self-reference for method chaining.
+   */
+  public function registerTask(TaskInterface $task) {
+    $this->taskList[$task->getName()] = $task;
+
+    return $this;
+  }
+
+  /**
+   * Register tasks.
+   *
+   * @param TaskInterface[] $tasks
+   *   An array of task objects to register.
+   *
+   * @return static
+   *   A self-reference for method chaining.
+   */
+  public function registerTasks(array $tasks) {
+    foreach ($tasks as $task) {
+      $this->registerTask($task);
+    }
+
+    return $this;
+  }
+
+  /**
+   * Remove task.
+   *
+   * @param string $taskName
+   *   A task name.
+   *
+   * @return static
+   *   A self-reference for method chaining.
+   */
+  public function removeTask($taskName) {
+    if (isset($this->taskList[$taskName])) {
+      unset($this->taskList[$taskName]);
+    }
+
+    return $this;
+  }
+
+  /**
+   * Remove tasks.
+   *
+   * @param array $taskNames
+   *   An array of task names.
+   *
+   * @return static
+   *   A self-reference for method chaining.
+   */
+  public function removeTasks(array $taskNames) {
+    foreach ($taskNames as $taskName) {
+      $this->removeTask($taskName);
+    }
+
+    return $this;
   }
 
 }
