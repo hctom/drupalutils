@@ -67,7 +67,6 @@ EOT;
    * Add commands from Drush site alias configuration.
    */
   protected function addCommandsFromDrushSiteAliasConfig() {
-    // Fetch Drush site alias details.
     /* @var SiteAliasConfig $drushSiteAliasConfig */
     $drushSiteAliasConfig = $this->getHelperSet()->get('drush_site_alias')
       ->getConfig();
