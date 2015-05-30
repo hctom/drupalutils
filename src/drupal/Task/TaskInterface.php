@@ -13,6 +13,14 @@ namespace hctom\DrupalUtils\Task;
 interface TaskInterface {
 
   /**
+   * Return task name.
+   *
+   * @return string
+   *   The task name.
+   */
+  public function getName();
+
+  /**
    * Return task title.
    *
    * @return string
