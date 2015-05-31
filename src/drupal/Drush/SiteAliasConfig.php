@@ -67,6 +67,12 @@ class SiteAliasConfig {
     return $classLoaderNamespaces->{'psr-4'};
   }
 
+  /**
+   * Return command configuration.
+   *
+   * @return array|null
+   *   An array of command class names.
+   */
   public function getCommands() {
     $drupalUtilsConfig = $this->getDrupalUtils();
 
@@ -90,6 +96,12 @@ class SiteAliasConfig {
     return $this->config;
   }
 
+  /**
+   * Return Drupal Utilities configuration.
+   *
+   * @return \stdClass|null
+   *   The Drupal Utilities configuration data (if any).
+   */
   public function getDrupalUtils() {
     if (property_exists($this->getConfig(), 'drupalutils')) {
       return $this->getConfig()->drupalutils;
