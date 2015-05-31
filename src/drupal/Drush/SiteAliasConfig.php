@@ -82,7 +82,7 @@ class SiteAliasConfig {
         throw new \RuntimeException('Invalid command configuration');
       }
 
-      return $drupalUtilsConfig->commands;
+      return (array) $drupalUtilsConfig->commands;
     }
   }
 
