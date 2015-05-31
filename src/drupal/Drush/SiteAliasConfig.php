@@ -156,4 +156,24 @@ class SiteAliasConfig {
     return $config->root;
   }
 
+  /**
+   * Return template paths.
+   *
+   * @return array|null
+   *   A keyed array of template paths. The key is the namespace, the value is
+   *   the absolute path (if any).
+   */
+  public function getTemplatePaths() {
+    $drupalUtilsConfig = $this->getDrupalUtils();
+
+    if ($drupalUtilsConfig && property_exists($drupalUtilsConfig, 'tpl')) {
+      // Is not an associative array?
+      if (!empty($drupalUtilsConfig->tpl) && !is_object($drupalUtilsConfig->tpl)) {
+        throw new \RuntimeException('Invalid template configuration');
+      }
+
+      return (array) $drupalUtilsConfig->tpl;
+    }
+  }
+
 }

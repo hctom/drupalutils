@@ -7,6 +7,9 @@
 
 namespace hctom\DrupalUtils\Helper;
 
+use hctom\DrupalUtils\Drush\SiteAliasConfig;
+use hctom\DrupalUtils\Log\LoggerAwareInterface;
+use hctom\DrupalUtils\Log\LoggerAwareTrait;
 use hctom\DrupalUtils\Package\PackagePathAwareInterface;
 use hctom\DrupalUtils\Package\PackagePathAwareTrait;
 use Symfony\Component\Console\Helper\Helper;
@@ -14,8 +17,9 @@ use Symfony\Component\Console\Helper\Helper;
 /**
  * Provides helpers for working with Twig templates.
  */
-class TwigHelper extends Helper implements PackagePathAwareInterface {
+class TwigHelper extends Helper implements LoggerAwareInterface, PackagePathAwareInterface {
 
+  use LoggerAwareTrait;
   use PackagePathAwareTrait;
 
   /**
@@ -28,11 +32,32 @@ class TwigHelper extends Helper implements PackagePathAwareInterface {
     static $loader;
 
     if (!isset($loader)) {
+      /* @var FormatterHelper $formatter */
+      $formatter = $this->getHelperSet()->get('formatter');
+
+      // Initialie and set up loader.
       $loader = new \Twig_Loader_Filesystem();
       $loader->addPath($this->getPackagePath() . DIRECTORY_SEPARATOR . 'tpl', 'drupalutils');
 
-      // TODO Allow additional path sot be specified in Drush site alias config.
-      // $loader->prependPath()
+      // No additional paths in Drush site alias configuration.
+      if (!($tplPaths = $this->getTemplatePaths())) {
+        $this->getLogger()->debug('No template paths registered in Drush site alias configuration');
+      }
+
+      // Additional paths found in Drush site alias configuration.
+      else {
+        foreach ($tplPaths as $namespace => $path) {
+          $namespace = ltrim($namespace, '@');
+
+          $loader->prependPath($path, $namespace);
+
+          $this->getLogger()
+            ->debug('<label>Registered template path:</label> {namespace} ==> {baseDir}', array(
+              'namespace' => $formatter->formatInlineCode('@' . $namespace),
+              'baseDir' => $formatter->formatPath($path),
+            ));
+        }
+      }
     }
 
     return $loader;
@@ -43,6 +68,21 @@ class TwigHelper extends Helper implements PackagePathAwareInterface {
    */
   public function getName() {
     return 'twig';
+  }
+
+  /**
+   * Return template paths.
+   *
+   * @return array
+   *   A keyed array of template paths. The key is the namespace, the value is
+   *   the absolute path.
+   */
+  protected function getTemplatePaths() {
+    /* @var SiteAliasConfig $drushSiteAliasConfig */
+    $drushSiteAliasConfig = $this->getHelperSet()->get('drush_site_alias')
+      ->getConfig();
+
+    return $drushSiteAliasConfig->getTemplatePaths();
   }
 
   /**

@@ -133,6 +133,10 @@ EOT;
 
     // Extend helpers.
     $this->extendHelpers($input, $output);
+
+    // TODO Find better solution -> currently only needed to have tpl registration debug messages at the top
+    // Initialize template engine.
+    $this->getHelperSet()->get('twig')->getTwig();
   }
 
   /**
