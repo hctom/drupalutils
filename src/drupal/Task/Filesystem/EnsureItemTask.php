@@ -28,7 +28,7 @@ abstract class EnsureItemTask extends FilesystemTask {
     $recursive = $filesystem->isFile($path) ? FALSE : $this->getApplyFileModeRecursively();
 
     // File permissions are already set to the correct value?
-    if ($originalFileModeOctal === $fileModeOctal) {
+    if ($originalFileModeOctal === $fileModeOctal && !$recursive) {
       $this->getLogger()->notice('<label>Permissions already set:</label> {path} ==> {mode}', array(
         'mode' => '<comment>' . $fileModeOctal . '</comment>',
         'path' => $this->getFormatterHelper()->formatPath($path),
@@ -67,7 +67,7 @@ abstract class EnsureItemTask extends FilesystemTask {
       $originalGroup = posix_getgrgid(filegroup($path));
 
       // Group is already set to the correct value?
-      if ($group['name'] == $originalGroup['name']) {
+      if ($group['name'] == $originalGroup['name'] && !$recursive) {
         $this->getLogger()->notice('<label>Group already set:</label> {path} ==> {group}', array(
           'group' => '<comment>' . $group['name'] . '</comment>',
           'path' => $this->getFormatterHelper()->formatPath($path),
