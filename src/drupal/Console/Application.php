@@ -79,13 +79,13 @@ EOT;
     }
 
     // Process command list.
-    foreach ($commandConfig as $commandName => $class) {
+    foreach ($commandConfig as $class) {
       /* @var FormatterHelper $formatter */
       $formatter = $this->getHelperSet()->get('formatter');
 
       // Command class exists?
       if (!class_exists($class)) {
-        throw new \RuntimeException('Registered command class not found: ' . $class);
+        throw new \RuntimeException(sprintf('Registered command class "%s" not found', $class));
       }
 
       /* @var Command $command */
@@ -93,7 +93,7 @@ EOT;
 
       // Command is not an instance of Symfony console command class?
       if (!$command instanceof SymfonyConsoleCommand) {
-        throw new \RuntimeException('Registered invalid command class ' . $class . ' for ' . $commandName);
+        throw new \RuntimeException(sprintf('Registered invalid command class "%s"', $class));
       }
 
       // Log overridden command.
