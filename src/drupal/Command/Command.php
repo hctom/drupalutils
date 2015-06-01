@@ -7,6 +7,7 @@
 
 namespace hctom\DrupalUtils\Command;
 
+use hctom\DrupalUtils\Entity\EntityAwareInterface;
 use hctom\DrupalUtils\Helper\DrupalCacheHelper;
 use hctom\DrupalUtils\Helper\DrupalHelper;
 use hctom\DrupalUtils\Helper\DrupalProjectHelper;
@@ -154,6 +155,11 @@ abstract class Command extends SymfonyConsoleCommand implements HelperSetAwareIn
     // Save output (if needed).
     if ($this instanceof OutputAwareInterface) {
       $this->setOutput($output);
+    }
+
+    // Initialize entities (if needed).
+    if ($this instanceof EntityAwareInterface) {
+      $this->initializeEntities($input, $output);
     }
   }
 
