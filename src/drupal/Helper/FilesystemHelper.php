@@ -11,7 +11,6 @@ use Symfony\Component\Console\Helper\Helper;
 use Symfony\Component\Filesystem\Exception\IOException;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Process\Exception\RuntimeException;
-use Symfony\Component\Process\PhpProcess;
 
 /**
  * Provides helpers for the file system.
@@ -254,44 +253,6 @@ class FilesystemHelper extends Helper {
    */
   public function rename($origin, $target, $overwrite = FALSE) {
     $this->getFilesystem()->rename($origin, $target, $overwrite);
-  }
-
-  /**
-   * Run a PHP file in isolation.
-   *
-   * @param string $path
-   *   The path of the PHP file run in isolation.
-   *
-   * @return string
-   *   All defined variables for the executed PHP file as JSON encoded string.
-   */
-  public function runPhpFileInIsolation($path) {
-    // File exists?
-    if (!$this->exists($path)) {
-      throw new RuntimeException(sprintf('File "%s" does not exist', $path));
-    }
-
-    // TODO Use template engine.
-    $php = <<<EOT
-<?php
-
-include '{$path}';
-
-print json_encode(get_defined_vars());
-EOT;
-
-    // Run PHP file.
-    $process = new PhpProcess($php);
-    $process->mustRun();
-
-    // Unable to parse variables?
-    if (($variables = json_decode(trim($process->getOutput()))) === NULL) {
-      $this->logger->error('<failure>' . trim($process->getErrorOutput()) . '</failure>');
-
-      throw new RuntimeException(sprintf('Unable to run PHP file "%s"', $path));
-    }
-
-    return $variables;
   }
 
   /**
