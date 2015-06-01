@@ -179,7 +179,7 @@ class FormatterHelper extends SymfonyFormatterHelper implements OutputAwareInter
    *   The formatted question.
    */
   public function formatQuestion($question, $defaultValue = NULL) {
-    return $question . ': ' . (isset($defaultValue) ? '<comment>[' . $defaultValue . ']</comment> ' : '') . '';
+    return $question . ':' . (!empty($defaultValue) ? ' <comment>[' . $defaultValue . ']</comment> ' : ' ');
   }
 
   /**
