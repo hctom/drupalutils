@@ -45,7 +45,7 @@ class EnsureDatabaseSettingsTask extends EnsureSettingsFileTask implements Inter
    * {@inheritdoc}
    */
   public function getSkipIfExists() {
-    return FALSE;
+    return TRUE;
   }
 
   /**
