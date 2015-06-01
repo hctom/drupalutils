@@ -78,6 +78,16 @@ class FormatterHelper extends SymfonyFormatterHelper implements OutputAwareInter
   }
 
   /**
+   * Format divider.
+   *
+   * @return string
+   *   The formatted divider.
+   */
+  public function formatDivider() {
+    return '<fg=blue>' . str_pad('', $this->getTerminalWidth(), '-') . '</>';
+  }
+
+  /**
    * Format a message as a block of text that fills the full width of the terminal.
    *
    * @param string|array $messages
