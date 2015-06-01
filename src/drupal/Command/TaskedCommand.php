@@ -123,14 +123,13 @@ abstract class TaskedCommand extends Command {
     $formatter = $this->getFormatterHelper();
 
     $this->getLogger()->always('');
-    $this->getLogger()->always('<label>Tasks to execute ({total}):</label>', array(
-      'total' => count($tasks),
-    ));
-    $this->getLogger()->always('');
 
     $toc = array();
+    $toc[] = sprintf('Tasks to execute (%s):', count($tasks));
+    $toc[] = '';
+
     foreach (array_values($tasks) as $i => $task) {
-      $toc[] = $formatter->formatCounterNumber($i + 1, count($tasks)) . '. ' . $task->getTitle();
+      $toc[] = '  ' . $formatter->formatCounterNumber($i + 1, count($tasks)) . '. ' . $task->getTitle();
     }
 
     $this->getLogger()->always($formatter->formatBlock($toc, 'toc', TRUE));
