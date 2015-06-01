@@ -85,6 +85,9 @@ abstract class TaskedCommand extends Command {
           'command' => $task->getName(),
         );
 
+        $this->getLogger()->always('');
+        $this->getLogger()->always($formatter->formatDivider());
+
         // Output task information.
         $this->getLogger()->always($formatter->formatTaskInfo($command, $taskCount, count($tasks)));
 
