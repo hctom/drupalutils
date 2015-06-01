@@ -8,7 +8,7 @@
 namespace hctom\DrupalUtils\Command\Site;
 
 use hctom\DrupalUtils\Command\TaskedCommand;
-use hctom\DrupalUtils\Task\Database\EnsureDefaultDatabaseSettingsTask;
+use hctom\DrupalUtils\Task\Database\EnsureDatabaseSettingsTask;
 use hctom\DrupalUtils\Task\Environment\EnsureEnvSettingsTask;
 use hctom\DrupalUtils\Task\Environment\SymlinkEnvHtaccessTask;
 use hctom\DrupalUtils\Task\Environment\SymlinkEnvSettingsTask;
@@ -32,7 +32,7 @@ class InstallSiteCommand extends TaskedCommand {
         new EnsureEnvSettingsTask(),
         new SymlinkEnvHtaccessTask(),
         new SymlinkEnvSettingsTask(),
-        new EnsureDefaultDatabaseSettingsTask(),
+        new EnsureDatabaseSettingsTask(),
         new InstallSiteTask(),
         new EnsurePublicFilesDirectoryTask(),
       ))

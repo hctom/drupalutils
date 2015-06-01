@@ -10,12 +10,12 @@ Database connections for the '{{ drupalutils.environment }}' environment.
 
 {% block phpCode %}
 {# Databases #}
-{% for db, targets in dbs %}
-{% for target, parameters in targets %}
+{% for databaseKey, targets in databases %}
+{% for targetKey, databaseConnection in targets %}
 {% if not loop.first %}
 
 {% endif %}
-$databases['{{ db }}']['{{ target }}'] = {{ parameters|var_export }};
+$databases['{{ databaseKey }}']['{{ targetKey }}'] = {{ databaseConnection|var_export }};
 {% endfor %}
 {% endfor %}
 {% endblock %}
