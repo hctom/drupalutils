@@ -59,7 +59,6 @@ abstract class TaskedCommand extends Command {
 
     // Log table of contents.
     $this->logTableOfContents($tasks);
-    $this->getLogger()->always('');
 
     // Prompt if tasks should be executed.
     $defaultValue = 'yes';
