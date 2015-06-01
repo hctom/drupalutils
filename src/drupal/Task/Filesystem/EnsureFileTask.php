@@ -47,10 +47,9 @@ abstract class EnsureFileTask extends EnsureItemTask {
   protected function dumpFile($content, $loggerMessage, $loggerContext) {
     $filesystem = $this->getFilesystemHelper();
     $filename = $filesystem->makePathAbsolute($this->getPath());
-    $fileMode = $this->getFileMode();
     $formatter = $this->getFormatterHelper();
 
-    $filesystem->dumpFile($filename, $content, $fileMode);
+    $filesystem->dumpFile($filename, $content);
 
     $this->getLogger()->notice($loggerMessage, $loggerContext);
     $this->getLogger()->debug('<label>File content:</label>');
