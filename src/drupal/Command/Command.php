@@ -15,6 +15,7 @@ use hctom\DrupalUtils\Helper\DrushHelper;
 use hctom\DrupalUtils\Helper\DrushProcessHelper;
 use hctom\DrupalUtils\Helper\FilesystemHelper;
 use hctom\DrupalUtils\Helper\FormatterHelper;
+use hctom\DrupalUtils\Helper\HelperSetAwareInterface;
 use hctom\DrupalUtils\Helper\TwigHelper;
 use hctom\DrupalUtils\Input\InputAwareInterface;
 use hctom\DrupalUtils\Log\LoggerInterface;
@@ -27,7 +28,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 /**
  * Base class for all Drupal Utilities commands.
  */
-abstract class Command extends SymfonyConsoleCommand {
+abstract class Command extends SymfonyConsoleCommand implements HelperSetAwareInterface {
 
   /**
    * Return Drupal cache helper.
