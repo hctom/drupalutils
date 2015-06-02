@@ -24,8 +24,7 @@
   ],  
   "autoload": {
     "psr-4": {
-      "hctom\\DrupalUtils\\": "src/drupal/",
-      "hctom\\DrushWrapper\\": "src/drush/"
+      "hctom\\DrupalUtils\\": "src/"
     }
   },
   "require-dev": {
