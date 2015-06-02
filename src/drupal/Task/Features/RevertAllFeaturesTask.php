@@ -29,10 +29,21 @@ class RevertAllFeaturesTask extends FeaturesTask {
   protected function execute(InputInterface $input, OutputInterface $output) {
     return $this->getDrushProcessHelper()
       ->setCommandName('features-revert-all')
+      ->setArguments($this->getExcludedFeatures())
       ->setOptions(array(
         'force' => $this->getForce() ? TRUE : FALSE,
       ))
       ->mustRun('Reverted all features', 'Unable to revert all features');
+  }
+
+  /**
+   * Return excluded features.
+   *
+   * @return array
+   *   An array of feature names that should be excluded from revert.
+   */
+  public function getExcludedFeatures() {
+    return array();
   }
 
   /**
