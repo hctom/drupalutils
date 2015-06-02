@@ -41,10 +41,6 @@ class EnsureEnvSettingsTask extends EnsureSettingsFileTask {
         'path' => $settingsBasePath . DIRECTORY_SEPARATOR . 'master.' . $environment . '.inc',
         'comment' => 'Environment: Master modules.',
       ),
-      'conf.ENVIRONMENT.inc' => array(
-        'path' => $settingsBasePath . DIRECTORY_SEPARATOR . 'conf.' . $environment . '.inc',
-        'comment' => 'Environment: Configuration variables.',
-      ),
       'settings.shared.inc' => array(
         'path' => $settingsBasePath . DIRECTORY_SEPARATOR . 'settings.shared.inc',
         'comment' => 'Shared: Custom settings.',
