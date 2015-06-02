@@ -168,7 +168,7 @@ abstract class EnsureMasterModulesTask extends EnsureSettingsFileTask {
    * {@inheritdoc}
    */
   protected function getTemplateName() {
-    return '@drupalutils/master.ENVIRONMENT.php.twig';
+    return '@drupalutils/master.ENVIRONMENT.inc.twig';
   }
 
   /**
