@@ -7,14 +7,13 @@
 
 namespace hctom\DrupalUtils\Task\Features;
 
-use hctom\DrupalUtils\Task\Task;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
- * Drupal utilities task class: List features.
+ * Provides a task command to list all features and their status.
  */
-class ListFeaturesTask extends Task {
+class ListFeaturesTask extends FeaturesTask {
 
   /**
    * {@inheritdoc}
@@ -28,10 +27,13 @@ class ListFeaturesTask extends Task {
    * {@inheritdoc}
    */
   protected function execute(InputInterface $input, OutputInterface $output) {
-    return $this->drush()
-      ->runCommand(array(
-        'command' => 'drush:features-list',
-      ), $input);
+    $process = $this->getDrushProcessHelper()
+      ->setCommandName('features-list')
+      ->mustRun(NULL, 'Unable to list features', FALSE);
+
+    $this->getLogger()->always('<info> ' . trim($process->getOutput()) . '</info>');
+
+    return $process->getExitCode();
   }
 
   /**
