@@ -76,13 +76,30 @@ class TwigHelper extends Helper implements LoggerAwareInterface, PackagePathAwar
    * @return array
    *   A keyed array of template paths. The key is the namespace, the value is
    *   the absolute path.
+   *
+   * @throws \RuntimeException
    */
   protected function getTemplatePaths() {
+    /* @var FilesystemHelper $filesystem */
+    $filesystem = $this->getHelperSet()->get('filesystem');
+
     /* @var SiteAliasConfig $drushSiteAliasConfig */
     $drushSiteAliasConfig = $this->getHelperSet()->get('drush_site_alias')
       ->getConfig();
 
-    return $drushSiteAliasConfig->getTemplatePaths();
+    $tplPaths = $drushSiteAliasConfig->getTemplatePaths();
+
+    // Check template paths.
+    foreach ($tplPaths as $namespace => $path) {
+      if (empty($path)) {
+        throw new \RuntimeException(sprintf('Empty template path specified for "%s" namespace', $namespace));
+      }
+      elseif (!$filesystem->isDirectory($path)) {
+        throw new \RuntimeException(sprintf('Specified "%s" template path for "%s" namespace is not a directory', $path, $namespace));
+      }
+    }
+
+    return $tplPaths;
   }
 
   /**

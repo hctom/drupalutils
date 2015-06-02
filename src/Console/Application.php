@@ -133,10 +133,6 @@ EOT;
 
     // Extend helpers.
     $this->extendHelpers($input, $output);
-
-    // TODO Find better solution -> currently only needed to have tpl registration debug messages at the top
-    // Initialize template engine.
-    $this->getHelperSet()->get('twig')->getTwig();
   }
 
   /**
@@ -218,6 +214,9 @@ EOT;
 
     // Merge additional/overriding commands from Drush site alias configuration.
     $this->addCommandsFromDrushSiteAliasConfig();
+
+    // Initialize template engine.
+    $this->initializeTemplateEngine();
 
     return parent::doRun($input, $output);
   }
@@ -406,6 +405,13 @@ EOT;
           break;
       }
     }
+  }
+
+  /**
+   * Initialize class loader.
+   */
+  protected function initializeTemplateEngine() {
+    $this->getHelperSet()->get('twig')->getTwig();
   }
 
 }
