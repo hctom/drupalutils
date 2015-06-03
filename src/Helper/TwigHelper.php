@@ -87,19 +87,22 @@ class TwigHelper extends Helper implements LoggerAwareInterface, PackagePathAwar
     $drushSiteAliasConfig = $this->getHelperSet()->get('drush_site_alias')
       ->getConfig();
 
-    $tplPaths = $drushSiteAliasConfig->getTemplatePaths();
+    if (($tplPaths = $drushSiteAliasConfig->getTemplatePaths())) {
 
-    // Check template paths.
-    foreach ($tplPaths as $namespace => $path) {
-      if (empty($path)) {
-        throw new \RuntimeException(sprintf('Empty template path specified for "%s" namespace', $namespace));
+      // Check template paths.
+      foreach ($tplPaths as $namespace => $path) {
+        if (empty($path)) {
+          throw new \RuntimeException(sprintf('Empty template path specified for "%s" namespace', $namespace));
+        }
+        elseif (!$filesystem->isDirectory($path)) {
+          throw new \RuntimeException(sprintf('Specified "%s" template path for "%s" namespace is not a directory', $path, $namespace));
+        }
       }
-      elseif (!$filesystem->isDirectory($path)) {
-        throw new \RuntimeException(sprintf('Specified "%s" template path for "%s" namespace is not a directory', $path, $namespace));
-      }
+
+      return $tplPaths;
     }
 
-    return $tplPaths;
+    return array();
   }
 
   /**
