@@ -325,7 +325,7 @@ EOT;
     // Add additional options.
     $inputDefinition->addOptions(array(
       // Drush site alias.
-      new InputOption('--site', NULL, InputOption::VALUE_REQUIRED, 'The Drush site alias to use.', '@none'),
+      new InputOption('--site', NULL, InputOption::VALUE_REQUIRED, 'The Drush site alias to use - its value may also be injected as the very first argument.', '@none'),
     ));
 
     return $inputDefinition;

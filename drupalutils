@@ -1,4 +1,17 @@
 #!/usr/bin/env php
 <?php
 
+// First argument is Drush site alias.
+if (!empty($_SERVER['argv'][1]) && preg_match('/^@/', $_SERVER['argv'][1])) {
+  // No '--site' option given -> use first argument as Drush site alias.
+  if (!preg_grep('/^\-\-site=/', $_SERVER['argv'])) {
+    $_SERVER['argv'][1] = '--site=' . $_SERVER['argv'][1];
+  }
+
+  // '--site' option already given -> remove first argument.
+  else {
+    unset($_SERVER['argv'][1]);
+  }
+}
+
 require __DIR__ . '/drupalutils.php';
