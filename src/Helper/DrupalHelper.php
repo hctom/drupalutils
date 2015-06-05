@@ -136,6 +136,34 @@ class DrupalHelper extends Helper {
   }
 
   /**
+   * Return Drupal's private files directory path.
+   *
+   * @return string
+   *   The absolute path of the private files directory.
+   *
+   * @throws RuntimeException
+   */
+  public function getPrivateFilesDirectoryPath() {
+    static $path;
+
+    if (!isset($path)) {
+      $path = NULL;
+      $status = $this->getCoreStatus();
+
+      // Contains private files directory path.
+      if (property_exists($status, 'private')) {
+        $path = $status->files;
+      }
+    }
+
+    if (!$path) {
+      throw new RuntimeException("Unable to determine Drupal's private files directory path");
+    }
+
+    return $this->getFilesystemHelper()->makePathAbsolute($path);
+  }
+
+  /**
    * Return Drupal's public files directory path.
    *
    * @return string
