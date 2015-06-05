@@ -152,7 +152,7 @@ class DrupalHelper extends Helper {
 
       // Contains private files directory path.
       if (property_exists($status, 'private')) {
-        $path = $status->files;
+        $path = $status->private;
       }
     }
 
