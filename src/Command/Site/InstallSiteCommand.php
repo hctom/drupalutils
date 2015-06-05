@@ -27,15 +27,6 @@ class InstallSiteCommand extends TaskedCommand {
   protected function configure() {
     $this
       ->setName('site:install')
-      ->registerTasks(array(
-        new EnsureSiteDirectoryTask(),
-        new EnsureEnvSettingsTask(),
-        new SymlinkEnvHtaccessTask(),
-        new SymlinkEnvSettingsTask(),
-        new EnsureDatabaseSettingsTask(),
-        new InstallSiteTask(),
-        new EnsurePublicFilesDirectoryTask(),
-      ))
       ->setDescription('Install a Drupal site.')
       ->setHelp(
 <<<EOT
@@ -44,6 +35,18 @@ The <info>%command.name%</info> command performs the installation of a Drupal si
 <info>%command.full_name%</info>
 EOT
       );
+
+    // Add default tasks.
+    $this->getTaskList()
+      ->addMultiple(array(
+        new EnsureSiteDirectoryTask(),
+        new EnsureEnvSettingsTask(),
+        new SymlinkEnvHtaccessTask(),
+        new SymlinkEnvSettingsTask(),
+        new EnsureDatabaseSettingsTask(),
+        new InstallSiteTask(),
+        new EnsurePublicFilesDirectoryTask(),
+      ));
   }
 
 }

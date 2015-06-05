@@ -28,15 +28,6 @@ class UpdateSiteCommand extends TaskedCommand {
     $this
       ->setName('site:update')
       ->setDescription('Update a Drupal site.')
-      ->registerTasks(array(
-        new EnsureSiteDirectoryTask(),
-        new EnsureEnvSettingsTask(),
-        new SymlinkEnvHtaccessTask(),
-        new SymlinkEnvSettingsTask(),
-        new EnsureDatabaseSettingsTask(),
-        new EnsurePublicFilesDirectoryTask(),
-        new UpdateDatabaseTask(),
-      ))
       ->setHelp(
 <<<EOT
 The <info>%command.name%</info> command performs updates on a Drupal site:
@@ -44,6 +35,18 @@ The <info>%command.name%</info> command performs updates on a Drupal site:
 <info>%command.full_name%</info>
 EOT
       );
+
+    // Add default tasks.
+    $this->getTaskList()
+      ->addMultiple(array(
+        new EnsureSiteDirectoryTask(),
+        new EnsureEnvSettingsTask(),
+        new SymlinkEnvHtaccessTask(),
+        new SymlinkEnvSettingsTask(),
+        new EnsureDatabaseSettingsTask(),
+        new EnsurePublicFilesDirectoryTask(),
+        new UpdateDatabaseTask(),
+      ));
   }
 
 }

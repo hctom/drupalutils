@@ -7,7 +7,9 @@
 
 namespace hctom\DrupalUtils\Command;
 
+use hctom\DrupalUtils\Collection\CollectionInterface;
 use hctom\DrupalUtils\Task\TaskInterface;
+use hctom\DrupalUtils\Task\TaskList;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -21,9 +23,9 @@ abstract class TaskedCommand extends Command {
   /**
    * Task list.
    *
-   * @var array
+   * @var CollectionInterface
    */
-  private $taskList = array();
+  private $taskList;
 
   /**
    * {@inheritdoc}
@@ -46,19 +48,21 @@ abstract class TaskedCommand extends Command {
    */
   public function executeTasks(InputInterface $input, OutputInterface $output) {
     $formatter = $this->getFormatterHelper();
+    $taskList = $this->getTaskList();
 
-    // Determine task list.
-    if (!($tasks = $this->getTasks())) {
+    // Task list is empty.
+    if ($taskList->isEmpty()) {
       throw new \RuntimeException(sprintf('No tasks supplied for "%s"', $this->getName()));
     }
+
 
     // Create and set up sub-application.
     $subApp = clone $this->getApplication();
     $subApp->setAutoExit(FALSE);
-    $subApp->addCommands($tasks);
+    $subApp->addCommands($taskList->toArray());
 
     // Log table of contents.
-    $this->logTableOfContents($tasks);
+    $this->logTableOfContents();
 
     // Prompt if tasks should be executed.
     $defaultValue = 'yes';
@@ -66,17 +70,8 @@ abstract class TaskedCommand extends Command {
     $continue = $this->getQuestionHelper()->ask($input, $output, $question);
 
     if ($continue) {
-      // Run tasks.
-      $taskCount = 0;
-      foreach ($tasks as $task) {
-        // Does not implement task interface?
-        if (!$task instanceof TaskInterface) {
-          throw new \RuntimeException(sprintf('Invalid task class "%s" for "%s"', get_class($task), $task->getName()));
-        }
-
-        // Increase task counter.
-        $taskCount++;
-
+      /* @var TaskInterface $task */
+      foreach ($taskList->getValues() as $i => $task) {
         // Find task command object.
         $command = $subApp->find($task->getName());
 
@@ -89,7 +84,7 @@ abstract class TaskedCommand extends Command {
         $this->getLogger()->always($formatter->formatDivider());
 
         // Output task information.
-        $this->getLogger()->always($formatter->formatTaskInfo($command, $taskCount, count($tasks)));
+        $this->getLogger()->always($formatter->formatTaskInfo($command, $i + 1, $taskList->count()));
 
         // Build command input.
         $commandInput = new ArrayInput($parameters);
@@ -106,101 +101,38 @@ abstract class TaskedCommand extends Command {
   }
 
   /**
-   * Return tasks.
+   * Return task list.
    *
-   * @return TaskInterface[]
-   *   An array of task objects.
+   * @return CollectionInterface
+   *   A task list collection object.
    */
-  public function getTasks() {
+  public function getTaskList() {
+    if (!isset($this->taskList)) {
+      $this->taskList = new TaskList();
+    }
+
     return $this->taskList;
   }
 
   /**
    * Log table of contents.
-   *
-   * @param TaskInterface[] $tasks
-   *   All task objects that are about to be executed.
    */
-  protected function logTableOfContents(array $tasks) {
+  protected function logTableOfContents() {
+    $taskList = $this->getTaskList();
     $formatter = $this->getFormatterHelper();
 
     $this->getLogger()->always('');
 
     $toc = array();
-    $toc[] = sprintf('Tasks to execute (%s):', count($tasks));
+    $toc[] = sprintf('Tasks to execute (%s):', $taskList->count());
     $toc[] = '';
 
-    foreach (array_values($tasks) as $i => $task) {
-      $toc[] = '  ' . $formatter->formatCounterNumber($i + 1, count($tasks)) . '. ' . $task->getTitle();
+    /* @var TaskInterface $task */
+    foreach ($taskList->getValues() as $i => $task) {
+      $toc[] = '  ' . $formatter->formatCounterNumber($i + 1, $taskList->count()) . '. ' . $task->getTitle();
     }
 
     $this->getLogger()->always($formatter->formatBlock($toc, 'toc', TRUE));
-  }
-
-  /**
-   * Register task.
-   *
-   * @param TaskInterface $task
-   *   A task object to register.
-   *
-   * @return static
-   *   A self-reference for method chaining.
-   */
-  public function registerTask(TaskInterface $task) {
-    $this->taskList[$task->getName()] = $task;
-
-    return $this;
-  }
-
-  /**
-   * Register tasks.
-   *
-   * @param TaskInterface[] $tasks
-   *   An array of task objects to register.
-   *
-   * @return static
-   *   A self-reference for method chaining.
-   */
-  public function registerTasks(array $tasks) {
-    foreach ($tasks as $task) {
-      $this->registerTask($task);
-    }
-
-    return $this;
-  }
-
-  /**
-   * Remove task.
-   *
-   * @param string $taskName
-   *   A task name.
-   *
-   * @return static
-   *   A self-reference for method chaining.
-   */
-  public function removeTask($taskName) {
-    if (isset($this->taskList[$taskName])) {
-      unset($this->taskList[$taskName]);
-    }
-
-    return $this;
-  }
-
-  /**
-   * Remove tasks.
-   *
-   * @param array $taskNames
-   *   An array of task names.
-   *
-   * @return static
-   *   A self-reference for method chaining.
-   */
-  public function removeTasks(array $taskNames) {
-    foreach ($taskNames as $taskName) {
-      $this->removeTask($taskName);
-    }
-
-    return $this;
   }
 
 }
