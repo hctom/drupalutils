@@ -45,6 +45,8 @@ abstract class EnsureMasterModulesTask extends EnsureSettingsFileTask {
    * {@inheritdoc}
    */
   protected function configure() {
+    parent::configure();
+
     $this
       ->setName('task:site:master:ensure:modules');
   }

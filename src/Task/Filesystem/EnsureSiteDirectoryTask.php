@@ -16,6 +16,8 @@ class EnsureSiteDirectoryTask extends EnsureDirectoryTask {
    * {@inheritdoc}
    */
   protected function configure() {
+    parent::configure();
+
     $this
       ->setName('task:directory:ensure:site');
   }

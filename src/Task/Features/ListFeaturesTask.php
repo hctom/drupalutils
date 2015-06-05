@@ -19,6 +19,8 @@ class ListFeaturesTask extends FeaturesTask {
    * {@inheritdoc}
    */
   protected function configure() {
+    parent::configure();
+
     $this
       ->setName('task:features:list');
   }

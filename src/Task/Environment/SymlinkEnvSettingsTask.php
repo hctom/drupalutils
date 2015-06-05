@@ -19,6 +19,8 @@ class SymlinkEnvSettingsTask extends SymlinkTask {
    * {@inheritdoc}
    */
   protected function configure() {
+    parent::configure();
+
     $this
       ->setName('task:environment:settings:symlink');
   }

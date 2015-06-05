@@ -16,6 +16,8 @@ class DisableBartikThemeTask extends DisableThemeTask {
    * {@inheritdoc}
    */
   protected function configure() {
+    parent::configure();
+
     $this
       ->setName('task:theme:disable:bartik');
   }

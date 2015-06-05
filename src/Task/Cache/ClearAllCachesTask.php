@@ -16,6 +16,8 @@ class ClearAllCachesTask extends ClearCacheTask {
    * {@inheritdoc}
    */
   protected function configure() {
+    parent::configure();
+
     $this
       ->setName('task:cache:clear:all');
   }

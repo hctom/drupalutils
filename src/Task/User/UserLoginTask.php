@@ -20,6 +20,8 @@ class UserLoginTask extends Task {
    * {@inheritdoc}
    */
   protected function configure() {
+    parent::configure();
+
     $this
       ->setName('task:user:login');
   }

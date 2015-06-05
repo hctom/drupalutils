@@ -19,6 +19,8 @@ class SymlinkEnvHtaccessTask extends SymLinkTask {
    * {@inheritdoc}
    */
   protected function configure() {
+    parent::configure();
+
     $this
       ->setName('task:environment:htaccess:symlink');
   }

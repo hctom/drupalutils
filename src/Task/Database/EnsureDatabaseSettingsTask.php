@@ -30,6 +30,8 @@ class EnsureDatabaseSettingsTask extends EnsureSettingsFileTask implements Inter
    * {@inheritdoc}
    */
   protected function configure() {
+    parent::configure();
+
     $this
       ->setName('task:database:settings:ensure');
   }

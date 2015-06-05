@@ -25,6 +25,8 @@ class InstallSiteCommand extends TaskedCommand {
    * {@inheritdoc}
    */
   protected function configure() {
+    parent::configure();
+
     $this
       ->setName('site:install')
       ->setDescription('Install a Drupal site.')

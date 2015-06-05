@@ -16,6 +16,8 @@ class EnsurePublicFilesDirectoryTask extends EnsureDirectoryTask {
    * {@inheritdoc}
    */
   protected function configure() {
+    parent::configure();
+
     $this
       ->setName('task:directory:ensure:public');
   }

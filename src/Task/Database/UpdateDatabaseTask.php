@@ -21,6 +21,8 @@ class UpdateDatabaseTask extends Task {
    * {@inheritdoc}
    */
   protected function configure() {
+    parent::configure();
+
     $this
       ->setName('task:database:update');
   }

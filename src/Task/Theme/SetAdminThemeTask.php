@@ -19,6 +19,8 @@ abstract class SetAdminThemeTask extends EnableThemeTask {
    * {@inheritdoc}
    */
   protected function configure() {
+    parent::configure();
+
     $this
       ->setName('task:theme:set:admin');
   }

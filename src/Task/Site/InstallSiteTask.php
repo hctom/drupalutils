@@ -20,6 +20,8 @@ class InstallSiteTask extends Task {
    * {@inheritdoc}
    */
   protected function configure() {
+    parent::configure();
+
     $this
       ->setName('task:site:install');
   }

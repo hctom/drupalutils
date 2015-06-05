@@ -19,6 +19,8 @@ abstract class SetDefaultThemeTask extends EnableThemeTask {
    * {@inheritdoc}
    */
   protected function configure() {
+    parent::configure();
+
     $this
       ->setName('task:theme:set:default');
   }

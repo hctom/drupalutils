@@ -16,6 +16,8 @@ class UserLoginNoBrowserTask extends UserLoginTask {
    * {@inheritdoc}
    */
   protected function configure() {
+    parent::configure();
+
     $this
       ->setName('task:user:login:browser:no');
   }

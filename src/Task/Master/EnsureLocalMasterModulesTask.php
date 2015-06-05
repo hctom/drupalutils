@@ -16,6 +16,8 @@ class EnsureLocalMasterModulesTask extends EnsureMasterModulesTask {
    * {@inheritdoc}
    */
   protected function configure() {
+    parent::configure();
+
     $this
       ->setName('task:site:master:ensure:modules:local');
   }

@@ -56,6 +56,8 @@ class EnsureEnvSettingsTask extends EnsureSettingsFileTask {
    * {@inheritdoc}
    */
   protected function configure() {
+    parent::configure();
+
     $this
       ->setName('task:environment:settings:ensure');
   }

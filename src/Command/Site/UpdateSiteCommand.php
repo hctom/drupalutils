@@ -25,6 +25,8 @@ class UpdateSiteCommand extends TaskedCommand {
    * {@inheritdoc}
    */
   protected function configure() {
+    parent::configure();
+
     $this
       ->setName('site:update')
       ->setDescription('Update a Drupal site.')

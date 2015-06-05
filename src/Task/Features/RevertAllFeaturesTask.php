@@ -19,6 +19,8 @@ class RevertAllFeaturesTask extends FeaturesTask {
    * {@inheritdoc}
    */
   protected function configure() {
+    parent::configure();
+
     $this
       ->setName('task:features:revert:all');
   }
