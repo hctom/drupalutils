@@ -17,7 +17,7 @@ class EnsurePublicFilesDirectoryTask extends EnsureDirectoryTask {
    */
   protected function configure() {
     $this
-      ->setName('task:directory:ensure:files');
+      ->setName('task:directory:ensure:public');
   }
 
   /**
