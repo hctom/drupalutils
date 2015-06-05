@@ -25,7 +25,7 @@ class EnsurePrivateFilesDirectoryTask extends EnsureDirectoryTask {
    */
   function getPath() {
     // TODO
-    return $this->getDrupalHelper()->getPri();
+    return $this->getDrupalHelper()->getPrivateFilesDirectoryPath();
   }
 
   /**
