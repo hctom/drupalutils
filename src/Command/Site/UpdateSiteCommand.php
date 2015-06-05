@@ -37,8 +37,14 @@ The <info>%command.name%</info> command performs updates on a Drupal site:
 <info>%command.full_name%</info>
 EOT
       );
+  }
 
-    // Add default tasks.
+  /**
+   * {@inheritdoc}
+   */
+  protected function doInitializeTaskList() {
+    parent::doInitializeTaskList();
+
     $this->getTaskList()
       ->addMultiple(array(
         new EnsureSiteDirectoryTask(),

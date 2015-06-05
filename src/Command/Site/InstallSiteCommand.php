@@ -37,6 +37,13 @@ The <info>%command.name%</info> command performs the installation of a Drupal si
 <info>%command.full_name%</info>
 EOT
       );
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  protected function doInitializeTaskList() {
+    parent::doInitializeTaskList();
 
     // Add default tasks.
     $this->getTaskList()

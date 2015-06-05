@@ -28,9 +28,19 @@ abstract class TaskedCommand extends Command {
   private $taskList;
 
   /**
+   * Initialize task list.
+   */
+  protected function doInitializeTaskList() {
+
+  }
+
+  /**
    * {@inheritdoc}
    */
   protected function execute(InputInterface $input, OutputInterface $output) {
+    // Initialize task list.
+    $this->doInitializeTaskList();
+
     // Execute registered tasks.
     return $this->executeTasks($input, $output);
   }
@@ -106,7 +116,7 @@ abstract class TaskedCommand extends Command {
    * @return CollectionInterface
    *   A task list collection object.
    */
-  public function getTaskList() {
+  protected function getTaskList() {
     if (!isset($this->taskList)) {
       $this->taskList = new TaskList();
     }
