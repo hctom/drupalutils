@@ -12,8 +12,10 @@ use hctom\DrupalUtils\Task\Database\EnsureDatabaseSettingsTask;
 use hctom\DrupalUtils\Task\Environment\EnsureEnvSettingsTask;
 use hctom\DrupalUtils\Task\Environment\SymlinkEnvHtaccessTask;
 use hctom\DrupalUtils\Task\Environment\SymlinkEnvSettingsTask;
+use hctom\DrupalUtils\Task\Filesystem\EnsurePrivateFilesDirectoryTask;
 use hctom\DrupalUtils\Task\Filesystem\EnsurePublicFilesDirectoryTask;
 use hctom\DrupalUtils\Task\Filesystem\EnsureSiteDirectoryTask;
+use hctom\DrupalUtils\Task\Filesystem\EnsureTemporaryFilesDirectoryTask;
 use hctom\DrupalUtils\Task\Site\InstallSiteTask;
 
 /**
@@ -53,8 +55,10 @@ EOT
         new SymlinkEnvHtaccessTask(),
         new SymlinkEnvSettingsTask(),
         new EnsureDatabaseSettingsTask(),
-        new InstallSiteTask(),
+        new EnsureTemporaryFilesDirectoryTask(),
         new EnsurePublicFilesDirectoryTask(),
+        new EnsurePrivateFilesDirectoryTask(),
+        new InstallSiteTask(),
       ));
   }
 
