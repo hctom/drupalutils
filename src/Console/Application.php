@@ -8,6 +8,7 @@
 namespace hctom\DrupalUtils\Console;
 
 use hctom\DrupalUtils\Command\Command;
+use hctom\DrupalUtils\Command\Site\InitialSiteSetupCommand;
 use hctom\DrupalUtils\Command\Site\InstallSiteCommand;
 use hctom\DrupalUtils\Command\Site\UpdateSiteCommand;
 use hctom\DrupalUtils\Drush\SiteAliasAwareInterface;
@@ -267,6 +268,9 @@ EOT;
    */
   protected function getDefaultCommands() {
     $defaultCommands = parent::getDefaultCommands();
+
+    // Initial site setup.
+    $defaultCommands[] = new InitialSiteSetupCommand();
 
     // Install site.
     $defaultCommands[] = new InstallSiteCommand();
