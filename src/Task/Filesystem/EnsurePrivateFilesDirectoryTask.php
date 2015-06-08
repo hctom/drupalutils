@@ -36,4 +36,22 @@ class EnsurePrivateFilesDirectoryTask extends EnsureDirectoryTask {
     return 'Ensure private files directory';
   }
 
+  /**
+   * {@inheritdoc}
+   */
+  protected function skipWithMessage() {
+    if (($message = parent::skipWithMessage())) {
+      return $message;
+    }
+
+    // No private files directory path set.
+    try {
+      $this->getDrupalHelper()->getPrivateFilesDirectoryPath();
+    }
+    catch(\Exception $e) {
+      return 'No private files directory specified';
+    }
+  }
+
+
 }
