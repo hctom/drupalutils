@@ -13,8 +13,10 @@ use hctom\DrupalUtils\Task\Database\UpdateDatabaseTask;
 use hctom\DrupalUtils\Task\Environment\EnsureEnvSettingsTask;
 use hctom\DrupalUtils\Task\Environment\SymlinkEnvHtaccessTask;
 use hctom\DrupalUtils\Task\Environment\SymlinkEnvSettingsTask;
+use hctom\DrupalUtils\Task\Filesystem\EnsurePrivateFilesDirectoryTask;
 use hctom\DrupalUtils\Task\Filesystem\EnsurePublicFilesDirectoryTask;
 use hctom\DrupalUtils\Task\Filesystem\EnsureSiteDirectoryTask;
+use hctom\DrupalUtils\Task\Filesystem\EnsureTemporaryFilesDirectoryTask;
 
 /**
  * Provides a command to perform basic updates on a Drupal site.
@@ -52,7 +54,9 @@ EOT
         new SymlinkEnvHtaccessTask(),
         new SymlinkEnvSettingsTask(),
         new EnsureDatabaseSettingsTask(),
+        new EnsureTemporaryFilesDirectoryTask(),
         new EnsurePublicFilesDirectoryTask(),
+        new EnsurePrivateFilesDirectoryTask(),
         new UpdateDatabaseTask(),
       ));
   }
