@@ -246,6 +246,22 @@ class FilesystemHelper extends Helper {
   public function makePathAbsolute($path) {
     if (!$this->getFilesystem()->isAbsolutePath($path)) {
       $path = $this->getDrupalHelper()->getRootDirectoryPath() . DIRECTORY_SEPARATOR . $path;
+
+      // Ensure real directory path.
+      if ($this->isDirectory($path) || $this->isSymlinkedDirectory($path)) {
+        $path = realpath($path);
+      }
+
+      // Ensure real file path.
+      elseif ($this->isFile($path) || $this->isSymlinkedFile($path)) {
+        $pathinfo = pathinfo($path);
+        $path = realpath($pathinfo['dirname']) . DIRECTORY_SEPARATOR . $pathinfo['basename'];
+      }
+
+      // Invalid path.
+      else {
+        throw new IOException(sprintf('Unable to make "%s" path absolute', $path), 0, NULL, $path);
+      }
     }
 
     return $path;
