@@ -46,7 +46,7 @@ abstract class SymlinkTask extends FilesystemTask {
     }
 
     // Symlink already exists?
-    elseif ($filesystem->isSymlink($link) && readlink($link) === $target) {
+    elseif ($filesystem->isSymlink($link) && $filesystem->getSymlinkTarget($link) === $target) {
       $this->getLogger()->always('<success>Symbolic link {link} ==> {target} already exists</success>', array(
         'link' => $formatter->formatPath($link),
         'target' => $formatter->formatPath($target),
@@ -135,7 +135,7 @@ abstract class SymlinkTask extends FilesystemTask {
     // Throw error if item already exists?
     if ($mode === static::MODE_ERROR_IF_EXISTS) {
       if ($filesystem->isSymlink($link)) {
-        throw new IOException(sprintf('Symbolic link "%s" already exists as symbolic link with different target "%s"', $link, readlink($link)), 0, NULL, $link);
+        throw new IOException(sprintf('Symbolic link "%s" already exists as symbolic link with different target "%s"', $link, $filesystem->getSymlinkTarget($link)), 0, NULL, $link);
       }
       elseif ($filesystem->isFile($link)) {
         throw new IOException(sprintf('Symbolic link "%s" already exists as file', $link), 0, NULL, $link);
@@ -149,7 +149,7 @@ abstract class SymlinkTask extends FilesystemTask {
     if ($filesystem->isSymlink($link)) {
       $this->getLogger()->notice('Symbolic link {link} already exists as symbolic link with different target {target}', array(
         'link' => $formatter->formatPath($link),
-        'target' => $formatter->formatPath($filesystem->makePathAbsolute(readlink($link))),
+        'target' => $formatter->formatPath($filesystem->getSymlinkTarget($link)),
       ));
     }
     elseif ($filesystem->isFile($link)) {

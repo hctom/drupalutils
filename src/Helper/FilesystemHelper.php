@@ -121,6 +121,34 @@ class FilesystemHelper extends Helper {
   }
 
   /**
+   * Return target of symbolic link.
+   *
+   * @param $path
+   *   A symbolic link path.
+   *
+   * @return string
+   *   The absolute symbolic link target path.
+   *
+   * @throws IOException
+   */
+  public function getSymlinkTarget($path) {
+    $path = $this->makePathAbsolute($path);
+
+    // Not a symbolic link.
+    if (!$this->isSymlink($path)) {
+      throw new IOException(sprintf('"%s" is not a symbolic link', $path), 0, NULL, $path);
+    }
+
+    $linkTarget = readlink($path);
+
+    if (!$this->isAbsolutePath($linkTarget)) {
+      $linkTarget = realpath(dirname($path) . DIRECTORY_SEPARATOR . $linkTarget);
+    }
+
+    return $linkTarget;
+  }
+
+  /**
    * @see Filesystem::isAbsolutePath()
    */
   public function isAbsolutePath($path) {
