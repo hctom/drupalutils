@@ -33,7 +33,7 @@ abstract class EnsureDirectoryTask extends EnsureItemTask {
     }
 
     // Existing item is not a directory.
-    elseif (!$filesystem->isDirectory($path)) {
+    elseif (!$filesystem->isDirectory($path) && !$filesystem->isSymlinkedDirectory($path)) {
       throw new IOException(sprintf('"%s" is not a directory', $path), 0, NULL, $path);
     }
 

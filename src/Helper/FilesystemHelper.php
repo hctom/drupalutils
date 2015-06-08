@@ -44,7 +44,7 @@ class FilesystemHelper extends Helper {
     }
 
     // Item is a directory?
-    elseif ($this->isDirectory($path)) {
+    elseif ($this->isDirectory($path) || $this->isSymlinkedDirectory($path)) {
       $target = $path . '.' . $suffix;
     }
 
@@ -206,6 +206,19 @@ class FilesystemHelper extends Helper {
     }
 
     return is_link($path);
+  }
+
+  /**
+   * Item is a symlinked directory?
+   *
+   * @param string $path
+   *   The path of the item to check.
+   *
+   * @return bool
+   *   Whether the item is a symlinked directory.
+   */
+  public function isSymlinkedDirectory($path) {
+    return $this->isSymlink($path) && $this->isDirectory($this->getSymlinkTarget($path));
   }
 
   /**
