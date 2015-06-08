@@ -32,7 +32,7 @@ class FilesystemHelper extends Helper {
     $suffix = 'backup.' . time();
 
     // Item is a file.
-    if ($this->isFile($path)) {
+    if ($this->isFile($path) || $this->isSymlinkedFile($path)) {
       $info = pathinfo($path);
 
       if (empty($info['filename'])) {
@@ -222,6 +222,19 @@ class FilesystemHelper extends Helper {
   }
 
   /**
+   * Item is a symlinked file?
+   *
+   * @param string $path
+   *   The path of the item to check.
+   *
+   * @return bool
+   *   Whether the item is a symlinked file.
+   */
+  public function isSymlinkedFile($path) {
+    return $this->isSymlink($path) && $this->isFile($this->getSymlinkTarget($path));
+  }
+
+  /**
    * Return absolute path.
    *
    * @param $path
@@ -275,7 +288,7 @@ class FilesystemHelper extends Helper {
     }
 
     // Is not a file?
-    if (!$this->isFile($path)) {
+    if (!$this->isFile($path) || !$this->isSymlinkedFile($path)) {
       throw new RuntimeException(sprint('"%s" is not a file', $path));
     }
 

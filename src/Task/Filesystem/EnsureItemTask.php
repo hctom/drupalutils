@@ -25,7 +25,7 @@ abstract class EnsureItemTask extends FilesystemTask {
     $fileMode = $this->getFileMode();
     $fileModeOctal = 0 . decoct($fileMode);
     $originalFileModeOctal = substr(sprintf('%o', fileperms($path)), -4);
-    $recursive = $filesystem->isFile($path) ? FALSE : $this->getApplyFileModeRecursively();
+    $recursive = $filesystem->isFile($path) || $filesystem->isSymlinkedFile($path) ? FALSE : $this->getApplyFileModeRecursively();
 
     // File permissions are already set to the correct value?
     if ($originalFileModeOctal === $fileModeOctal && !$recursive) {
@@ -61,7 +61,7 @@ abstract class EnsureItemTask extends FilesystemTask {
     if ($this->getGroup() !== NULL) {
       $filesystem = $this->getFilesystemHelper();
       $path = $this->getPath();
-      $recursive = $filesystem->isFile($path) ? FALSE : $this->getApplyGroupRecursively();
+      $recursive = $filesystem->isFile($path) || $filesystem->isSymlinkedDirectory($path) ? FALSE : $this->getApplyGroupRecursively();
       $group = $this->getGroup();
       $group = is_numeric($group) ? posix_getgrgid($group) : posix_getgrnam($group);
       $originalGroup = posix_getgrgid(filegroup($path));

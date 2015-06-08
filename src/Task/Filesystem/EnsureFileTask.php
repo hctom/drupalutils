@@ -72,8 +72,8 @@ abstract class EnsureFileTask extends EnsureItemTask {
     }
 
     // Existing item is not a file.
-    elseif (!$filesystem->isFile($filename)) {
-      throw new RuntimeException(sprint('"%s" is not a file', $filename));
+    elseif (!$filesystem->isFile($filename) && !$filesystem->isSymlinkedFile($filename)) {
+      throw new RuntimeException(sprintf('"%s" is not a file', $filename));
     }
 
     // Skip if exists.
