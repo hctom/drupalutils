@@ -9,13 +9,16 @@ namespace hctom\DrupalUtils\Helper;
 
 use hctom\DrupalUtils\Drush\SiteAliasAwareInterface;
 use hctom\DrupalUtils\Drush\SiteAliasAwareTrait;
+use hctom\DrupalUtils\Package\PackagePathAwareInterface;
+use hctom\DrupalUtils\Package\PackagePathAwareTrait;
 use Symfony\Component\Process\Exception\InvalidArgumentException;
 
 /**
  * Provides helpers to run external Drush processes.
  */
-class DrushProcessHelper extends ProcessHelper implements SiteAliasAwareInterface {
+class DrushProcessHelper extends ProcessHelper implements SiteAliasAwareInterface, PackagePathAwareInterface {
 
+  use PackagePathAwareTrait;
   use SiteAliasAwareTrait;
 
   /**
@@ -65,6 +68,9 @@ class DrushProcessHelper extends ProcessHelper implements SiteAliasAwareInterfac
     $assumedAnswer = $this->getAssumedAnswerToAllPrompts();
     $options[$assumedAnswer] = '--' . $assumedAnswer;
 
+    // Add include path(s).
+    $options['include'] = '--include=' . implode(',', $this->getIncludePaths());
+
     return $options;
   }
 
@@ -78,6 +84,20 @@ class DrushProcessHelper extends ProcessHelper implements SiteAliasAwareInterfac
    */
   public function getAssumedAnswerToAllPrompts() {
     return empty($this->assumedAnswerToAllPrompts) ? static::ASSUMED_ANSWER_YES : $this->assumedAnswerToAllPrompts;
+  }
+
+  /**
+   * Return Drush command include paths.
+   *
+   * @return array
+   *   An array of include paths to consider when looking for Drush commands
+   */
+  protected function getIncludePaths() {
+    $includePaths = array(
+      $this->getPackagePath() . DIRECTORY_SEPARATOR . 'drush' . DIRECTORY_SEPARATOR . 'commands',
+    );
+
+    return $includePaths;
   }
 
   /**
