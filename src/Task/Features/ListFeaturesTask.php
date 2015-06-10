@@ -18,17 +18,17 @@ class ListFeaturesTask extends FeaturesTask {
   /**
    * Feature status: All.
    */
-  const STATUS_ALL = 'all';
+  const FEATURE_STATUS_ALL = 'all';
 
   /**
    * Feature status: Disabled.
    */
-  const STATUS_DISABLED = 'disabled';
+  const FEATURE_STATUS_DISABLED = 'disabled';
 
   /**
    * Feature status: Enabled.
    */
-  const STATUS_ENABLED = 'enabled';
+  const FEATURE_STATUS_ENABLED = 'enabled';
 
   /**
    * {@inheritdoc}
@@ -61,12 +61,12 @@ class ListFeaturesTask extends FeaturesTask {
    *
    * @return string
    *   The status of the features to list. Possible values:
-   *     - static::STATUS_ALL: List all features (default).
-   *     - static::STATUS_DISABLED: List disabled features only.
-   *     - static::STATUS_ENABLED: List enabled features only.
+   *     - static::FEATURE_STATUS_ALL: List all features (default).
+   *     - static::FEATURE_STATUS_DISABLED: List disabled features only.
+   *     - static::FEATURE_STATUS_ENABLED: List enabled features only.
    */
   public function getFeatureStatus() {
-    return static::STATUS_ALL;
+    return static::FEATURE_STATUS_ALL;
   }
 
   /**
