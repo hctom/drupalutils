@@ -55,10 +55,10 @@ EOT
         new SymlinkEnvHtaccessTask(),
         new SymlinkEnvSettingsTask(),
         new EnsureDatabaseSettingsTask(),
+        new InstallSiteTask(),
         new EnsureTemporaryFilesDirectoryTask(),
         new EnsurePublicFilesDirectoryTask(),
         new EnsurePrivateFilesDirectoryTask(),
-        new InstallSiteTask(),
       ));
   }
 
