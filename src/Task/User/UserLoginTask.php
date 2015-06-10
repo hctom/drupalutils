@@ -40,11 +40,15 @@ class UserLoginTask extends Task {
         'browser' => $this->getBrowser(),
         'redirect-port' => $this->getRedirectPort(),
       ), $input)
-      ->mustRun('Created one time login link', 'Unable to log in user');
+      ->mustRun(NULL, 'Unable to log in user');
 
-    // Display one time login link.
-    if ($process->isSuccessful() && !$output->isVerbose()) {
-      $output->writeln('<processOutput>' . $process->getOutput() . '</processOutput>');
+    if ($process->isSuccessful()) {
+      // Display one time login link (if output not very verbose).
+      if (!$output->isVeryVerbose()) {
+        $output->writeln('<processOutput>' . trim($process->getOutput()) . '</processOutput>');
+      }
+
+      $this->getLogger()->always('<success>Created one time login link</success>');
     }
 
     return $process->getExitCode();
