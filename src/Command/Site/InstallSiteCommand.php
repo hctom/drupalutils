@@ -52,8 +52,8 @@ EOT
       ->addMultiple(array(
         new EnsureSiteDirectoryTask(),
         new EnsureEnvSettingsTask(),
-        new SymlinkEnvHtaccessTask(),
         new SymlinkEnvSettingsTask(),
+        new SymlinkEnvHtaccessTask(),
         new EnsureDatabaseSettingsTask(),
         new InstallSiteTask(),
         new EnsureTemporaryFilesDirectoryTask(),
