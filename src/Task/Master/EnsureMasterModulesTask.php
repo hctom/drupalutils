@@ -69,8 +69,9 @@ abstract class EnsureMasterModulesTask extends EnsureSettingsFileTask {
         ->mustRun('Ensured master modules', 'Unable to ensure master modules')
         ->getExitCode();
 
-      // Reload project list (if no error)
+      // Reload project list and clear Drush cache (if no error).
       if (!$exitCode) {
+        $this->getCacheHelper()->flush('drush');
         $this->getProjectHelper()->getProjectList(TRUE);
       }
 
