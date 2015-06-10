@@ -16,6 +16,21 @@ use Symfony\Component\Console\Output\OutputInterface;
 class ListFeaturesTask extends FeaturesTask {
 
   /**
+   * Feature status: All.
+   */
+  const STATUS_ALL = 'all';
+
+  /**
+   * Feature status: Disabled.
+   */
+  const STATUS_DISABLED = 'disabled';
+
+  /**
+   * Feature status: Enabled.
+   */
+  const STATUS_ENABLED = 'enabled';
+
+  /**
    * {@inheritdoc}
    */
   protected function configure() {
@@ -31,11 +46,27 @@ class ListFeaturesTask extends FeaturesTask {
   protected function execute(InputInterface $input, OutputInterface $output) {
     $process = $this->getDrushProcessHelper()
       ->setCommandName('features-list')
+      ->setOptions(array(
+        'status' => $this->getFeatureStatus(),
+      ))
       ->mustRun(NULL, 'Unable to list features', FALSE);
 
     $this->getLogger()->always('<info> ' . trim($process->getOutput()) . '</info>');
 
     return $process->getExitCode();
+  }
+
+  /**
+   * Return feature status.
+   *
+   * @return string
+   *   The status of the features to list. Possible values:
+   *     - static::STATUS_ALL: List all features (default).
+   *     - static::STATUS_DISABLED: List disabled features only.
+   *     - static::STATUS_ENABLED: List enabled features only.
+   */
+  public function getFeatureStatus() {
+    return static::STATUS_ALL;
   }
 
   /**
