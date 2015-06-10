@@ -29,13 +29,25 @@ class RevertAllFeaturesTask extends FeaturesTask {
    * {@inheritdoc}
    */
   protected function execute(InputInterface $input, OutputInterface $output) {
-    return $this->getDrushProcessHelper()
+    $process = $this->getDrushProcessHelper()
       ->setCommandName('features-revert-all')
       ->setArguments($this->getExcludedFeatures())
       ->setOptions(array(
         'force' => $this->getForce() ? TRUE : FALSE,
       ))
-      ->mustRun('Reverted all features', 'Unable to revert all features');
+      ->mustRun(NULL, 'Unable to revert all features');
+
+    // TODO Implement maximum execution limit to avoid infinite loop.
+    // Still revertable features found -> execute task again.
+    if (($revertableFeatures = $this->getRevertableFeatures()) && count($revertableFeatures)) {
+      $this->getLogger()->info(sprintf('Tried to revert all features, but the following features are still revertable: %s', implode(', ', $revertableFeatures)));
+
+      return $this->run($input, $output);
+    }
+
+    $this->getLogger()->always('<success>Reverted all features</success>');
+
+    return $process->getExitCode();
   }
 
   /**
@@ -65,5 +77,17 @@ class RevertAllFeaturesTask extends FeaturesTask {
   public function getTitle() {
     return 'Revert all features';
   }
+
+  /**
+   * {@inheritdoc}
+   */
+  protected function skipWithMessage() {
+    if (($message = parent::skipWithMessage())) {
+      return $message;
+    }
+
+    return count($this->getRevertableFeatures()) === 0 ? 'No revertable features found' : NULL;
+  }
+
 
 }
