@@ -257,11 +257,6 @@ class FilesystemHelper extends Helper {
         $pathinfo = pathinfo($path);
         $path = realpath($pathinfo['dirname']) . DIRECTORY_SEPARATOR . $pathinfo['basename'];
       }
-
-      // Invalid path.
-      else {
-        throw new IOException(sprintf('Unable to make "%s" path absolute', $path), 0, NULL, $path);
-      }
     }
 
     return $path;
