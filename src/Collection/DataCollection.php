@@ -2,7 +2,7 @@
 
 /**
  * @file
- * Contains hctom\DrupalUtils\Collection\Collection.
+ * Contains hctom\DrupalUtils\Collection\DataCollection.
  */
 
 namespace hctom\DrupalUtils\Collection;
@@ -12,9 +12,9 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Criteria;
 
 /**
- * Base class for collections.
+ * Base class for data collections.
  */
-abstract class Collection extends AbstractLazyCollection implements CollectionInterface {
+abstract class DataCollection extends AbstractLazyCollection implements DataCollectionInterface {
 
   /**
    * Add an element at the end of the collection.

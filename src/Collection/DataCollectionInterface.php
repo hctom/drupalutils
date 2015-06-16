@@ -2,7 +2,7 @@
 
 /**
  * @file
- * Contains hctom\DrupalUtils\Collection\CollectionInterface.
+ * Contains hctom\DrupalUtils\Collection\DataCollectionInterface.
  */
 
 namespace hctom\DrupalUtils\Collection;
@@ -11,9 +11,9 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\Selectable;
 
 /**
- * Should be implemented by collection classes.
+ * Should be implemented by lazy collection classes.
  */
-interface CollectionInterface extends Collection, Selectable {
+interface DataCollectionInterface extends Collection, Selectable {
 
   /**
    * Add multiple elements at the end of the collection.

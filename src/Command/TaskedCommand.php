@@ -7,7 +7,7 @@
 
 namespace hctom\DrupalUtils\Command;
 
-use hctom\DrupalUtils\Collection\CollectionInterface;
+use hctom\DrupalUtils\Collection\DataCollectionInterface;
 use hctom\DrupalUtils\Task\TaskInterface;
 use hctom\DrupalUtils\Task\TaskList;
 use Symfony\Component\Console\Input\ArrayInput;
@@ -23,7 +23,7 @@ abstract class TaskedCommand extends Command {
   /**
    * Task list.
    *
-   * @var CollectionInterface
+   * @var DataCollectionInterface
    */
   private $taskList;
 
@@ -113,7 +113,7 @@ abstract class TaskedCommand extends Command {
   /**
    * Return task list.
    *
-   * @return CollectionInterface
+   * @return DataCollectionInterface
    *   A task list collection object.
    */
   protected function getTaskList() {

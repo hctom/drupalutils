@@ -8,12 +8,12 @@
 namespace hctom\DrupalUtils\Task;
 
 use Doctrine\Common\Collections\Criteria;
-use hctom\DrupalUtils\Collection\Collection;
+use hctom\DrupalUtils\Collection\DataCollection;
 
 /**
  * Provides a task list.
  */
-class TaskList extends Collection {
+class TaskList extends DataCollection {
 
   /**
    * {@inheritdoc}

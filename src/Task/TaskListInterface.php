@@ -7,12 +7,12 @@
 
 namespace hctom\DrupalUtils\Task;
 
-use hctom\DrupalUtils\Collection\CollectionInterface;
+use hctom\DrupalUtils\Collection\DataCollectionInterface;
 
 /**
  * Should be implemented by task list classes.
  */
-interface TaskListInterface extends CollectionInterface {
+interface TaskListInterface extends DataCollectionInterface {
 
 
   /**
