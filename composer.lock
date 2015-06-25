@@ -344,16 +344,16 @@
         },
         {
             "name": "symfony/monolog-bridge",
-            "version": "v2.7.0",
+            "version": "v2.7.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/MonologBridge.git",
-                "reference": "8963a48b7cb94f4f63cfa82b2513d82fd051fdf1"
+                "reference": "529eb4023517ae5e111ac54f0aa7d597b0579d95"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/MonologBridge/zipball/8963a48b7cb94f4f63cfa82b2513d82fd051fdf1",
-                "reference": "8963a48b7cb94f4f63cfa82b2513d82fd051fdf1",
+                "url": "https://api.github.com/repos/symfony/MonologBridge/zipball/529eb4023517ae5e111ac54f0aa7d597b0579d95",
+                "reference": "529eb4023517ae5e111ac54f0aa7d597b0579d95",
                 "shasum": ""
             },
             "require": {
@@ -398,7 +398,7 @@
             ],
             "description": "Symfony Monolog Bridge",
             "homepage": "https://symfony.com",
-            "time": "2015-05-02 15:21:08"
+            "time": "2015-06-08 09:37:21"
         },
         {
             "name": "symfony/process",
