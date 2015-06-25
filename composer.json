@@ -29,6 +29,6 @@
     }
   },
   "require-dev": {
-    "drush/drush": "dev-master"
+    "drush/drush": "7.*"
   }
 }

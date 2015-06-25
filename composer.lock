@@ -1,10 +1,10 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "54eb95f58aca81b5d2de61f17f1b4ac3",
+    "hash": "42cf9fe6b52a02648dac1fb4d5c3d039",
     "packages": [
         {
             "name": "doctrine/collections",
@@ -543,31 +543,28 @@
         },
         {
             "name": "drush/drush",
-            "version": "dev-master",
+            "version": "7.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/drush-ops/drush.git",
-                "reference": "af918debe394f1bd90cd7ac7690366e82a25b837"
+                "reference": "02a9841b29daba7b55295903c1c4b0a45c9abdc5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/drush-ops/drush/zipball/af918debe394f1bd90cd7ac7690366e82a25b837",
-                "reference": "af918debe394f1bd90cd7ac7690366e82a25b837",
+                "url": "https://api.github.com/repos/drush-ops/drush/zipball/02a9841b29daba7b55295903c1c4b0a45c9abdc5",
+                "reference": "02a9841b29daba7b55295903c1c4b0a45c9abdc5",
                 "shasum": ""
             },
             "require": {
                 "d11wtq/boris": "~1.0",
                 "pear/console_table": "~1.2.0",
-                "php": ">=5.4.5",
+                "php": ">=5.3.0",
                 "symfony/var-dumper": "^2.6.3",
                 "symfony/yaml": "~2.2"
             },
             "require-dev": {
                 "phpunit/phpunit": ">=3.5",
                 "symfony/process": "2.4.5"
-            },
-            "suggest": {
-                "drush/config-extra": "Provides configuration workflow commands, such as config-merge."
             },
             "bin": [
                 "drush",
@@ -578,7 +575,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "8.0.x-dev"
+                    "dev-master": "7.0.x-dev"
                 }
             },
             "autoload": {
@@ -626,7 +623,7 @@
             ],
             "description": "Drush is a command line shell and scripting interface for Drupal, a veritable Swiss Army knife designed to make life easier for those of us who spend some of our working hours hacking away at the command prompt.",
             "homepage": "http://www.drush.org",
-            "time": "2015-06-05 20:36:51"
+            "time": "2015-05-20 14:23:37"
         },
         {
             "name": "pear/console_table",
@@ -794,9 +791,7 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {
-        "drush/drush": 20
-    },
+    "stability-flags": [],
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": [],
